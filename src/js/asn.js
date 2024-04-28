@@ -38,40 +38,53 @@ function updateEntryTable() {
     updateEntryTable = function () {}
     console.debug('updateEntryTable')
 
-    const table = document.getElementsByTagName('table')
-    if (!table.length) {
+    const table = document.querySelector('table')
+    if (!table) {
         return console.debug('table not found')
     }
 
-    const rows = table[0].children[0].rows
-    for (const tr of rows) {
-        if (tr.innerHTML.includes('Registration:')) {
+    for (const tr of table.rows) {
+        if (tr.textContent.startsWith('Registration:')) {
             const reg = tr.cells[1].textContent.trim()
             console.debug('reg:', reg)
-            if (reg) {
-                tr.cells[1].innerHTML = `<span>${reg}</span>`
-                if (reg.startsWith('N')) {
-                    const faaUrl = `<a href='https://registry.faa.gov/AircraftInquiry/Search/NNumberResult?nNumberTxt=${reg}' target='_blank'>FAA</a>`
-                    tr.cells[1].innerHTML += ` | ${faaUrl}`
-                }
-                const flightAware = `<a href='https://flightaware.com/resources/registration/${reg}' target='_blank'>FA</a>`
-                const fr24 = `<a href='https://flightaware.com/resources/registration/${reg}' target='_blank'>FR24</a>`
-                const jetPhotos = `<a href='https://www.jetphotos.com/registration/${reg}' target='_blank'>JetPhotos</a>`
-                tr.cells[1].innerHTML += ` | ${flightAware} | ${fr24} | ${jetPhotos}`
+            if (!reg) {
+                console.debug('registration not found')
+                break
             }
+
+            const cell = tr.cells[1]
+            addEntryLink(reg, cell)
         }
-        if (tr.innerHTML.includes('Owner/operator:')) {
+        if (tr.textContent.startsWith('Owner/operator:')) {
             let operator = tr.cells[1].textContent.trim()
             console.debug('operator:', operator)
-            if (
-                operator &&
-                !['private', 'unreported'].includes(operator.toLowerCase())
-            ) {
-                operator = operator.replace(' ', '+')
-                const link = `<a href='https://aviation-safety.net/wikibase/dblist2.php?op=${operator}' target='_blank'>Wiki Search</a>`
-                tr.cells[1].innerHTML += ` | ${link}`
-            }
+            const link = document.createElement('a')
+            link.href = `https://aviation-safety.net/wikibase/dblist2.php?op=${operator}`
+            link.textContent = 'Wiki Search'
+            tr.cells[1].appendChild(document.createTextNode(' - '))
+            tr.cells[1].appendChild(link)
         }
+    }
+}
+
+function addEntryLink(reg, cell) {
+    console.debug(`addEntryLink: ${reg}`, cell)
+    const links = {
+        FAA: 'https://registry.faa.gov/AircraftInquiry/Search/NNumberResult?nNumberTxt=${reg}',
+        FA: 'https://flightaware.com/resources/registration/${reg}',
+        FR24: 'https://flightaware.com/resources/registration/${reg}',
+        JetPhoto: 'https://www.jetphotos.com/registration/${reg}',
+    }
+    for (const [key, value] of Object.entries(links)) {
+        if (key === 'FAA' && !reg.toUpperCase().startsWith('N')) {
+            console.debug('skipping FAA link for reg', reg)
+            continue
+        }
+        const link = document.createElement('a')
+        link.href = `${value}`
+        link.textContent = key
+        cell.appendChild(document.createTextNode(' | '))
+        cell.appendChild(link)
     }
 }
 
