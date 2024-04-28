@@ -1,9 +1,9 @@
 {
   "name": "ASN Plus",
-  "description": "Aviation Safety Network Plus - Additional Features and Display Options.",
+  "description": "Aviation Safety Network Plus - Additional Features, Display and Search Options.",
   "homepage_url": "https://github.com/cssnr/asn-plus",
   "author": "Shane",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "manifest_version": 3,
   "commands": {
     "_execute_action": {
