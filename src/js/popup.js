@@ -4,9 +4,6 @@ import { checkPerms, saveOptions, showToast, updateOptions } from './export.js'
 
 document.addEventListener('DOMContentLoaded', initPopup)
 document.getElementById('grant-perms').addEventListener('click', grantPerms)
-// document
-//     .querySelectorAll('a[href]')
-//     .forEach((el) => el.addEventListener('click', popupLinks))
 document
     .querySelectorAll('#options-form input')
     .forEach((el) => el.addEventListener('change', saveOptions))
@@ -41,6 +38,7 @@ async function initPopup() {
     ).checked = true
 
     populateYearLinks()
+    // addEventListener on popupLinks must be done after all links are generated
     document
         .querySelectorAll('a[href]')
         .forEach((el) => el.addEventListener('click', popupLinks))

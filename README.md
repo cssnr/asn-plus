@@ -1,54 +1,85 @@
-[![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/ifefifghpkllfibejafbakmflidjcjfp?logo=google&logoColor=white&label=google%20users)](https://chromewebstore.google.com/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp)
-[![Mozilla Add-on Users](https://img.shields.io/amo/users/link-extractor?logo=mozilla&label=mozilla%20users)](https://addons.mozilla.org/addon/link-extractor)
-[![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/ifefifghpkllfibejafbakmflidjcjfp?label=chrome&logo=googlechrome)](https://chromewebstore.google.com/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp)
-[![Mozilla Add-on Version](https://img.shields.io/amo/v/link-extractor?label=firefox&logo=firefox)](https://addons.mozilla.org/addon/link-extractor)
-[![GitHub Release Version](https://img.shields.io/github/v/release/smashedr/simple-extension?logo=github)](https://github.com/cssnr/asn-plus/releases/latest)
-[![Manifest Version](https://img.shields.io/github/manifest-json/v/smashedr/simple-extension?filename=manifest.json&logo=json&label=manifest)](https://github.com/cssnr/asn-plus/blob/master/manifest.json)
+[![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/anlkpnbhiiojmedlkchcdmigkdccnmcn?logo=google&logoColor=white&label=google%20users)](https://chromewebstore.google.com/detail/asn-plus/anlkpnbhiiojmedlkchcdmigkdccnmcn)
+[![Mozilla Add-on Users](https://img.shields.io/amo/users/asn-plus?logo=mozilla&label=mozilla%20users)](https://addons.mozilla.org/addon/asn-plus)
+[![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/anlkpnbhiiojmedlkchcdmigkdccnmcn?label=chrome&logo=googlechrome)](https://chromewebstore.google.com/detail/asn-plus/anlkpnbhiiojmedlkchcdmigkdccnmcn)
+[![Mozilla Add-on Version](https://img.shields.io/amo/v/asn-plus?label=firefox&logo=firefox)](https://addons.mozilla.org/addon/asn-plus)
+[![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/asn-plus?logo=github)](https://github.com/cssnr/asn-plus/releases/latest)
+[![Manifest Version](https://img.shields.io/github/manifest-json/v/cssnr/asn-plus?filename=manifest.json&logo=json&label=manifest)](https://github.com/cssnr/asn-plus/blob/master/manifest.json)
 [![Build](https://github.com/cssnr/asn-plus/actions/workflows/build.yaml/badge.svg)](https://github.com/cssnr/asn-plus/actions/workflows/build.yaml)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=smashedr_simple-extension&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=smashedr_simple-extension)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_asn-plus&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_asn-plus)
 # ASN Plus
 
-Modern Chrome Web Extension and Firefox Browser Addon ASN Plus Example.
-[README.md](README.md) copied from [link-extractor](https://github.com/cssnr/link-extractor) as an example.
+Modern [Chrome](https://chromewebstore.google.com/detail/asn-plus/anlkpnbhiiojmedlkchcdmigkdccnmcn)
+Web Extension and [Firefox](https://addons.mozilla.org/addon/asn-plus)
+Browser Addon for [The Aviation Safety Network](https://aviation-safety.net/)
+to enable dark mode plus add additional features.
 
 *   [Install](#install)
 *   [Features](#features)
+    -   [Upcoming Features](#upcoming-features-and-ideas)
+*   [Frequently Asked Questions](#frequently-asked-questions)
+*   [Known Issues](#known-issues)
 *   [Configuration](#configuration)
 *   [Development](#development)
     -   [Building](#building)
 
 # Install
 
-*   [Google Chrome Web Store](https://chromewebstore.google.com/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp)
-*   [Mozilla Firefox Add-ons](https://addons.mozilla.org/addon/link-extractor)
+*   [Google Chrome Web Store](https://chromewebstore.google.com/detail/asn-plus/anlkpnbhiiojmedlkchcdmigkdccnmcn)
+*   [Mozilla Firefox Add-ons](https://addons.mozilla.org/addon/asn-plus)
 
-[![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_48x48.png)](https://chromewebstore.google.com/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp)
-[![Firefox](https://raw.githubusercontent.com/alrra/browser-logos/main/src/firefox/firefox_48x48.png)](https://addons.mozilla.org/addon/link-extractor)
-[![Edge](https://raw.githubusercontent.com/alrra/browser-logos/main/src/edge/edge_48x48.png)](https://chromewebstore.google.com/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp)
-[![Chromium](https://raw.githubusercontent.com/alrra/browser-logos/main/src/chromium/chromium_48x48.png)](https://chromewebstore.google.com/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp)
-[![Brave](https://raw.githubusercontent.com/alrra/browser-logos/main/src/brave/brave_48x48.png)](https://chromewebstore.google.com/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp)
-[![Vivaldi](https://raw.githubusercontent.com/alrra/browser-logos/main/src/vivaldi/vivaldi_48x48.png)](https://chromewebstore.google.com/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp)
-[![Opera](https://raw.githubusercontent.com/alrra/browser-logos/main/src/opera/opera_48x48.png)](https://chromewebstore.google.com/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp)
+[![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_48x48.png)](https://chromewebstore.google.com/detail/asn-plus/anlkpnbhiiojmedlkchcdmigkdccnmcn)
+[![Firefox](https://raw.githubusercontent.com/alrra/browser-logos/main/src/firefox/firefox_48x48.png)](https://addons.mozilla.org/addon/asn-plus)
+[![Edge](https://raw.githubusercontent.com/alrra/browser-logos/main/src/edge/edge_48x48.png)](https://chromewebstore.google.com/detail/asn-plus/anlkpnbhiiojmedlkchcdmigkdccnmcn)
+[![Chromium](https://raw.githubusercontent.com/alrra/browser-logos/main/src/chromium/chromium_48x48.png)](https://chromewebstore.google.com/detail/asn-plus/anlkpnbhiiojmedlkchcdmigkdccnmcn)
+[![Brave](https://raw.githubusercontent.com/alrra/browser-logos/main/src/brave/brave_48x48.png)](https://chromewebstore.google.com/detail/asn-plus/anlkpnbhiiojmedlkchcdmigkdccnmcn)
+[![Vivaldi](https://raw.githubusercontent.com/alrra/browser-logos/main/src/vivaldi/vivaldi_48x48.png)](https://chromewebstore.google.com/detail/asn-plus/anlkpnbhiiojmedlkchcdmigkdccnmcn)
+[![Opera](https://raw.githubusercontent.com/alrra/browser-logos/main/src/opera/opera_48x48.png)](https://chromewebstore.google.com/detail/asn-plus/anlkpnbhiiojmedlkchcdmigkdccnmcn)
 
 All **Chromium** Based Browsers can install the extension from the
-[Chrome Web Store](https://chromewebstore.google.com/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp).
+[Chrome Web Store](https://chromewebstore.google.com/detail/asn-plus/anlkpnbhiiojmedlkchcdmigkdccnmcn).
 
 # Features
 
-Please submit a [Feature Request](https://github.com/cssnr/asn-plus/discussions/categories/feature-requests) for new features.  
-For any issues, bugs or concerns; please [Open an Issue](https://github.com/cssnr/asn-plus/issues).
+*   Enable Dark Mode
+*   Highlight Rows with Fatalities
+*   Add Additional Links to Entries
+*   Search by Registration or Operator from the Popup
+
+### Upcoming Features and Ideas
+
+*   Auto Fill for New Event Submissions
+
+> [!TIP]
+> **Don't see your feature here?**
+> Request one on the [Feature Request Discussion](https://github.com/cssnr/asn-plus/discussions/new?category=q-a).
+
+# Frequently Asked Questions
+
+### Why are there no questions?
+
+Nobody has asked any...
+
+> [!TIP]
+> **Don't see your question here?**
+> Ask one on the [Q&A Discussion](https://github.com/cssnr/asn-plus/discussions/new?category=q-a).
+
+# Known Issues
+
+*   Disabling some features requires a page reload before they will take effect.
+
+> [!TIP]
+> **Don't see your issue here?**
+> Open one on the [Issues](https://github.com/cssnr/asn-plus/issues).
 
 # Configuration
 
 You can pin the Addon by clicking the `Puzzle Piece`, find the Web Extension icon, then;  
-**Chrome,** click the `Pin` icon.  
-**Firefox,** click the `Settings Wheel` and `Pin to Toolbar`.
+**Chrome**, click the `Pin` icon.  
+**Firefox**, click the `Settings Wheel` and `Pin to Toolbar`.
 
-To open the options, click on the icon (from above) then click `Open Options`.  
-Here you can set flags and add as many saved regular expressions as you would like for easy use later.  
-Make sure to click`Save Options` when finished.
+To open the options, click on the icon (from above) then click `Open Options`.
 
-For more information on regex, see: https://regex101.com/
+You may also access the Options and Home page from a Right Click if Enabled in Options.
 
 # Development
 
