@@ -20,6 +20,10 @@
     }
   },
   "permissions": ["contextMenus", "scripting", "storage"],
+  "host_permissions": [
+    "http://aviation-safety.net/*",
+    "https://aviation-safety.net/*"
+  ],
   "content_scripts": [
     {
       "matches": [
