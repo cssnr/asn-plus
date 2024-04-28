@@ -1,6 +1,6 @@
-[![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/anlkpnbhiiojmedlkchcdmigkdccnmcn?logo=google&logoColor=white&label=google%20users)](https://chromewebstore.google.com/detail/asn-plus/anlkpnbhiiojmedlkchcdmigkdccnmcn)
+[![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/phcbcnpmcbkcnijkpfohkdmcofcofibh?logo=google&logoColor=white&label=google%20users)](https://chromewebstore.google.com/detail/asn-plus/phcbcnpmcbkcnijkpfohkdmcofcofibh)
 [![Mozilla Add-on Users](https://img.shields.io/amo/users/asn-plus?logo=mozilla&label=mozilla%20users)](https://addons.mozilla.org/addon/asn-plus)
-[![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/anlkpnbhiiojmedlkchcdmigkdccnmcn?label=chrome&logo=googlechrome)](https://chromewebstore.google.com/detail/asn-plus/anlkpnbhiiojmedlkchcdmigkdccnmcn)
+[![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/phcbcnpmcbkcnijkpfohkdmcofcofibh?label=chrome&logo=googlechrome)](https://chromewebstore.google.com/detail/asn-plus/phcbcnpmcbkcnijkpfohkdmcofcofibh)
 [![Mozilla Add-on Version](https://img.shields.io/amo/v/asn-plus?label=firefox&logo=firefox)](https://addons.mozilla.org/addon/asn-plus)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/asn-plus?logo=github)](https://github.com/cssnr/asn-plus/releases/latest)
 [![Manifest Version](https://img.shields.io/github/manifest-json/v/cssnr/asn-plus?filename=manifest.json&logo=json&label=manifest)](https://github.com/cssnr/asn-plus/blob/master/manifest.json)
@@ -8,7 +8,7 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_asn-plus&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_asn-plus)
 # ASN Plus
 
-Modern [Chrome](https://chromewebstore.google.com/detail/asn-plus/anlkpnbhiiojmedlkchcdmigkdccnmcn)
+Modern [Chrome](https://chromewebstore.google.com/detail/asn-plus/phcbcnpmcbkcnijkpfohkdmcofcofibh)
 Web Extension and [Firefox](https://addons.mozilla.org/addon/asn-plus)
 Browser Addon for [The Aviation Safety Network](https://aviation-safety.net/)
 to enable dark mode plus add additional features.
@@ -24,19 +24,19 @@ to enable dark mode plus add additional features.
 
 # Install
 
-*   [Google Chrome Web Store](https://chromewebstore.google.com/detail/asn-plus/anlkpnbhiiojmedlkchcdmigkdccnmcn)
+*   [Google Chrome Web Store](https://chromewebstore.google.com/detail/asn-plus/phcbcnpmcbkcnijkpfohkdmcofcofibh)
 *   [Mozilla Firefox Add-ons](https://addons.mozilla.org/addon/asn-plus)
 
-[![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_48x48.png)](https://chromewebstore.google.com/detail/asn-plus/anlkpnbhiiojmedlkchcdmigkdccnmcn)
+[![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_48x48.png)](https://chromewebstore.google.com/detail/asn-plus/phcbcnpmcbkcnijkpfohkdmcofcofibh)
 [![Firefox](https://raw.githubusercontent.com/alrra/browser-logos/main/src/firefox/firefox_48x48.png)](https://addons.mozilla.org/addon/asn-plus)
-[![Edge](https://raw.githubusercontent.com/alrra/browser-logos/main/src/edge/edge_48x48.png)](https://chromewebstore.google.com/detail/asn-plus/anlkpnbhiiojmedlkchcdmigkdccnmcn)
-[![Chromium](https://raw.githubusercontent.com/alrra/browser-logos/main/src/chromium/chromium_48x48.png)](https://chromewebstore.google.com/detail/asn-plus/anlkpnbhiiojmedlkchcdmigkdccnmcn)
-[![Brave](https://raw.githubusercontent.com/alrra/browser-logos/main/src/brave/brave_48x48.png)](https://chromewebstore.google.com/detail/asn-plus/anlkpnbhiiojmedlkchcdmigkdccnmcn)
-[![Vivaldi](https://raw.githubusercontent.com/alrra/browser-logos/main/src/vivaldi/vivaldi_48x48.png)](https://chromewebstore.google.com/detail/asn-plus/anlkpnbhiiojmedlkchcdmigkdccnmcn)
-[![Opera](https://raw.githubusercontent.com/alrra/browser-logos/main/src/opera/opera_48x48.png)](https://chromewebstore.google.com/detail/asn-plus/anlkpnbhiiojmedlkchcdmigkdccnmcn)
+[![Edge](https://raw.githubusercontent.com/alrra/browser-logos/main/src/edge/edge_48x48.png)](https://chromewebstore.google.com/detail/asn-plus/phcbcnpmcbkcnijkpfohkdmcofcofibh)
+[![Chromium](https://raw.githubusercontent.com/alrra/browser-logos/main/src/chromium/chromium_48x48.png)](https://chromewebstore.google.com/detail/asn-plus/phcbcnpmcbkcnijkpfohkdmcofcofibh)
+[![Brave](https://raw.githubusercontent.com/alrra/browser-logos/main/src/brave/brave_48x48.png)](https://chromewebstore.google.com/detail/asn-plus/phcbcnpmcbkcnijkpfohkdmcofcofibh)
+[![Vivaldi](https://raw.githubusercontent.com/alrra/browser-logos/main/src/vivaldi/vivaldi_48x48.png)](https://chromewebstore.google.com/detail/asn-plus/phcbcnpmcbkcnijkpfohkdmcofcofibh)
+[![Opera](https://raw.githubusercontent.com/alrra/browser-logos/main/src/opera/opera_48x48.png)](https://chromewebstore.google.com/detail/asn-plus/phcbcnpmcbkcnijkpfohkdmcofcofibh)
 
 All **Chromium** Based Browsers can install the extension from the
-[Chrome Web Store](https://chromewebstore.google.com/detail/asn-plus/anlkpnbhiiojmedlkchcdmigkdccnmcn).
+[Chrome Web Store](https://chromewebstore.google.com/detail/asn-plus/phcbcnpmcbkcnijkpfohkdmcofcofibh).
 
 # Features
 
