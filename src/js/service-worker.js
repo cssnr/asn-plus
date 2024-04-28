@@ -38,6 +38,7 @@ async function onInstalled(details) {
             darkMode: true,
             highlightTable: true,
             updateEntry: true,
+            searchType: 'registration',
             contextMenu: true,
             showUpdate: false,
         })
@@ -125,10 +126,16 @@ async function registerDarkMode() {
         runAt: 'document_start',
     }
     console.log('registerDarkMode', asnDark)
+    // const scripts = await chrome.scripting.getRegisteredContentScripts()
+    // for (const script of scripts) {
+    //     if (script.id === asnDark.id) {
+    //         return console.debug('darkMode already registered')
+    //     }
+    // }
     try {
         await chrome.scripting.registerContentScripts([asnDark])
     } catch (e) {
-        console.error('failed to register content scripts', e)
+        console.log('failed to register content scripts', e)
     }
 }
 
