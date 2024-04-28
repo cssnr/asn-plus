@@ -16,13 +16,7 @@
       "suggested_key": {
         "default": "Alt+Shift+X"
       },
-      "description": "Open Home Page"
-    },
-    "showPage": {
-      "suggested_key": {
-        "default": "Alt+Shift+W"
-      },
-      "description": "Show Extension Page"
+      "description": "Open ASN Home Page"
     }
   },
   "permissions": ["contextMenus", "scripting", "storage"],

@@ -2,14 +2,10 @@
 
 console.info('LOADED: asn.js')
 
-let highlightTableRowsUpdated = false
-
 function highlightTableRows() {
-    if (highlightTableRowsUpdated) {
-        return console.debug('highlightTableRows already updated')
-    }
-    highlightTableRowsUpdated = true
+    highlightTableRows = function () {}
     console.debug('highlightTableRows')
+
     const table = document.getElementsByTagName('table')
     if (!table.length) {
         return console.debug('table not found')
@@ -18,19 +14,6 @@ function highlightTableRows() {
     const rows = table[0].children[0].rows
     let i = 4
     for (const tr of rows) {
-        // if (tr.cells[0].tagName === 'TH') {
-        //     for (const td of tr.cells) {
-        //         if (td.textContent === 'fat.') {
-        //             console.debug(`fat. index: ${td.cellIndex}`)
-        //             i = td.cellIndex
-        //             break
-        //         }
-        //     }
-        //     continue
-        // }
-        // if (!i) {
-        //     break
-        // }
         if (tr.cells[0].tagName === 'TH') {
             continue
         }
@@ -44,14 +27,10 @@ function highlightTableRows() {
     }
 }
 
-let updateEntryTableUpdated = false
-
 function updateEntryTable() {
-    if (updateEntryTableUpdated) {
-        return console.debug('updateEntryTable already updated')
-    }
-    updateEntryTableUpdated = true
+    updateEntryTable = function () {}
     console.debug('updateEntryTable')
+
     const table = document.getElementsByTagName('table')
     if (!table.length) {
         return console.debug('table not found')
@@ -89,29 +68,27 @@ function updateEntryTable() {
     }
 }
 
-let updateLastUpdatedUpdated = false
-
 function updateLastUpdated() {
-    if (updateLastUpdatedUpdated) {
-        return console.debug('updateLastUpdated already updated')
-    }
-    updateLastUpdatedUpdated = true
+    updateLastUpdated = function () {}
     console.debug('updateLastUpdated')
 
     // Add Edit Link
     const lastupdated = document.querySelector('.lastupdated')
-    if (!lastupdated.length) {
-        return
+    console.debug('lastupdated:', lastupdated)
+    if (!lastupdated) {
+        return console.debug('.lastupdated querySelector empty')
     }
-    const id = document.URL.split('/').at(-1).trim()
+
+    const id = parseInt(document.URL.split('/').at(-1).trim())
     console.debug('id:', id)
     if (isNaN(id)) {
-        return
+        return console.debug('id isNaN:', id)
     }
     lastupdated.innerHTML = `<a href='https://aviation-safety.net/wikibase/web_db_edit.php?id=${id}'>Edit ${id}</a>`
     lastupdated.style.float = 'none'
     lastupdated.style.marginLeft = '40px'
     // el.style.color = 'white'
+
     // Add Updated Date
     const rows = document.getElementsByClassName('updates')[0].children[0].rows
     const updated = rows[rows.length - 1].firstChild.innerText.trim()

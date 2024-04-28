@@ -4,9 +4,9 @@ import { checkPerms, saveOptions, showToast, updateOptions } from './export.js'
 
 document.addEventListener('DOMContentLoaded', initPopup)
 document.getElementById('grant-perms').addEventListener('click', grantPerms)
-document
-    .querySelectorAll('a[href]')
-    .forEach((el) => el.addEventListener('click', popupLinks))
+// document
+//     .querySelectorAll('a[href]')
+//     .forEach((el) => el.addEventListener('click', popupLinks))
 document
     .querySelectorAll('#options-form input')
     .forEach((el) => el.addEventListener('change', saveOptions))
@@ -40,6 +40,11 @@ async function initPopup() {
         `input[name="searchType"][value="${options.searchType}"]`
     ).checked = true
 
+    populateYearLinks()
+    document
+        .querySelectorAll('a[href]')
+        .forEach((el) => el.addEventListener('click', popupLinks))
+
     searchForm.elements.searchTerm.focus()
 
     if (chrome.runtime.lastError) {
@@ -56,6 +61,27 @@ async function initPopup() {
     // console.log('views:', views)
     // const result = views.find((item) => item.location.href.endsWith('html/home.html'))
     // console.log('result:', result)
+}
+
+function populateYearLinks() {
+    console.debug('populateYearLinks')
+    const yearView = document.getElementById('year-view')
+    const yearList = document.getElementById('year-list')
+    const date = new Date()
+    let year = date.getFullYear()
+    yearView.textContent = year.toString()
+    yearView.href = `https://aviation-safety.net/wikibase/dblist.php?Year=${year}&sorteer=datekey_desc`
+    for (let i = 0; i < 4; i++) {
+        year = year - 1
+        console.log('i, year', i, year)
+        const li = document.createElement('li')
+        const a = document.createElement('a')
+        a.classList.add('dropdown-item')
+        a.textContent = year.toString()
+        a.href = `https://aviation-safety.net/wikibase/dblist.php?Year=${year}&sorteer=datekey_desc`
+        li.appendChild(a)
+        yearList.appendChild(li)
+    }
 }
 
 /**

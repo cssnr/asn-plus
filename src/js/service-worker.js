@@ -7,6 +7,8 @@ chrome.commands.onCommand.addListener(onCommand)
 chrome.runtime.onMessage.addListener(onMessage)
 chrome.storage.onChanged.addListener(onChanged)
 
+const asnHomePageURL = 'https://aviation-safety.net/'
+
 /**
  * On Startup Callback
  * @function onStartup
@@ -74,6 +76,7 @@ async function onInstalled(details) {
 
 /**
  * On Message Callback
+ * The sendResponse function does not work if this is an async function
  * @function onMessage
  * @param {Object} message
  * @param {MessageSender} sender
@@ -140,18 +143,18 @@ async function onClicked(ctx, tab) {
     if (ctx.menuItemId === 'options') {
         chrome.runtime.openOptionsPage()
     } else if (ctx.menuItemId === 'openHome') {
-        const url = chrome.runtime.getURL('/html/home.html')
-        await chrome.tabs.create({ active: true, url })
-    } else if (ctx.menuItemId === 'showPage') {
-        await chrome.windows.create({
-            type: 'detached_panel',
-            url: '/html/page.html',
-            width: 720,
-            height: 480,
-        })
+        // const url = chrome.runtime.getURL('/html/home.html')
+        await chrome.tabs.create({ active: true, url: asnHomePageURL })
     } else {
         console.error(`Unknown ctx.menuItemId: ${ctx.menuItemId}`)
     }
+    // } else if (ctx.menuItemId === 'showPage') {
+    //     await chrome.windows.create({
+    //         type: 'detached_panel',
+    //         url: '/html/page.html',
+    //         width: 720,
+    //         height: 480,
+    //     })
 }
 
 /**
@@ -162,16 +165,17 @@ async function onClicked(ctx, tab) {
 async function onCommand(command) {
     console.debug(`onCommand: ${command}`)
     if (command === 'openHome') {
-        const url = chrome.runtime.getURL('/html/home.html')
-        await chrome.tabs.create({ active: true, url })
-    } else if (command === 'showPage') {
-        await chrome.windows.create({
-            type: 'detached_panel',
-            url: '/html/page.html',
-            width: 480,
-            height: 360,
-        })
+        // const url = chrome.runtime.getURL('/html/home.html')
+        await chrome.tabs.create({ active: true, url: asnHomePageURL })
     }
+    // } else if (command === 'showPage') {
+    //     await chrome.windows.create({
+    //         type: 'detached_panel',
+    //         url: '/html/page.html',
+    //         width: 480,
+    //         height: 360,
+    //     })
+    // }
 }
 
 /**
@@ -206,8 +210,8 @@ function createContextMenus() {
     chrome.contextMenus.removeAll()
     const ctx = ['all']
     const contexts = [
-        [ctx, 'openHome', 'normal', 'Home Page'],
-        [ctx, 'showPage', 'normal', 'Extension Page'],
+        [ctx, 'openHome', 'normal', 'ASN Home'],
+        // [ctx, 'showPage', 'normal', 'Extension Page'],
         [ctx, 'separator-1', 'separator', 'separator'],
         [ctx, 'options', 'normal', 'Open Options'],
     ]

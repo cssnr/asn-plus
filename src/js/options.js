@@ -31,7 +31,6 @@ async function initOptions() {
     await setShortcuts({
         mainKey: '_execute_action',
         openHome: 'openHome',
-        showPage: 'showPage',
     })
 
     const { options } = await chrome.storage.sync.get(['options'])
@@ -64,7 +63,10 @@ function onChanged(changes, namespace) {
 async function grantPerms(event) {
     console.debug('grantPermsBtn:', event)
     await chrome.permissions.request({
-        origins: ['http://aviation-safety.net/*', 'https://aviation-safety.net/*'],
+        origins: [
+            'http://aviation-safety.net/*',
+            'https://aviation-safety.net/*',
+        ],
     })
     await checkPerms()
 }
