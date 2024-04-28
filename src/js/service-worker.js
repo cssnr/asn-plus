@@ -11,16 +11,16 @@ chrome.storage.onChanged.addListener(onChanged)
  * On Startup Callback
  * @function onStartup
  */
-function onStartup() {
-    console.log('onStartup')
-    // if (typeof browser !== 'undefined') {
-    //     console.log('FireFox Startup - Fix for Bug')
-    //     const { options } = await chrome.storage.sync.get(['options'])
-    //     console.debug('options:', options)
-    //     if (options.contextMenu) {
-    //         createContextMenus()
-    //     }
-    // }
+async function onStartup(arg) {
+    console.log('onStartup', arg)
+    if (typeof browser !== 'undefined') {
+        console.log('FireFox Startup - Fix for Bug')
+        const { options } = await chrome.storage.sync.get(['options'])
+        console.debug('options:', options)
+        if (options.contextMenu) {
+            createContextMenus()
+        }
+    }
 }
 
 /**
@@ -37,7 +37,6 @@ async function onInstalled(details) {
             showUpdate: false,
             darkMode: true,
             searchType: 'registration',
-            testInput: 'Default Value',
         })
     )
     console.debug('options:', options)
