@@ -1,6 +1,7 @@
 // JS for ASN
 
 function highlightTableRows() {
+    console.debug('highlightTableRows')
     const table = document.getElementsByTagName('table')
     if (!table.length) {
         return
@@ -36,6 +37,7 @@ function highlightTableRows() {
 }
 
 function updateEntryTable() {
+    console.debug('updateEntryTable')
     const table = document.getElementsByTagName('table')
     if (!table.length) {
         return
@@ -73,6 +75,7 @@ function updateEntryTable() {
 }
 
 function updateLastUpdated() {
+    console.debug('updateLastUpdated')
     // Add Edit Link
     const lastupdated = document.querySelector('.lastupdated')
     if (!lastupdated.length) {

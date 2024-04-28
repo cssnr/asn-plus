@@ -67,6 +67,65 @@ async function onInstalled(details) {
         }
     }
     await chrome.runtime.setUninstallURL(`${githubURL}/issues`)
+    if (options.darkMode) {
+        await registerDarkMode()
+    }
+}
+
+/**
+ * On Message Callback
+ * @function onMessage
+ * @param {Object} message
+ * @param {MessageSender} sender
+ * @param {Function} sendResponse
+ */
+function onMessage(message, sender, sendResponse) {
+    console.debug('onMessage: message, sender:', message, sender, sendResponse)
+    const darkCss = {
+        files: ['css/dark.css'],
+        target: {
+            tabId: sender.tab.id,
+        },
+    }
+    if (message.dark === 'off') {
+        console.info('SW: Dark Mode OFF')
+        chrome.scripting.unregisterContentScripts({ ids: ['asn-dark'] }).then()
+        try {
+            chrome.scripting.removeCSS(darkCss).then()
+        } catch (e) {
+            console.warn('e', e)
+        }
+    } else if (message.dark === 'on') {
+        console.info('SW: Dark Mode ON')
+        registerDarkMode().then()
+        try {
+            chrome.scripting.insertCSS(darkCss).then()
+        } catch (e) {
+            console.warn('e', e)
+        }
+    } else {
+        console.log('sendResponse: not matched')
+        return sendResponse('NO Action for message')
+    }
+    console.log('sendResponse: success')
+    sendResponse('Success')
+}
+
+async function registerDarkMode() {
+    const asnDark = {
+        id: 'asn-dark',
+        css: ['css/dark.css'],
+        matches: [
+            'http://aviation-safety.net/*',
+            'https://aviation-safety.net/*',
+        ],
+        runAt: 'document_start',
+    }
+    try {
+        await chrome.scripting.registerContentScripts([asnDark])
+    } catch (e) {
+        console.error('failed to register content scripts', e)
+    }
 }
 
 /**
@@ -112,21 +171,6 @@ async function onCommand(command) {
             height: 360,
         })
     }
-}
-
-/**
- * On Message Callback
- * @function onMessage
- * @param {Object} message
- * @param {MessageSender} sender
- * @param {Function} sendResponse
- */
-async function onMessage(message, sender, sendResponse) {
-    console.debug('onMessage: message, sender:', message, sender)
-    if (message.message === 'my eyes') {
-        await doShit(sender.tab)
-    }
-    sendResponse('Success.')
 }
 
 /**
@@ -200,18 +244,4 @@ async function setDefaultOptions(defaultOptions) {
         console.log('changed:', options)
     }
     return options
-}
-
-async function doShit(tab) {
-    console.info('doShit:', tab)
-    try {
-        await chrome.scripting.insertCSS({
-            target: {
-                tabId: tab.id,
-            },
-            files: ['css/dark.css'],
-        })
-    } catch (err) {
-        console.error(`failed to insert CSS: ${err}`)
-    }
 }
