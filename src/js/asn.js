@@ -1,5 +1,7 @@
 // JS for ASN
 
+console.info('LOADED: asn.js')
+
 function highlightTableRows() {
     console.debug('highlightTableRows')
     const table = document.getElementsByTagName('table')

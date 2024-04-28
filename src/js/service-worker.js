@@ -81,34 +81,34 @@ async function onInstalled(details) {
  */
 function onMessage(message, sender, sendResponse) {
     console.debug('onMessage: message, sender:', message, sender, sendResponse)
-    const darkCss = {
-        files: ['css/dark.css'],
-        target: {
-            tabId: sender.tab.id,
-        },
-    }
-    if (message.dark === 'off') {
-        console.info('SW: Dark Mode OFF')
-        chrome.scripting.unregisterContentScripts({ ids: ['asn-dark'] }).then()
-        try {
-            chrome.scripting.removeCSS(darkCss).then()
-        } catch (e) {
-            console.warn('e', e)
+    if (message.dark) {
+        const darkCss = {
+            files: ['css/dark.css'],
+            target: {
+                tabId: sender.tab.id,
+            },
         }
-    } else if (message.dark === 'on') {
-        console.info('SW: Dark Mode ON')
-        registerDarkMode().then()
-        try {
-            chrome.scripting.insertCSS(darkCss).then()
-        } catch (e) {
-            console.warn('e', e)
+        console.info(`SW: Dark Mode: ${message.dark}`, darkCss)
+        if (message.dark === 'off') {
+            chrome.scripting.unregisterContentScripts({ ids: ['asn-dark'] })
+            try {
+                chrome.scripting.removeCSS(darkCss)
+            } catch (e) {
+                console.warn('e', e)
+            }
+        } else if (message.dark === 'on') {
+            registerDarkMode()
+            try {
+                chrome.scripting.insertCSS(darkCss)
+            } catch (e) {
+                console.warn('e', e)
+            }
         }
+        sendResponse('Success')
     } else {
-        console.log('sendResponse: not matched')
-        return sendResponse('NO Action for message')
+        console.warn('Unmatched Message:', message)
+        sendResponse('NO Action for message')
     }
-    console.log('sendResponse: success')
-    sendResponse('Success')
 }
 
 async function registerDarkMode() {
@@ -121,6 +121,7 @@ async function registerDarkMode() {
         ],
         runAt: 'document_start',
     }
+    console.log('registerDarkMode', asnDark)
     try {
         await chrome.scripting.registerContentScripts([asnDark])
     } catch (e) {
