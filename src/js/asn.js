@@ -13,19 +13,19 @@ function highlightTableRows() {
 
     for (const table of tables) {
         console.debug('updating table:', table)
-        let i = 4
+        let fatIdx = 4
         for (const tr of table.rows) {
             if (tr.cells[0].tagName === 'TH') {
-                for (const th of tr.cells) {
-                    if (th.textContent.toLowerCase().includes('fat')) {
-                        i = th.cellIndex
-                        console.debug('fatal cell index:', th.cellIndex)
-                    }
-                }
+                // for (const th of tr.cells) {
+                //     if (th.textContent.toLowerCase().includes('fat')) {
+                //         i = th.cellIndex
+                //         console.debug('fatal cell index:', th.cellIndex)
+                //     }
+                // }
                 // console.debug('skipping TH row', tr)
                 continue
             }
-            const text = tr.cells[i].textContent.trim()
+            const text = tr.cells[fatIdx].textContent.trim()
             if (text && text !== '0') {
                 tr.style.backgroundColor = 'rgba(255,0,0,0.2)'
             }
