@@ -15,15 +15,14 @@ function highlightTableRows() {
         console.debug('updating table:', table)
         let i = 4
         for (const tr of table.rows) {
-            // if (tr.rowIndex === 0) {
             if (tr.cells[0].tagName === 'TH') {
                 for (const th of tr.cells) {
                     if (th.textContent.toLowerCase().includes('fat')) {
                         i = th.cellIndex
-                        console.info('FATALITY CELL INDEX:', th.cellIndex)
+                        console.debug('fatal cell index:', th.cellIndex)
                     }
                 }
-                console.debug('skipping TH row', tr)
+                // console.debug('skipping TH row', tr)
                 continue
             }
             const text = tr.cells[i].textContent.trim()
@@ -72,7 +71,7 @@ function addEntryLink(reg, cell) {
     const links = {
         FAA: 'https://registry.faa.gov/AircraftInquiry/Search/NNumberResult?nNumberTxt=${reg}',
         FA: 'https://flightaware.com/resources/registration/${reg}',
-        FR24: 'https://flightaware.com/resources/registration/${reg}',
+        FR24: 'https://www.flightradar24.com/data/aircraft/${reg}',
         JetPhoto: 'https://www.jetphotos.com/registration/${reg}',
     }
     for (const [key, value] of Object.entries(links)) {
@@ -81,7 +80,7 @@ function addEntryLink(reg, cell) {
             continue
         }
         const link = document.createElement('a')
-        link.href = `${value}`
+        link.href = value.replace('${reg}', reg)
         link.textContent = key
         cell.appendChild(document.createTextNode(' | '))
         cell.appendChild(link)
