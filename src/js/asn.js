@@ -2,12 +2,19 @@
 
 console.info('LOADED: asn.js')
 
+let highlightTableRowsUpdated = false
+
 function highlightTableRows() {
+    if (highlightTableRowsUpdated) {
+        return console.debug('highlightTableRows already updated')
+    }
+    highlightTableRowsUpdated = true
     console.debug('highlightTableRows')
     const table = document.getElementsByTagName('table')
     if (!table.length) {
-        return
+        return console.debug('table not found')
     }
+
     const rows = table[0].children[0].rows
     let i = 4
     for (const tr of rows) {
@@ -27,7 +34,6 @@ function highlightTableRows() {
         if (tr.cells[0].tagName === 'TH') {
             continue
         }
-        console.debug('Updating table now...')
         if (
             tr.cells[i] &&
             tr.cells[i].firstChild &&
@@ -38,12 +44,19 @@ function highlightTableRows() {
     }
 }
 
+let updateEntryTableUpdated = false
+
 function updateEntryTable() {
+    if (updateEntryTableUpdated) {
+        return console.debug('updateEntryTable already updated')
+    }
+    updateEntryTableUpdated = true
     console.debug('updateEntryTable')
     const table = document.getElementsByTagName('table')
     if (!table.length) {
-        return
+        return console.debug('table not found')
     }
+
     const rows = table[0].children[0].rows
     for (const tr of rows) {
         if (tr.innerHTML.includes('Registration:')) {
@@ -76,8 +89,15 @@ function updateEntryTable() {
     }
 }
 
+let updateLastUpdatedUpdated = false
+
 function updateLastUpdated() {
+    if (updateLastUpdatedUpdated) {
+        return console.debug('updateLastUpdated already updated')
+    }
+    updateLastUpdatedUpdated = true
     console.debug('updateLastUpdated')
+
     // Add Edit Link
     const lastupdated = document.querySelector('.lastupdated')
     if (!lastupdated.length) {

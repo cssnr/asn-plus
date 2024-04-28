@@ -33,10 +33,11 @@ async function onInstalled(details) {
     const githubURL = 'https://github.com/cssnr/asn-plus'
     const options = await Promise.resolve(
         setDefaultOptions({
+            darkMode: true,
+            highlightTable: true,
+            updateEntry: true,
             contextMenu: true,
             showUpdate: false,
-            darkMode: true,
-            searchType: 'registration',
         })
     )
     console.debug('options:', options)

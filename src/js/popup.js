@@ -98,6 +98,7 @@ async function popupLinks(event) {
 
 /**
  * Grant Permissions Button Click Callback
+ * Firefox requires us to ignore the promise and call window.close()
  * @function grantPerms
  * @param {Event} event
  */

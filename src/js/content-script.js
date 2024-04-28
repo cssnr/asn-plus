@@ -10,8 +10,15 @@ if (!chrome.storage.onChanged.hasListener(onChanged)) {
 
 async function domContentLoaded() {
     console.info('domContentLoaded')
-    highlightTableRows()
-    if (document.URL.includes('aviation-safety.net/wikibase/')) {
+    const { options } = await chrome.storage.sync.get(['options'])
+    console.debug('options:', options)
+    if (options.highlightTable) {
+        highlightTableRows()
+    }
+    if (
+        options.updateEntry &&
+        document.URL.includes('aviation-safety.net/wikibase/')
+    ) {
         updateEntryTable()
         updateLastUpdated()
     }
@@ -37,19 +44,33 @@ async function onChanged(changes, namespace) {
     for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
         if (namespace === 'sync' && key === 'options') {
             if (oldValue.darkMode !== newValue.darkMode) {
-                console.debug('Update Dark Mode:', oldValue, newValue)
+                console.log('darkMode:', oldValue, newValue)
                 if (newValue.darkMode) {
-                    console.info('CS: Enable Dark Mode +++')
                     const message = { dark: 'on' }
-                    const response = await chrome.runtime.sendMessage(message)
-                    console.log('response:', response)
+                    await chrome.runtime.sendMessage(message)
+                    // const response = await chrome.runtime.sendMessage(message)
+                    // console.debug('response:', response)
                     // await enableDarkMode()
                 } else {
-                    console.info('CS: Disable Dark Mode ---')
                     const message = { dark: 'off' }
-                    const response = await chrome.runtime.sendMessage(message)
-                    console.log('response:', response)
+                    await chrome.runtime.sendMessage(message)
+                    // const response = await chrome.runtime.sendMessage(message)
+                    // console.debug('response:', response)
                     // disableDarkMode()
+                }
+            } else if (oldValue.highlightTable !== newValue.highlightTable) {
+                console.log('highlightTable:', oldValue, newValue)
+                if (newValue.highlightTable) {
+                    highlightTableRows()
+                }
+            } else if (oldValue.updateEntry !== newValue.updateEntry) {
+                console.log('updateEntry:', oldValue, newValue)
+                if (
+                    newValue.updateEntry &&
+                    document.URL.includes('aviation-safety.net/wikibase/')
+                ) {
+                    updateEntryTable()
+                    updateLastUpdated()
                 }
             }
         }
