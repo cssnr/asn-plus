@@ -1,0 +1,9 @@
+/* CSS for popup.html */
+
+body {
+    width: 340px;
+}
+
+input::placeholder {
+    text-align: center;
+}

@@ -1,0 +1,7 @@
+{
+  "background": {
+    "service_worker": "js/service-worker.js"
+  },
+  "optional_host_permissions": ["http://aviation-safety.net/*", "https://aviation-safety.net/*"],
+  "minimum_chrome_version": "88"
+}
