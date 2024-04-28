@@ -2,9 +2,9 @@
 
 chrome.runtime.onStartup.addListener(onStartup)
 chrome.runtime.onInstalled.addListener(onInstalled)
+chrome.runtime.onMessage.addListener(onMessage)
 chrome.contextMenus.onClicked.addListener(onClicked)
 chrome.commands.onCommand.addListener(onCommand)
-chrome.runtime.onMessage.addListener(onMessage)
 chrome.storage.onChanged.addListener(onChanged)
 
 const asnHomePageURL = 'https://aviation-safety.net/'
@@ -47,6 +47,9 @@ async function onInstalled(details) {
     if (options.contextMenu) {
         createContextMenus()
     }
+    if (options.darkMode) {
+        await registerDarkMode()
+    }
     if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
         const hasPerms = await chrome.permissions.contains({
             origins: [
@@ -70,9 +73,6 @@ async function onInstalled(details) {
         }
     }
     await chrome.runtime.setUninstallURL(`${githubURL}/issues`)
-    if (options.darkMode) {
-        await registerDarkMode()
-    }
 }
 
 /**
@@ -94,14 +94,12 @@ function onMessage(message, sender, sendResponse) {
         }
         console.info(`SW: Dark Mode: ${message.dark}`, darkCss)
         if (message.dark === 'off') {
-            chrome.scripting.unregisterContentScripts({ ids: ['asn-dark'] })
             try {
                 chrome.scripting.removeCSS(darkCss)
             } catch (e) {
                 console.warn('e', e)
             }
         } else if (message.dark === 'on') {
-            registerDarkMode()
             try {
                 chrome.scripting.insertCSS(darkCss)
             } catch (e) {
@@ -112,30 +110,6 @@ function onMessage(message, sender, sendResponse) {
     } else {
         console.warn('Unmatched Message:', message)
         sendResponse('NOT Handled')
-    }
-}
-
-async function registerDarkMode() {
-    const asnDark = {
-        id: 'asn-dark',
-        css: ['css/dark.css'],
-        matches: [
-            'http://aviation-safety.net/*',
-            'https://aviation-safety.net/*',
-        ],
-        runAt: 'document_start',
-    }
-    console.log('registerDarkMode', asnDark)
-    // const scripts = await chrome.scripting.getRegisteredContentScripts()
-    // for (const script of scripts) {
-    //     if (script.id === asnDark.id) {
-    //         return console.debug('darkMode already registered')
-    //     }
-    // }
-    try {
-        await chrome.scripting.registerContentScripts([asnDark])
-    } catch (e) {
-        console.log('failed to register content scripts', e)
     }
 }
 
@@ -150,18 +124,10 @@ async function onClicked(ctx, tab) {
     if (ctx.menuItemId === 'options') {
         chrome.runtime.openOptionsPage()
     } else if (ctx.menuItemId === 'openHome') {
-        // const url = chrome.runtime.getURL('/html/home.html')
         await chrome.tabs.create({ active: true, url: asnHomePageURL })
     } else {
-        console.error(`Unknown ctx.menuItemId: ${ctx.menuItemId}`)
+        console.warn(`Unknown ctx.menuItemId: ${ctx.menuItemId}`)
     }
-    // } else if (ctx.menuItemId === 'showPage') {
-    //     await chrome.windows.create({
-    //         type: 'detached_panel',
-    //         url: '/html/page.html',
-    //         width: 720,
-    //         height: 480,
-    //     })
 }
 
 /**
@@ -170,19 +136,12 @@ async function onClicked(ctx, tab) {
  * @param {String} command
  */
 async function onCommand(command) {
-    console.debug(`onCommand: ${command}`)
+    console.error('onCommand:', command)
     if (command === 'openHome') {
-        // const url = chrome.runtime.getURL('/html/home.html')
         await chrome.tabs.create({ active: true, url: asnHomePageURL })
+    } else {
+        console.warn('Unknown command:', command)
     }
-    // } else if (command === 'showPage') {
-    //     await chrome.windows.create({
-    //         type: 'detached_panel',
-    //         url: '/html/page.html',
-    //         width: 480,
-    //         height: 360,
-    //     })
-    // }
 }
 
 /**
@@ -204,7 +163,46 @@ function onChanged(changes, namespace) {
                     chrome.contextMenus.removeAll()
                 }
             }
+            if (oldValue.darkMode !== newValue.darkMode) {
+                if (newValue?.darkMode) {
+                    console.debug('Register Dark Mode.')
+                    registerDarkMode()
+                } else {
+                    console.debug('Unregister Dark Mode.')
+                    chrome.scripting.unregisterContentScripts({
+                        ids: ['asn-dark'],
+                    })
+                }
+            }
         }
+    }
+}
+
+/**
+ * Register Dark Mode Content Script, yea its that hard
+ * @function registerDarkMode
+ */
+async function registerDarkMode() {
+    const asnDark = {
+        id: 'asn-dark',
+        css: ['css/dark.css'],
+        matches: [
+            'http://aviation-safety.net/*',
+            'https://aviation-safety.net/*',
+        ],
+        runAt: 'document_start',
+    }
+    console.log('registerDarkMode', asnDark)
+    // const scripts = await chrome.scripting.getRegisteredContentScripts()
+    // for (const script of scripts) {
+    //     if (script.id === asnDark.id) {
+    //         return console.debug('darkMode already registered')
+    //     }
+    // }
+    try {
+        await chrome.scripting.registerContentScripts([asnDark])
+    } catch (e) {
+        console.log('Error scripting.registerContentScripts', e)
     }
 }
 
@@ -218,7 +216,6 @@ function createContextMenus() {
     const ctx = ['all']
     const contexts = [
         [ctx, 'openHome', 'normal', 'ASN Home'],
-        // [ctx, 'showPage', 'normal', 'Extension Page'],
         [ctx, 'separator-1', 'separator', 'separator'],
         [ctx, 'options', 'normal', 'Open Options'],
     ]
