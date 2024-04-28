@@ -69,10 +69,10 @@ function updateEntryTable() {
 function addEntryLink(reg, cell) {
     console.debug(`addEntryLink: ${reg}`, cell)
     const links = {
-        FAA: 'https://registry.faa.gov/AircraftInquiry/Search/NNumberResult?nNumberTxt=${reg}',
-        FA: 'https://flightaware.com/resources/registration/${reg}',
-        FR24: 'https://www.flightradar24.com/data/aircraft/${reg}',
-        JetPhoto: 'https://www.jetphotos.com/registration/${reg}',
+        FAA: `https://registry.faa.gov/AircraftInquiry/Search/NNumberResult?nNumberTxt=${reg}`,
+        FA: `https://flightaware.com/resources/registration/${reg}`,
+        FR24: `https://www.flightradar24.com/data/aircraft/${reg}`,
+        JetPhoto: `https://www.jetphotos.com/registration/${reg}`,
     }
     for (const [key, value] of Object.entries(links)) {
         if (key === 'FAA' && !reg.toUpperCase().startsWith('N')) {
@@ -80,7 +80,7 @@ function addEntryLink(reg, cell) {
             continue
         }
         const link = document.createElement('a')
-        link.href = value.replace('${reg}', reg)
+        link.href = value
         link.textContent = key
         cell.appendChild(document.createTextNode(' | '))
         cell.appendChild(link)
