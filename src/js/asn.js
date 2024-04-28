@@ -92,27 +92,32 @@ function updateLastUpdated() {
     updateLastUpdated = function () {}
     console.debug('updateLastUpdated')
 
-    // Add Edit Link
+    // TODO: Probably best to make our own element and insert it at the desired location
+    //       This also needs to have a class that is styled by Dark Mode
     const lastupdated = document.querySelector('.lastupdated')
     console.debug('lastupdated:', lastupdated)
     if (!lastupdated) {
         return console.debug('.lastupdated querySelector empty')
     }
+    lastupdated.style.float = 'none'
+    lastupdated.style.marginLeft = '40px'
 
+    // Add Edit Link
     const id = parseInt(document.URL.split('/').at(-1).trim())
     console.debug('id:', id)
     if (isNaN(id)) {
         return console.debug('id isNaN:', id)
     }
     lastupdated.innerHTML = `<a href='https://aviation-safety.net/wikibase/web_db_edit.php?id=${id}'>Edit ${id}</a>`
-    lastupdated.style.float = 'none'
-    lastupdated.style.marginLeft = '40px'
-    // el.style.color = 'white'
 
-    // Add Updated Date
-    const rows = document.getElementsByClassName('updates')[0].children[0].rows
-    const updated = rows[rows.length - 1].firstChild.innerText.trim()
+    // Add Updated Date and Count
+    const table = document.querySelector('table.updates')
+    if (!table) {
+        return console.debug('table.updates not found')
+    }
+    const updated =
+        table.rows[table.rows.length - 1].cells[0].textContent.trim()
     console.debug('updated:', updated)
-    const times = rows.length - 1
-    lastupdated.innerHTML += ` - Updated <strong>${times}</strong> times on <strong>${updated}</strong>`
+    const count = table.rows.length - 1
+    lastupdated.innerHTML += ` - Updated <strong>${count}</strong> times on <strong>${updated}</strong>`
 }
