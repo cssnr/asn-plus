@@ -6,23 +6,30 @@ function highlightTableRows() {
     highlightTableRows = function () {}
     console.debug('highlightTableRows')
 
-    const table = document.getElementsByTagName('table')
-    if (!table.length) {
-        return console.debug('table not found')
+    const tables = document.querySelectorAll('table.hp')
+    if (!tables.length) {
+        return console.debug('no tables found')
     }
 
-    const rows = table[0].children[0].rows
-    let i = 4
-    for (const tr of rows) {
-        if (tr.cells[0].tagName === 'TH') {
-            continue
-        }
-        if (
-            tr.cells[i] &&
-            tr.cells[i].firstChild &&
-            tr.cells[i].firstChild?.data !== '0'
-        ) {
-            tr.style.backgroundColor = 'rgba(255,0,0,0.2)'
+    for (const table of tables) {
+        console.debug('updating table:', table)
+        let i = 4
+        for (const tr of table.rows) {
+            // if (tr.rowIndex === 0) {
+            if (tr.cells[0].tagName === 'TH') {
+                for (const th of tr.cells) {
+                    if (th.textContent.toLowerCase().includes('fat')) {
+                        i = th.cellIndex
+                        console.info('FATALITY CELL INDEX:', th.cellIndex)
+                    }
+                }
+                console.debug('skipping TH row', tr)
+                continue
+            }
+            const text = tr.cells[i].textContent.trim()
+            if (text && text !== '0') {
+                tr.style.backgroundColor = 'rgba(255,0,0,0.2)'
+            }
         }
     }
 }
