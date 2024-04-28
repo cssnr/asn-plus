@@ -2,7 +2,6 @@
   "background": {
     "scripts": ["js/service-worker.js"]
   },
-  "optional_permissions": ["http://aviation-safety.net/*", "https://aviation-safety.net/*"],
   "browser_specific_settings": {
     "gecko": {
       "id": "asn-plus@cssnr.com",
