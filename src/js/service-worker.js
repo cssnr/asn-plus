@@ -107,7 +107,7 @@ function onMessage(message, sender, sendResponse) {
         sendResponse('Success')
     } else {
         console.warn('Unmatched Message:', message)
-        sendResponse('NO Action for message')
+        sendResponse('NOT Handled')
     }
 }
 

@@ -2,29 +2,29 @@
 
 console.info('LOADED: content-script.js')
 
-// window.addEventListener('DOMContentLoaded', domContentLoaded)
+window.addEventListener('DOMContentLoaded', domContentLoaded)
 
 if (!chrome.storage.onChanged.hasListener(onChanged)) {
     chrome.storage.onChanged.addListener(onChanged)
 }
 
-// async function domContentLoaded() {
-//     console.info('domContentLoaded')
-//     highlightTableRows()
-//     if (document.URL.includes('aviation-safety.net/wikibase/')) {
-//         updateEntryTable()
-//         updateLastUpdated()
-//     }
-// }
-
-;(async () => {
-    console.info('async')
+async function domContentLoaded() {
+    console.info('domContentLoaded')
     highlightTableRows()
     if (document.URL.includes('aviation-safety.net/wikibase/')) {
         updateEntryTable()
         updateLastUpdated()
     }
-})()
+}
+
+// ;(async () => {
+//     console.info('async')
+//     highlightTableRows()
+//     if (document.URL.includes('aviation-safety.net/wikibase/')) {
+//         updateEntryTable()
+//         updateLastUpdated()
+//     }
+// })()
 
 /**
  * On Changed Callback

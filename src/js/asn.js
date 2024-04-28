@@ -14,7 +14,7 @@ function highlightTableRows() {
         // if (tr.cells[0].tagName === 'TH') {
         //     for (const td of tr.cells) {
         //         if (td.textContent === 'fat.') {
-        //             console.log(`fat. index: ${td.cellIndex}`)
+        //             console.debug(`fat. index: ${td.cellIndex}`)
         //             i = td.cellIndex
         //             break
         //         }
@@ -27,7 +27,7 @@ function highlightTableRows() {
         if (tr.cells[0].tagName === 'TH') {
             continue
         }
-        console.log('Updating table now...')
+        console.debug('Updating table now...')
         if (
             tr.cells[i] &&
             tr.cells[i].firstChild &&
@@ -48,8 +48,8 @@ function updateEntryTable() {
     for (const tr of rows) {
         if (tr.innerHTML.includes('Registration:')) {
             const reg = tr.cells[1].textContent.trim()
+            console.debug('reg:', reg)
             if (reg) {
-                console.log(`reg: ${reg}`)
                 tr.cells[1].innerHTML = `<span>${reg}</span>`
                 if (reg.startsWith('N')) {
                     const faaUrl = `<a href='https://registry.faa.gov/AircraftInquiry/Search/NNumberResult?nNumberTxt=${reg}' target='_blank'>FAA</a>`
@@ -62,15 +62,15 @@ function updateEntryTable() {
             }
         }
         if (tr.innerHTML.includes('Owner/operator:')) {
-            let oper = tr.cells[1].textContent.trim()
+            let operator = tr.cells[1].textContent.trim()
+            console.debug('operator:', operator)
             if (
-                oper &&
-                !['private', 'unreported'].includes(oper.trim().toLowerCase())
+                operator &&
+                !['private', 'unreported'].includes(operator.toLowerCase())
             ) {
-                console.log(`oper: ${oper}`)
-                oper = oper.replace(' ', '+')
-                const operSearch = `<a href='https://aviation-safety.net/wikibase/dblist2.php?op=${oper}' target='_blank'>Wiki Search</a>`
-                tr.cells[1].innerHTML += ` | ${operSearch}`
+                operator = operator.replace(' ', '+')
+                const link = `<a href='https://aviation-safety.net/wikibase/dblist2.php?op=${operator}' target='_blank'>Wiki Search</a>`
+                tr.cells[1].innerHTML += ` | ${link}`
             }
         }
     }
@@ -84,10 +84,10 @@ function updateLastUpdated() {
         return
     }
     const id = document.URL.split('/').at(-1).trim()
+    console.debug('id:', id)
     if (isNaN(id)) {
         return
     }
-    console.log(`id: ${id}`)
     lastupdated.innerHTML = `<a href='https://aviation-safety.net/wikibase/web_db_edit.php?id=${id}'>Edit ${id}</a>`
     lastupdated.style.float = 'none'
     lastupdated.style.marginLeft = '40px'
@@ -95,7 +95,7 @@ function updateLastUpdated() {
     // Add Updated Date
     const rows = document.getElementsByClassName('updates')[0].children[0].rows
     const updated = rows[rows.length - 1].firstChild.innerText.trim()
+    console.debug('updated:', updated)
     const times = rows.length - 1
-    console.log(`updated: ${updated}`)
     lastupdated.innerHTML += ` - Updated <strong>${times}</strong> times on <strong>${updated}</strong>`
 }

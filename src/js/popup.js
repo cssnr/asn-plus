@@ -68,7 +68,7 @@ async function popupLinks(event) {
     console.debug('popupLinks:', event)
     event.preventDefault()
     const anchor = event.target.closest('a')
-    console.debug(`anchor.href: ${anchor.href}`)
+    console.debug(`anchor.href: ${anchor.href}`, anchor)
     let url
     if (anchor.href.endsWith('html/options.html')) {
         chrome.runtime.openOptionsPage()
@@ -81,9 +81,14 @@ async function popupLinks(event) {
             height: 480,
         })
         return window.close()
-    } else if (anchor.href.startsWith('http')) {
+    } else if (
+        anchor.href.startsWith('http') ||
+        anchor.href.startsWith('chrome-extension')
+    ) {
+        // console.debug(`http or chrome-extension`)
         url = anchor.href
     } else {
+        // console.debug(`else chrome.runtime.getURL`)
         url = chrome.runtime.getURL(anchor.href)
     }
     console.debug('url:', url)
