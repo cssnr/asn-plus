@@ -31,6 +31,9 @@ async function domContentLoaded() {
         updateEntryTable()
         updateLastUpdated()
     }
+    if (options.updateNavigation) {
+        updateNavigation()
+    }
 }
 
 /**
@@ -44,7 +47,6 @@ async function onChanged(changes, namespace) {
     for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
         if (namespace === 'sync' && key === 'options') {
             if (oldValue.darkMode !== newValue.darkMode) {
-                console.log('darkMode:', oldValue, newValue)
                 if (newValue.darkMode) {
                     const message = { dark: 'on' }
                     await chrome.runtime.sendMessage(message)
@@ -53,18 +55,22 @@ async function onChanged(changes, namespace) {
                     await chrome.runtime.sendMessage(message)
                 }
             } else if (oldValue.highlightTable !== newValue.highlightTable) {
-                console.log('highlightTable:', oldValue, newValue)
                 if (newValue.highlightTable) {
                     highlightTableRows()
                 }
             } else if (oldValue.updateEntry !== newValue.updateEntry) {
-                console.log('updateEntry:', oldValue, newValue)
                 if (
                     newValue.updateEntry &&
                     document.URL.includes('aviation-safety.net/wikibase/')
                 ) {
                     updateEntryTable()
                     updateLastUpdated()
+                }
+            } else if (
+                oldValue.updateNavigation !== newValue.updateNavigation
+            ) {
+                if (newValue.updateNavigation) {
+                    updateNavigation()
                 }
             }
         }

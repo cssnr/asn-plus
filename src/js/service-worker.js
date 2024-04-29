@@ -38,6 +38,7 @@ async function onInstalled(details) {
             darkMode: true,
             highlightTable: true,
             updateEntry: true,
+            updateNavigation: true,
             searchType: 'registration',
             contextMenu: true,
             showUpdate: false,

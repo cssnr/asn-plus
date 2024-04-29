@@ -2,6 +2,55 @@
 
 console.info('LOADED: asn.js')
 
+const navigationMenu = [
+    {
+        href: '/',
+        text: 'Home',
+    },
+    {
+        href: '/database/',
+        text: 'Database',
+        year: true,
+    },
+    {
+        href: '/asndb/',
+        text: 'ASN DB',
+        year: true,
+    },
+    {
+        href: '/wikibase/',
+        text: 'Wikibase',
+        year: true,
+    },
+]
+
+function updateNavigation() {
+    updateNavigation = function () {}
+    document.getElementById('noprint').style.display = 'none'
+    // const date = new Date()
+    // let year = date.getFullYear()
+    const div = document.querySelector('div.navigation')
+    div.innerHTML = ''
+    // div.classList.remove('navigation')
+    const ul = document.createElement('ul')
+    div.appendChild(ul)
+    for (const item of navigationMenu) {
+        const li = document.createElement('li')
+        ul.appendChild(li)
+        const a = document.createElement('a')
+        a.href = item.href
+        a.textContent = item.text
+        li.appendChild(a)
+        // if (item.year) {
+        //     li.appendChild(document.createTextNode(' - '))
+        //     const a2 = document.createElement('a')
+        //     a2.href = item.href + `year/${year}`
+        //     a2.textContent = year
+        //     li.appendChild(a2)
+        // }
+    }
+}
+
 function highlightTableRows() {
     highlightTableRows = function () {}
     console.debug('highlightTableRows')

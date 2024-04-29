@@ -1,6 +1,7 @@
 body {
     background: #848484 !important;
 }
+
 td.list,
 th.list,
 th.defaultheader,
@@ -13,6 +14,7 @@ td.listdata {
     border-top: 1px solid #fff !important;
     border-bottom: 1px solid #fff !important;
 }
+
 body,
 div.pagenumbers a,
 .navigation a:link,
@@ -20,9 +22,11 @@ label,
 td.listnoline {
     color: white !important;
 }
+
 .infobox {
     background-color: #222 !important;
 }
+
 table,
 #page-wrap,
 .navigation,
@@ -30,12 +34,14 @@ table,
 table tr.listmain td {
     background-color: #313131 !important;
 }
+
 table tr.list:hover td,
 table tr:hover td.list,
 td.listdata:hover,
 tbody tr:hover td.listdata {
     background-color: #474747 !important;
 }
+
 a {
     color: #0f0 !important;
 }
@@ -45,11 +51,13 @@ a:visited,
 div.alertbox a {
     color: #f0f !important;
 }
-div.navigation img,
-div.alertbox,
-div#noprint {
-    display: none !important;
-}
+
+/*div.navigation img,*/
+/*div.alertbox,*/
+/*div#noprint {*/
+/*    display: none !important;*/
+/*}*/
+
 /*
 td.desc img {
     -webkit-filter: invert(1);
