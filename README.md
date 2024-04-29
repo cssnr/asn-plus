@@ -43,6 +43,8 @@ All **Chromium** Based Browsers can install the extension from the
 *   Enable Dark Mode
 *   Highlight Rows with Fatalities
 *   Add Additional Links to Entries
+*   Update Main Navigation Links
+*   Hide Site Header Image
 *   Search by Registration or Operator from the Popup
 
 ### Upcoming Features and Ideas
@@ -51,7 +53,7 @@ All **Chromium** Based Browsers can install the extension from the
 
 > [!TIP]
 > **Don't see your feature here?**
-> Request one on the [Feature Request Discussion](https://github.com/cssnr/asn-plus/discussions/new?category=q-a).
+> Request one on the [Feature Request Discussion](https://github.com/cssnr/asn-plus/discussions/categories/feature-requests).
 
 # Frequently Asked Questions
 
@@ -61,7 +63,7 @@ Nobody has asked any...
 
 > [!TIP]
 > **Don't see your question here?**
-> Ask one on the [Q&A Discussion](https://github.com/cssnr/asn-plus/discussions/new?category=q-a).
+> Ask one on the [Q&A Discussion](https://github.com/cssnr/asn-plus/discussions/categories/q-a).
 
 # Known Issues
 
