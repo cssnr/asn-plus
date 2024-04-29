@@ -20,16 +20,10 @@
     }
   },
   "permissions": ["contextMenus", "scripting", "storage"],
-  "host_permissions": [
-    "http://aviation-safety.net/*",
-    "https://aviation-safety.net/*"
-  ],
+  "host_permissions": ["*://aviation-safety.net/*"],
   "content_scripts": [
     {
-      "matches": [
-        "http://aviation-safety.net/*",
-        "https://aviation-safety.net/*"
-      ],
+      "matches": ["*://aviation-safety.net/*"],
       "run_at": "document_start",
       "js": ["dist/jquery/jquery.min.js", "js/asn.js", "js/content-script.js"]
     }
@@ -37,10 +31,7 @@
   "web_accessible_resources": [
     {
       "resources": ["css/dark.css"],
-      "matches": [
-        "http://aviation-safety.net/*",
-        "https://aviation-safety.net/*"
-      ]
+      "matches": ["*://aviation-safety.net/*"]
     }
   ],
   "background": {},

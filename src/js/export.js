@@ -9,10 +9,7 @@ export async function checkPerms() {
     const hasPermsEl = document.querySelectorAll('.has-perms')
     const grantPermsEl = document.querySelectorAll('.grant-perms')
     const hasPerms = await chrome.permissions.contains({
-        origins: [
-            'http://aviation-safety.net/*',
-            'https://aviation-safety.net/*',
-        ],
+        origins: ['*://aviation-safety.net/*'],
     })
     console.debug('checkPerms:', hasPerms)
     if (hasPerms) {

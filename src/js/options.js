@@ -63,10 +63,7 @@ function onChanged(changes, namespace) {
 async function grantPerms(event) {
     console.debug('grantPermsBtn:', event)
     await chrome.permissions.request({
-        origins: [
-            'http://aviation-safety.net/*',
-            'https://aviation-safety.net/*',
-        ],
+        origins: ['*://aviation-safety.net/*'],
     })
     await checkPerms()
 }

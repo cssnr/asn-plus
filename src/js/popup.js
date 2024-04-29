@@ -129,10 +129,7 @@ async function popupLinks(event) {
 function grantPerms(event) {
     console.debug('grantPerms:', event)
     chrome.permissions.request({
-        origins: [
-            'http://aviation-safety.net/*',
-            'https://aviation-safety.net/*',
-        ],
+        origins: ['*://aviation-safety.net/*'],
     })
     window.close()
 }

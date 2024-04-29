@@ -55,10 +55,7 @@ async function onInstalled(details) {
     }
     if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
         const hasPerms = await chrome.permissions.contains({
-            origins: [
-                'http://aviation-safety.net/*',
-                'https://aviation-safety.net/*',
-            ],
+            origins: ['*://aviation-safety.net/*'],
         })
         if (hasPerms) {
             chrome.runtime.openOptionsPage()
@@ -189,10 +186,7 @@ async function registerDarkMode() {
     const asnDark = {
         id: 'asn-dark',
         css: ['css/dark.css'],
-        matches: [
-            'http://aviation-safety.net/*',
-            'https://aviation-safety.net/*',
-        ],
+        matches: ['*://aviation-safety.net/*'],
         runAt: 'document_start',
     }
     console.log('registerDarkMode', asnDark)
