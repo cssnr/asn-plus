@@ -1,17 +1,32 @@
 // JS Exports
 
 /**
+ * Request Host Permissions
+ * @function requestPerms
+ * @return {chrome.permissions.request}
+ */
+export async function requestPerms() {
+    return await chrome.permissions.request({
+        origins: ['*://aviation-safety.net/*'],
+    })
+}
+
+/**
  * Check Host Permissions
  * @function checkPerms
  * @return {Boolean}
  */
 export async function checkPerms() {
-    const hasPermsEl = document.querySelectorAll('.has-perms')
-    const grantPermsEl = document.querySelectorAll('.grant-perms')
     const hasPerms = await chrome.permissions.contains({
         origins: ['*://aviation-safety.net/*'],
     })
     console.debug('checkPerms:', hasPerms)
+    if (typeof document === 'undefined') {
+        console.debug('document undefined')
+        return hasPerms
+    }
+    const hasPermsEl = document.querySelectorAll('.has-perms')
+    const grantPermsEl = document.querySelectorAll('.grant-perms')
     if (hasPerms) {
         hasPermsEl.forEach((el) => el.classList.remove('d-none'))
         grantPermsEl.forEach((el) => el.classList.add('d-none'))

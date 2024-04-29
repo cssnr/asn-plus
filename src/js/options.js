@@ -1,6 +1,11 @@
 // JS for options.html
 
-import { checkPerms, saveOptions, updateOptions } from './export.js'
+import {
+    checkPerms,
+    requestPerms,
+    saveOptions,
+    updateOptions,
+} from './export.js'
 
 chrome.storage.onChanged.addListener(onChanged)
 document.addEventListener('DOMContentLoaded', initOptions)
@@ -62,9 +67,7 @@ function onChanged(changes, namespace) {
  */
 async function grantPerms(event) {
     console.debug('grantPermsBtn:', event)
-    await chrome.permissions.request({
-        origins: ['*://aviation-safety.net/*'],
-    })
+    await requestPerms()
     await checkPerms()
 }
 

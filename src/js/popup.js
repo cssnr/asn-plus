@@ -1,6 +1,12 @@
 // JS for popup.html
 
-import { checkPerms, saveOptions, showToast, updateOptions } from './export.js'
+import {
+    checkPerms,
+    requestPerms,
+    saveOptions,
+    showToast,
+    updateOptions,
+} from './export.js'
 
 document.addEventListener('DOMContentLoaded', initPopup)
 document.getElementById('grant-perms').addEventListener('click', grantPerms)
@@ -126,11 +132,9 @@ async function popupLinks(event) {
  * @function grantPerms
  * @param {Event} event
  */
-function grantPerms(event) {
+async function grantPerms(event) {
     console.debug('grantPerms:', event)
-    chrome.permissions.request({
-        origins: ['*://aviation-safety.net/*'],
-    })
+    requestPerms()
     window.close()
 }
 

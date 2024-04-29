@@ -1,6 +1,6 @@
 // JS for oninstall.html
 
-import { checkPerms } from './export.js'
+import { checkPerms, requestPerms } from './export.js'
 
 document.addEventListener('DOMContentLoaded', domContentLoaded)
 document.getElementById('grant-perms').addEventListener('click', grantPerms)
@@ -22,9 +22,7 @@ async function domContentLoaded() {
  */
 async function grantPerms(event) {
     console.debug('grantPerms:', event)
-    await chrome.permissions.request({
-        origins: ['*://aviation-safety.net/*'],
-    })
+    await requestPerms()
     const hasPerms = await checkPerms()
     if (hasPerms) {
         chrome.runtime.openOptionsPage()

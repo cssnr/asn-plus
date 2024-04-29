@@ -1,5 +1,7 @@
 // JS Background Service Worker
 
+import { checkPerms } from './export.js'
+
 chrome.runtime.onStartup.addListener(onStartup)
 chrome.runtime.onInstalled.addListener(onInstalled)
 chrome.runtime.onMessage.addListener(onMessage)
@@ -14,8 +16,8 @@ const uninstallURL = 'https://asn-plus.cssnr.com/uninstall/'
  * On Startup Callback
  * @function onStartup
  */
-async function onStartup(arg) {
-    console.log('onStartup', arg)
+async function onStartup() {
+    console.log('onStartup')
     if (typeof browser !== 'undefined') {
         console.log('FireFox Startup - Fix for Bug')
         const { options } = await chrome.storage.sync.get(['options'])
@@ -54,9 +56,8 @@ async function onInstalled(details) {
         await registerDarkMode()
     }
     if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
-        const hasPerms = await chrome.permissions.contains({
-            origins: ['*://aviation-safety.net/*'],
-        })
+        const hasPerms = await checkPerms()
+        console.debug('hasPerms:', hasPerms)
         if (hasPerms) {
             chrome.runtime.openOptionsPage()
         } else {
@@ -92,7 +93,7 @@ function onMessage(message, sender, sendResponse) {
                 tabId: sender.tab.id,
             },
         }
-        console.info(`SW: Dark Mode: ${message.dark}`, darkCss)
+        console.debug(`SW: Dark Mode: ${message.dark}`, darkCss)
         if (message.dark === 'off') {
             try {
                 chrome.scripting.removeCSS(darkCss)
@@ -136,7 +137,7 @@ async function onClicked(ctx, tab) {
  * @param {String} command
  */
 async function onCommand(command) {
-    console.error('onCommand:', command)
+    console.debug('onCommand:', command)
     if (command === 'openHome') {
         await chrome.tabs.create({ active: true, url: asnHomePageURL })
     } else {
