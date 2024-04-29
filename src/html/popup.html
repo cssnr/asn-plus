@@ -56,12 +56,13 @@
             </div>
         </div>
         <div class="row mb-2">
-            <div class="col">
-                <label for="searchTerm" class="visually-hidden"></label>
-                <input id="searchTerm" name="searchTerm" class="form-control" type="text" placeholder="Registration or Operator">
+            <label for="searchTerm" class="visually-hidden"></label>
+            <div class="input-group">
+                <input id="searchTerm" type="text" class="form-control form-control-sm" placeholder="Registration or Operator"
+                       aria-label="Registration or Operator" aria-describedby="submit-search" required>
+                <button class="btn btn-outline-primary" type="submit" id="submit-search">Go</button>
             </div>
         </div>
-        <button type="submit" form="search-form" class="visually-hidden"></button>
     </form>
 
     <form id="options-form" class="mb-2">
