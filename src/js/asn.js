@@ -2,13 +2,90 @@
 
 console.info('LOADED: asn.js')
 
+const navigationMenu = [
+    {
+        href: '/',
+        text: 'Home',
+    },
+    {
+        href: '/database/',
+        text: 'Database',
+    },
+    {
+        href: '/database/year/',
+        text: 'DB',
+        year: true,
+    },
+    {
+        href: '/wikibase/',
+        text: 'Wikibase',
+    },
+    {
+        href: '/asndb/year/',
+        text: 'Wiki',
+        year: true,
+    },
+    {
+        href: '/wikibase/wikisearch.php',
+        text: 'Wiki Search',
+    },
+]
+
+function updateNavigation() {
+    updateNavigation = function () {}
+    console.debug('updateNavigation')
+
+    const div = document.querySelector('div.navigation')
+    if (!div) {
+        return console.debug('div.navigation not found', div)
+    }
+
+    const trail = document.getElementById('noprint')
+    if (trail) {
+        trail.style.display = 'none'
+    }
+
+    div.innerHTML = ''
+    // div.classList.remove('navigation')
+    const ul = document.createElement('ul')
+    div.appendChild(ul)
+
+    const date = new Date()
+    let year = date.getFullYear()
+    for (const item of navigationMenu) {
+        const li = document.createElement('li')
+        ul.appendChild(li)
+        const a = document.createElement('a')
+        if (item.year) {
+            a.href = `${item.href}${year}`
+            a.textContent = `${item.text} ${year}`
+        } else {
+            a.href = item.href
+            a.textContent = item.text
+        }
+        li.appendChild(a)
+    }
+}
+
+function hideHeaderImage() {
+    hideHeaderImage = function () {}
+    console.debug('hideHeaderImage')
+
+    const headerImage = document.querySelector('div.photodisplay > img')
+    if (headerImage) {
+        headerImage.style.display = 'none'
+    } else {
+        console.debug('div.photodisplay > img not found', headerImage)
+    }
+}
+
 function highlightTableRows() {
     highlightTableRows = function () {}
     console.debug('highlightTableRows')
 
-    const tables = document.querySelectorAll('table.hp')
+    const tables = document.querySelectorAll('table.hp,table.list')
     if (!tables.length) {
-        return console.debug('no tables found')
+        return console.debug('tables not found', tables)
     }
 
     for (const table of tables) {
@@ -39,7 +116,7 @@ function updateEntryTable() {
 
     const table = document.querySelector('table')
     if (!table) {
-        return console.debug('table not found')
+        return console.debug('table not found', table)
     }
 
     for (const tr of table.rows) {
@@ -57,8 +134,13 @@ function updateEntryTable() {
         if (tr.textContent.startsWith('Owner/operator:')) {
             let operator = tr.cells[1].textContent.trim()
             console.debug('operator:', operator)
+            if (['private', 'unreported'].includes(operator.toLowerCase())) {
+                console.debug('skipping operator due to private/unreported')
+                continue
+            }
             const link = document.createElement('a')
-            link.href = `https://aviation-safety.net/wikibase/dblist2.php?op=${operator}`
+            operator = operator.replaceAll(' ', '+')
+            link.href = `https://aviation-safety.net/wikibase/dblist2.php?op=${operator.toString()}`
             link.textContent = 'Wiki Search'
             tr.cells[1].appendChild(document.createTextNode(' - '))
             tr.cells[1].appendChild(link)
@@ -100,6 +182,7 @@ function updateLastUpdated() {
     }
     lastupdated.style.float = 'none'
     lastupdated.style.marginLeft = '40px'
+    lastupdated.style.marginTop = '6px'
 
     // Add Edit Link
     const id = parseInt(document.URL.split('/').at(-1).trim())

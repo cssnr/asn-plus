@@ -21,12 +21,22 @@ async function domContentLoaded() {
     console.info('domContentLoaded')
     const { options } = await chrome.storage.sync.get(['options'])
     console.debug('options:', options)
+
+    if (options.hideHeaderImage) {
+        hideHeaderImage()
+    }
+
+    if (options.updateNavigation) {
+        updateNavigation()
+    }
+
     if (options.highlightTable) {
         highlightTableRows()
     }
+
     if (
         options.updateEntry &&
-        document.URL.includes('aviation-safety.net/wikibase/')
+        /^\/wikibase\/\d+/.test(window.location.pathname)
     ) {
         updateEntryTable()
         updateLastUpdated()
@@ -44,7 +54,6 @@ async function onChanged(changes, namespace) {
     for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
         if (namespace === 'sync' && key === 'options') {
             if (oldValue.darkMode !== newValue.darkMode) {
-                console.log('darkMode:', oldValue, newValue)
                 if (newValue.darkMode) {
                     const message = { dark: 'on' }
                     await chrome.runtime.sendMessage(message)
@@ -53,18 +62,26 @@ async function onChanged(changes, namespace) {
                     await chrome.runtime.sendMessage(message)
                 }
             } else if (oldValue.highlightTable !== newValue.highlightTable) {
-                console.log('highlightTable:', oldValue, newValue)
                 if (newValue.highlightTable) {
                     highlightTableRows()
                 }
             } else if (oldValue.updateEntry !== newValue.updateEntry) {
-                console.log('updateEntry:', oldValue, newValue)
                 if (
                     newValue.updateEntry &&
                     document.URL.includes('aviation-safety.net/wikibase/')
                 ) {
                     updateEntryTable()
                     updateLastUpdated()
+                }
+            } else if (
+                oldValue.updateNavigation !== newValue.updateNavigation
+            ) {
+                if (newValue.updateNavigation) {
+                    updateNavigation()
+                }
+            } else if (oldValue.hideHeaderImage !== newValue.hideHeaderImage) {
+                if (newValue.updateNavigation) {
+                    hideHeaderImage()
                 }
             }
         }

@@ -163,11 +163,12 @@ async function searchFormSubmit(event) {
     // console.log('event.submitter:', event.submitter)
     const searchType = searchForm.elements.searchType.value.toString().trim()
     console.debug(`searchType: ${searchType}`)
-    const value = searchForm.elements.searchTerm.value.toString().trim()
+    let value = searchForm.elements.searchTerm.value.toString().trim()
     console.debug(`value: ${value}`)
     if (!value) {
         return searchForm.elements.searchTerm.focus()
     }
+    value = value.replaceAll(' ', '+')
     let url
     if (searchType === 'registration') {
         url = `https://aviation-safety.net/wikibase/dblist2.php?yr=&at=&re=${value}&pc=&op=&lo=&co=&ph=&na=&submit=Submit`
