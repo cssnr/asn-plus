@@ -21,18 +21,25 @@ async function domContentLoaded() {
     console.info('domContentLoaded')
     const { options } = await chrome.storage.sync.get(['options'])
     console.debug('options:', options)
+
+    if (options.hideHeaderImage) {
+        hideHeaderImage()
+    }
+
+    if (options.updateNavigation) {
+        updateNavigation()
+    }
+
     if (options.highlightTable) {
         highlightTableRows()
     }
+
     if (
         options.updateEntry &&
-        document.URL.includes('aviation-safety.net/wikibase/')
+        /^\/wikibase\/\d+/.test(window.location.pathname)
     ) {
         updateEntryTable()
         updateLastUpdated()
-    }
-    if (options.updateNavigation) {
-        updateNavigation()
     }
 }
 
@@ -71,6 +78,10 @@ async function onChanged(changes, namespace) {
             ) {
                 if (newValue.updateNavigation) {
                     updateNavigation()
+                }
+            } else if (oldValue.hideHeaderImage !== newValue.hideHeaderImage) {
+                if (newValue.updateNavigation) {
+                    hideHeaderImage()
                 }
             }
         }
