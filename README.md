@@ -45,7 +45,7 @@ All **Chromium** Based Browsers can install the extension from the
 *   Add Additional Links to Entries
 *   Update Main Navigation Links
 *   Hide Site Header Image
-*   Search by Registration or Operator from the Popup
+*   Search Registration/Operator from Popup
 
 ### Upcoming Features and Ideas
 

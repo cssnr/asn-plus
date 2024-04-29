@@ -1,8 +1,15 @@
 // JS for options.html
 
-import { checkPerms, saveOptions, updateOptions } from './export.js'
+import {
+    checkPerms,
+    requestPerms,
+    saveOptions,
+    updateOptions,
+} from './export.js'
 
 chrome.storage.onChanged.addListener(onChanged)
+chrome.permissions.onAdded.addListener(onAdded)
+
 document.addEventListener('DOMContentLoaded', initOptions)
 document.getElementById('grant-perms').addEventListener('click', grantPerms)
 document
@@ -62,12 +69,7 @@ function onChanged(changes, namespace) {
  */
 async function grantPerms(event) {
     console.debug('grantPermsBtn:', event)
-    await chrome.permissions.request({
-        origins: [
-            'http://aviation-safety.net/*',
-            'https://aviation-safety.net/*',
-        ],
-    })
+    await requestPerms()
     await checkPerms()
 }
 
@@ -101,4 +103,13 @@ async function setShortcuts(mapping) {
             }
         }
     }
+}
+
+/**
+ * Permissions On Added Callback
+ * @param permissions
+ */
+async function onAdded(permissions) {
+    console.debug('onAdded', permissions)
+    await checkPerms()
 }
