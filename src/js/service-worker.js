@@ -8,6 +8,7 @@ chrome.commands.onCommand.addListener(onCommand)
 chrome.storage.onChanged.addListener(onChanged)
 
 const asnHomePageURL = 'https://aviation-safety.net/'
+const uninstallURL = 'https://asn-plus.cssnr.com/uninstall/'
 
 /**
  * On Startup Callback
@@ -74,7 +75,7 @@ async function onInstalled(details) {
             }
         }
     }
-    await chrome.runtime.setUninstallURL(`${githubURL}/issues`)
+    await chrome.runtime.setUninstallURL(uninstallURL)
 }
 
 /**
