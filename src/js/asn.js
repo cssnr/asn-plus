@@ -10,25 +10,32 @@ const navigationMenu = [
     {
         href: '/database/',
         text: 'Database',
-        year: true,
     },
     {
-        href: '/asndb/',
-        text: 'ASN DB',
+        href: '/database/year/',
+        text: 'DB',
         year: true,
     },
     {
         href: '/wikibase/',
         text: 'Wikibase',
+    },
+    {
+        href: '/asndb/year/',
+        text: 'Wiki',
         year: true,
+    },
+    {
+        href: '/wikibase/wikisearch.php',
+        text: 'Wiki Search',
     },
 ]
 
 function updateNavigation() {
     updateNavigation = function () {}
     document.getElementById('noprint').style.display = 'none'
-    // const date = new Date()
-    // let year = date.getFullYear()
+    const date = new Date()
+    let year = date.getFullYear()
     const div = document.querySelector('div.navigation')
     div.innerHTML = ''
     // div.classList.remove('navigation')
@@ -38,16 +45,14 @@ function updateNavigation() {
         const li = document.createElement('li')
         ul.appendChild(li)
         const a = document.createElement('a')
-        a.href = item.href
-        a.textContent = item.text
+        if (item.year) {
+            a.href = `${item.href}${year}`
+            a.textContent = `${item.text} ${year}`
+        } else {
+            a.href = item.href
+            a.textContent = item.text
+        }
         li.appendChild(a)
-        // if (item.year) {
-        //     li.appendChild(document.createTextNode(' - '))
-        //     const a2 = document.createElement('a')
-        //     a2.href = item.href + `year/${year}`
-        //     a2.textContent = year
-        //     li.appendChild(a2)
-        // }
     }
 }
 
