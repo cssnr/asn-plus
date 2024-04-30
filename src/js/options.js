@@ -4,6 +4,7 @@ import {
     checkPerms,
     requestPerms,
     saveOptions,
+    showToast,
     updateOptions,
 } from './export.js'
 
@@ -63,6 +64,7 @@ async function resetCountry(event) {
     // const form = document.getElementById('options-form')
     // form.submit()
     await saveOptions(event)
+    showToast('Country Display and Code Reset.')
 }
 
 /**
