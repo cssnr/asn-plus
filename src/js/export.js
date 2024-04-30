@@ -24,7 +24,7 @@ export function getSearchURL(value, type) {
  */
 export async function requestPerms() {
     return await chrome.permissions.request({
-        origins: ['*://*.aviation-safety.net/*'],
+        origins: ['*://aviation-safety.net/*'],
     })
 }
 
@@ -35,7 +35,7 @@ export async function requestPerms() {
  */
 export async function checkPerms() {
     const hasPerms = await chrome.permissions.contains({
-        origins: ['*://*.aviation-safety.net/*'],
+        origins: ['*://aviation-safety.net/*'],
     })
     console.debug('checkPerms:', hasPerms)
     // Firefox still uses DOM Based Background Scripts
