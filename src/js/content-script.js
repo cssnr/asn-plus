@@ -8,15 +8,6 @@ if (!chrome.storage.onChanged.hasListener(onChanged)) {
     chrome.storage.onChanged.addListener(onChanged)
 }
 
-// ;(async () => {
-//     console.info('async')
-//     highlightTableRows()
-//     if (document.URL.includes('aviation-safety.net/wikibase/')) {
-//         updateEntryTable()
-//         updateLastUpdated()
-//     }
-// })()
-
 async function domContentLoaded() {
     console.info('domContentLoaded')
     const { options } = await chrome.storage.sync.get(['options'])
@@ -49,6 +40,11 @@ async function onChanged(changes, namespace) {
     }
 }
 
+/**
+ * Process Options and Execute Functions
+ * @function processOptions
+ * @param {Object} options
+ */
 function processOptions(options) {
     if (options.hideHeaderImage) {
         hideHeaderImage()
