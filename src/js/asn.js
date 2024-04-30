@@ -123,27 +123,25 @@ function updateEntryTable() {
         if (tr.textContent.startsWith('Registration:')) {
             const reg = tr.cells[1].textContent.trim()
             console.debug('reg:', reg)
-            if (!reg) {
-                console.debug('registration not found')
-                break
+            if (reg) {
+                const cell = tr.cells[1]
+                addEntryLink(reg, cell)
             }
-
-            const cell = tr.cells[1]
-            addEntryLink(reg, cell)
         }
         if (tr.textContent.startsWith('Owner/operator:')) {
             let operator = tr.cells[1].textContent.trim()
             console.debug('operator:', operator)
-            if (['private', 'unreported'].includes(operator.toLowerCase())) {
-                console.debug('skipping operator due to private/unreported')
-                continue
+            if (
+                operator &&
+                !['private', 'unreported'].includes(operator.toLowerCase())
+            ) {
+                const link = document.createElement('a')
+                operator = operator.replaceAll(' ', '+')
+                link.href = `https://aviation-safety.net/wikibase/dblist2.php?op=${operator.toString()}`
+                link.textContent = 'Wiki Search'
+                tr.cells[1].appendChild(document.createTextNode(' - '))
+                tr.cells[1].appendChild(link)
             }
-            const link = document.createElement('a')
-            operator = operator.replaceAll(' ', '+')
-            link.href = `https://aviation-safety.net/wikibase/dblist2.php?op=${operator.toString()}`
-            link.textContent = 'Wiki Search'
-            tr.cells[1].appendChild(document.createTextNode(' - '))
-            tr.cells[1].appendChild(link)
         }
     }
 }
