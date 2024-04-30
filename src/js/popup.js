@@ -70,12 +70,13 @@ async function initPopup() {
 
 function populateYearLinks() {
     console.debug('populateYearLinks')
+    const url = 'https://aviation-safety.net/asndb/year'
     const yearView = document.getElementById('year-view')
     const yearList = document.getElementById('year-list')
     const date = new Date()
     let year = date.getFullYear()
     yearView.textContent = year.toString()
-    yearView.href = `https://aviation-safety.net/wikibase/dblist.php?Year=${year}&sorteer=datekey_desc`
+    yearView.href = `${url}/${year}`
     for (let i = 0; i < 4; i++) {
         year = year - 1
         console.log('i, year', i, year)
@@ -83,7 +84,7 @@ function populateYearLinks() {
         const a = document.createElement('a')
         a.classList.add('dropdown-item')
         a.textContent = year.toString()
-        a.href = `https://aviation-safety.net/wikibase/dblist.php?Year=${year}&sorteer=datekey_desc`
+        a.href = `${url}/${year}`
         li.appendChild(a)
         yearList.appendChild(li)
     }
