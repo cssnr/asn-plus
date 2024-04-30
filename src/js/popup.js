@@ -21,6 +21,7 @@ document
     .querySelectorAll('[data-bs-toggle="tooltip"]')
     .forEach((el) => new bootstrap.Tooltip(el))
 
+const searchTerm = document.getElementById('searchTerm')
 const searchForm = document.getElementById('search-form')
 searchForm.addEventListener('submit', searchFormSubmit)
 
@@ -41,6 +42,7 @@ async function initPopup() {
     updateOptions(options)
     document.getElementById('country-url').href =
         `https://aviation-safety.net/asndb/country/${options.countryCode}`
+    searchTerm.placeholder = options.searchType
 
     document.querySelector(
         `input[name="searchType"][value="${options.searchType}"]`
@@ -153,6 +155,7 @@ async function updateSearchType(event) {
     options.searchType = event.target.value
     console.debug(`options.searchType: ${event.target.value}`)
     await chrome.storage.sync.set({ options })
+    searchTerm.placeholder = options.searchType
     await searchFormSubmit(event)
 }
 
