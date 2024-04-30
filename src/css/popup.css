@@ -7,4 +7,5 @@ body {
 
 input::placeholder {
     text-align: center;
+    text-transform: capitalize;
 }

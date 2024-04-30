@@ -1,5 +1,7 @@
 // JS Exports
 
+import { countryList } from './vars.js'
+
 /**
  * Request Host Permissions
  * @function getSearchURL
@@ -62,42 +64,90 @@ export async function checkPerms() {
 export async function saveOptions(event) {
     console.debug('saveOptions:', event)
     const { options } = await chrome.storage.sync.get(['options'])
+    let key = event.target.id
     let value
-    if (event.target.type === 'checkbox') {
+    if (key === 'countryCode') {
+        value = event.target.value.trim()
+        console.info('Country Code:', value)
+        if (value.includes('/')) {
+            value = value.split('/').at(-1).trim()
+            event.target.value = value
+        }
+        if (!countryList.includes(value)) {
+            // event.target.classList.add('is-invalid')
+            event.target.value = options['countryCode']
+            return showToast(`Invalid Country Code: ${value}`, 'danger')
+        }
+    } else if (key === 'reset-country') {
+        options['countryCode'] = 'N'
+        key = 'countryDisplay'
+        value = 'USA'
+    } else if (event.target.type === 'radio') {
+        key = event.target.name
+        const radios = document.getElementsByName(key)
+        for (const input of radios) {
+            if (input.checked) {
+                value = input.id
+                break
+            }
+        }
+    } else if (event.target.type === 'checkbox') {
         value = event.target.checked
     } else if (event.target.type === 'number') {
         value = event.target.value.toString()
-    } else if (event.target.type === 'radio') {
-        value = event.target.value.toString()
     } else {
-        value = event.target.value
+        value = event.target.value?.trim()
     }
     if (value !== undefined) {
-        options[event.target.id] = value
-        console.info(`Set: event.target.id: ${event.target.id}:`, value)
+        options[key] = value
+        console.info(`Set: ${key}:`, value)
         await chrome.storage.sync.set({ options })
     } else {
-        console.warn(`No Value for event.target.id: ${event.target.id}`)
+        console.warn('No Value for key:', key)
     }
 }
 
 /**
- * Update Options based on typeof
+ * Update Options based on type
  * @function initOptions
  * @param {Object} options
  */
 export function updateOptions(options) {
-    for (const [key, value] of Object.entries(options)) {
-        const el = document.getElementById(key)
-        // console.debug(`${key}: ${value}`, el)
-        if (el) {
-            if (typeof value === 'boolean') {
-                el.checked = value
-            } else if (typeof value === 'string') {
-                el.value = value
-            }
+    console.debug('updateOptions:', options)
+    for (let [key, value] of Object.entries(options)) {
+        if (typeof value === 'undefined') {
+            console.warn('Value undefined for key:', key)
+            continue
         }
-        // el.classList.remove('is-invalid')
+        if (key.startsWith('radio')) {
+            key = value
+            value = true
+        }
+        // console.debug(`${key}: ${value}`)
+        const el = document.getElementById(key)
+        if (!el) {
+            continue
+        }
+        if (el.tagName !== 'INPUT') {
+            el.textContent = value.toString()
+        } else if (el.type === 'checkbox') {
+            el.checked = value
+        } else {
+            el.value = value
+        }
+        if (el.dataset.related) {
+            hideShowElement(`#${el.dataset.related}`, value)
+        }
+    }
+}
+
+function hideShowElement(selector, show, speed = 'fast') {
+    const element = $(`${selector}`)
+    // console.debug('hideShowElement:', show, element)
+    if (show) {
+        element.show(speed)
+    } else {
+        element.hide(speed)
     }
 }
 
@@ -111,15 +161,14 @@ export function showToast(message, type = 'success') {
     console.debug(`showToast: ${type}: ${message}`)
     const clone = document.querySelector('.d-none .toast')
     const container = document.getElementById('toast-container')
-    if (clone && container) {
-        const element = clone.cloneNode(true)
-        element.querySelector('.toast-body').innerHTML = message
-        element.classList.add(`text-bg-${type}`)
-        container.appendChild(element)
-        const toast = new bootstrap.Toast(element)
-        element.addEventListener('mousemove', () => toast.hide())
-        toast.show()
-    } else {
-        console.info('Missing clone or container:', clone, container)
+    if (!clone || !container) {
+        return console.warn('Missing clone or container:', clone, container)
     }
+    const element = clone.cloneNode(true)
+    element.querySelector('.toast-body').innerHTML = message
+    element.classList.add(`text-bg-${type}`)
+    container.appendChild(element)
+    const toast = new bootstrap.Toast(element)
+    element.addEventListener('mousemove', () => toast.hide())
+    toast.show()
 }

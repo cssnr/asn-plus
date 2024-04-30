@@ -21,6 +21,7 @@ document
     .querySelectorAll('[data-bs-toggle="tooltip"]')
     .forEach((el) => new bootstrap.Tooltip(el))
 
+const searchTerm = document.getElementById('searchTerm')
 const searchForm = document.getElementById('search-form')
 searchForm.addEventListener('submit', searchFormSubmit)
 
@@ -39,6 +40,9 @@ async function initPopup() {
     const { options } = await chrome.storage.sync.get(['options'])
     console.debug('options:', options)
     updateOptions(options)
+    document.getElementById('country-url').href =
+        `https://aviation-safety.net/asndb/country/${options.countryCode}`
+    searchTerm.placeholder = options.searchType
 
     document.querySelector(
         `input[name="searchType"][value="${options.searchType}"]`
@@ -70,20 +74,21 @@ async function initPopup() {
 
 function populateYearLinks() {
     console.debug('populateYearLinks')
+    const url = 'https://aviation-safety.net/asndb/year'
     const yearView = document.getElementById('year-view')
     const yearList = document.getElementById('year-list')
     const date = new Date()
     let year = date.getFullYear()
     yearView.textContent = year.toString()
-    yearView.href = `https://aviation-safety.net/wikibase/dblist.php?Year=${year}&sorteer=datekey_desc`
+    yearView.href = `${url}/${year}`
     for (let i = 0; i < 4; i++) {
         year = year - 1
-        console.log('i, year', i, year)
+        // console.debug('i, year', i, year)
         const li = document.createElement('li')
         const a = document.createElement('a')
         a.classList.add('dropdown-item')
         a.textContent = year.toString()
-        a.href = `https://aviation-safety.net/wikibase/dblist.php?Year=${year}&sorteer=datekey_desc`
+        a.href = `${url}/${year}`
         li.appendChild(a)
         yearList.appendChild(li)
     }
@@ -122,7 +127,7 @@ async function popupLinks(event) {
         // console.debug(`else chrome.runtime.getURL`)
         url = chrome.runtime.getURL(anchor.href)
     }
-    console.debug('url:', url)
+    console.log('url:', url)
     await chrome.tabs.create({ active: true, url })
     return window.close()
 }
@@ -145,12 +150,12 @@ async function grantPerms(event) {
  * @param {SubmitEvent} event
  */
 async function updateSearchType(event) {
-    console.log('defaultSearchChange')
-    console.log(event)
+    console.debug('defaultSearchChange', event)
     let { options } = await chrome.storage.sync.get(['options'])
     options.searchType = event.target.value
-    console.log(`options.searchType: ${event.target.value}`)
+    console.debug(`options.searchType: ${event.target.value}`)
     await chrome.storage.sync.set({ options })
+    searchTerm.placeholder = options.searchType
     await searchFormSubmit(event)
 }
 

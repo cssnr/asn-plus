@@ -43,6 +43,8 @@ async function onInstalled(details) {
             updateEntry: true,
             updateNavigation: true,
             hideHeaderImage: true,
+            countryDisplay: 'USA',
+            countryCode: 'N',
             searchType: 'registration',
             contextMenu: true,
             showUpdate: false,
@@ -220,7 +222,7 @@ function createContextMenus() {
         [['selection'], 'operator', 'normal', 'Operator Search'],
         [['selection'], 'registration', 'normal', 'Registration Search'],
         [['selection'], 'separator-1', 'separator', 'separator'],
-        [['selection'], 'openHome', 'normal', 'ASN Home'],
+        [['selection'], 'openHome', 'normal', 'ASN Home Page'],
         [['selection'], 'options', 'normal', 'Open Options'],
     ]
     contexts.forEach((context) => {

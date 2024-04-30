@@ -4,6 +4,7 @@ import {
     checkPerms,
     requestPerms,
     saveOptions,
+    showToast,
     updateOptions,
 } from './export.js'
 
@@ -12,6 +13,7 @@ chrome.permissions.onAdded.addListener(onAdded)
 
 document.addEventListener('DOMContentLoaded', initOptions)
 document.getElementById('grant-perms').addEventListener('click', grantPerms)
+document.getElementById('reset-country').addEventListener('click', resetCountry)
 document
     .querySelectorAll('#options-form input')
     .forEach((el) => el.addEventListener('change', saveOptions))
@@ -44,6 +46,25 @@ async function initOptions() {
     console.debug('options:', options)
     updateOptions(options)
     await checkPerms()
+}
+
+/**
+ * Reset Options Form Click Callback
+ * @function resetForm
+ * @param {InputEvent} event
+ */
+async function resetCountry(event) {
+    console.log('resetCountry:', event)
+    event.preventDefault()
+    const countryCode = document.getElementById('countryCode')
+    const countryDisplay = document.getElementById('countryDisplay')
+    countryCode.value = 'N'
+    countryDisplay.value = 'USA'
+    countryDisplay.focus()
+    // const form = document.getElementById('options-form')
+    // form.submit()
+    await saveOptions(event)
+    showToast('Country Display and Code Reset.')
 }
 
 /**
