@@ -38,8 +38,8 @@ export async function checkPerms() {
         origins: ['*://aviation-safety.net/*'],
     })
     console.debug('checkPerms:', hasPerms)
+    // Firefox still uses DOM Based Background Scripts
     if (typeof document === 'undefined') {
-        console.debug('document undefined')
         return hasPerms
     }
     const hasPermsEl = document.querySelectorAll('.has-perms')
