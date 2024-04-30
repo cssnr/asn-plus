@@ -2,6 +2,7 @@
 
 import {
     checkPerms,
+    getSearchURL,
     requestPerms,
     saveOptions,
     showToast,
@@ -159,9 +160,8 @@ async function updateSearchType(event) {
  * @param {SubmitEvent} event
  */
 async function searchFormSubmit(event) {
-    event.preventDefault()
     console.debug('searchFormSubmit:', event)
-    // console.log('event.submitter:', event.submitter)
+    event.preventDefault()
     const searchType = searchForm.elements.searchType.value.toString().trim()
     console.debug(`searchType: ${searchType}`)
     let value = searchForm.elements.searchTerm.value.toString().trim()
@@ -169,14 +169,8 @@ async function searchFormSubmit(event) {
     if (!value) {
         return searchForm.elements.searchTerm.focus()
     }
-    value = value.replaceAll(' ', '+')
-    let url
-    if (searchType === 'registration') {
-        url = `https://aviation-safety.net/wikibase/dblist2.php?yr=&at=&re=${value}&pc=&op=&lo=&co=&ph=&na=&submit=Submit`
-    } else if (searchType === 'operator') {
-        url = `https://aviation-safety.net/wikibase/dblist2.php?yr=&at=&re=&pc=&op=${value}&lo=&co=&ph=&na=&submit=Submit`
-    }
-    console.info(`url: ${url}`)
+    const url = getSearchURL(value, searchType)
+    console.log(`url: ${url}`)
     await chrome.tabs.create({ active: true, url })
     window.close()
 }
