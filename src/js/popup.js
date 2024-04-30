@@ -79,7 +79,7 @@ function populateYearLinks() {
     yearView.href = `${url}/${year}`
     for (let i = 0; i < 4; i++) {
         year = year - 1
-        console.log('i, year', i, year)
+        // console.debug('i, year', i, year)
         const li = document.createElement('li')
         const a = document.createElement('a')
         a.classList.add('dropdown-item')
@@ -123,7 +123,7 @@ async function popupLinks(event) {
         // console.debug(`else chrome.runtime.getURL`)
         url = chrome.runtime.getURL(anchor.href)
     }
-    console.debug('url:', url)
+    console.log('url:', url)
     await chrome.tabs.create({ active: true, url })
     return window.close()
 }
@@ -146,11 +146,10 @@ async function grantPerms(event) {
  * @param {SubmitEvent} event
  */
 async function updateSearchType(event) {
-    console.log('defaultSearchChange')
-    console.log(event)
+    console.debug('defaultSearchChange', event)
     let { options } = await chrome.storage.sync.get(['options'])
     options.searchType = event.target.value
-    console.log(`options.searchType: ${event.target.value}`)
+    console.debug(`options.searchType: ${event.target.value}`)
     await chrome.storage.sync.set({ options })
     await searchFormSubmit(event)
 }

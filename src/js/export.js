@@ -1,5 +1,7 @@
 // JS Exports
 
+import { countryList } from './vars.js'
+
 /**
  * Request Host Permissions
  * @function getSearchURL
@@ -64,7 +66,22 @@ export async function saveOptions(event) {
     const { options } = await chrome.storage.sync.get(['options'])
     let key = event.target.id
     let value
-    if (event.target.type === 'radio') {
+    if (key === 'countryCode') {
+        value = event.target.value.trim()
+        console.info('Country Code:', value)
+        if (value.includes('/')) {
+            value = value.split('/').at(-1).trim()
+        }
+        if (!countryList.includes(value)) {
+            // event.target.classList.add('is-invalid')
+            event.target.value = options['countryCode']
+            return showToast(`Invalid Country Code: ${value}`, 'danger')
+        }
+    } else if (key === 'reset-country') {
+        options['countryCode'] = 'N'
+        key = 'countryDisplay'
+        value = 'USA'
+    } else if (event.target.type === 'radio') {
         key = event.target.name
         const radios = document.getElementsByName(key)
         for (const input of radios) {
@@ -78,7 +95,7 @@ export async function saveOptions(event) {
     } else if (event.target.type === 'number') {
         value = event.target.value.toString()
     } else {
-        value = event.target.value
+        value = event.target.value?.trim()
     }
     if (value !== undefined) {
         options[key] = value
@@ -90,14 +107,17 @@ export async function saveOptions(event) {
 }
 
 /**
- * Update Options based on typeof
+ * Update Options based on type
  * @function initOptions
  * @param {Object} options
- * @param {boolean} text
  */
-export function updateOptions(options, text = false) {
+export function updateOptions(options) {
     console.debug('updateOptions:', options)
     for (let [key, value] of Object.entries(options)) {
+        if (typeof value === 'undefined') {
+            console.warn('Value undefined for key:', key)
+            continue
+        }
         if (key.startsWith('radio')) {
             key = value
             value = true
@@ -107,12 +127,10 @@ export function updateOptions(options, text = false) {
         if (!el) {
             continue
         }
-        if (text) {
+        if (el.tagName !== 'INPUT') {
             el.textContent = value.toString()
-        } else if (typeof value === 'boolean') {
+        } else if (el.type === 'checkbox') {
             el.checked = value
-        } else if (typeof value === 'object') {
-            console.debug(`Options Object for: ${key}`, value)
         } else {
             el.value = value
         }
