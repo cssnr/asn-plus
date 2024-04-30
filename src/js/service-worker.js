@@ -216,13 +216,12 @@ async function registerDarkMode() {
 function createContextMenus() {
     console.debug('createContextMenus')
     chrome.contextMenus.removeAll()
-    const ctx = ['all']
     const contexts = [
         [['selection'], 'operator', 'normal', 'Operator Search'],
         [['selection'], 'registration', 'normal', 'Registration Search'],
         [['selection'], 'separator-1', 'separator', 'separator'],
-        [ctx, 'openHome', 'normal', 'ASN Home'],
-        [ctx, 'options', 'normal', 'Open Options'],
+        [['selection'], 'openHome', 'normal', 'ASN Home'],
+        [['selection'], 'options', 'normal', 'Open Options'],
     ]
     contexts.forEach((context) => {
         chrome.contextMenus.create({
