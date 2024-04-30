@@ -33,9 +33,8 @@ async function onChanged(changes, namespace) {
                     const message = { dark: 'off' }
                     await chrome.runtime.sendMessage(message)
                 }
-            } else {
-                processOptions(newValue)
             }
+            processOptions(newValue)
         }
     }
 }
@@ -46,6 +45,7 @@ async function onChanged(changes, namespace) {
  * @param {Object} options
  */
 function processOptions(options) {
+    console.debug('processOptions:', options)
     if (options.hideHeaderImage) {
         hideHeaderImage()
     }
