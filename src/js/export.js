@@ -2,6 +2,23 @@
 
 /**
  * Request Host Permissions
+ * @function getSearchURL
+ * @param {String} value
+ * @param {String} type
+ * @return {String}
+ */
+export function getSearchURL(value, type) {
+    value = value.trim()
+    if (type === 'registration') {
+        return `https://aviation-safety.net/wikibase/dblist2.php?yr=&at=&re=${value}&pc=&op=&lo=&co=&ph=&na=&submit=Submit`
+    } else if (type === 'operator') {
+        value = value.replaceAll(' ', '+')
+        return `https://aviation-safety.net/wikibase/dblist2.php?yr=&at=&re=&pc=&op=${value}&lo=&co=&ph=&na=&submit=Submit`
+    }
+}
+
+/**
+ * Request Host Permissions
  * @function requestPerms
  * @return {chrome.permissions.request}
  */
@@ -21,8 +38,8 @@ export async function checkPerms() {
         origins: ['*://aviation-safety.net/*'],
     })
     console.debug('checkPerms:', hasPerms)
+    // Firefox still uses DOM Based Background Scripts
     if (typeof document === 'undefined') {
-        console.debug('document undefined')
         return hasPerms
     }
     const hasPermsEl = document.querySelectorAll('.has-perms')

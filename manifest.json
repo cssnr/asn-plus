@@ -3,7 +3,7 @@
   "description": "Aviation Safety Network Plus - Additional Features, Display and Search Options.",
   "homepage_url": "https://asn-plus.cssnr.com/",
   "author": "Shane",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "manifest_version": 3,
   "commands": {
     "_execute_action": {

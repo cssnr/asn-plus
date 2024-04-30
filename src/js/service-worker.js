@@ -1,6 +1,6 @@
 // JS Background Service Worker
 
-import { checkPerms } from './export.js'
+import { checkPerms, getSearchURL } from './export.js'
 
 chrome.runtime.onStartup.addListener(onStartup)
 chrome.runtime.onInstalled.addListener(onInstalled)
@@ -19,7 +19,7 @@ const uninstallURL = 'https://asn-plus.cssnr.com/uninstall/'
 async function onStartup() {
     console.log('onStartup')
     if (typeof browser !== 'undefined') {
-        console.log('FireFox Startup - Fix for Bug')
+        console.log('Firefox CTX Menu Workaround')
         const { options } = await chrome.storage.sync.get(['options'])
         console.debug('options:', options)
         if (options.contextMenu) {
@@ -126,6 +126,11 @@ async function onClicked(ctx, tab) {
         chrome.runtime.openOptionsPage()
     } else if (ctx.menuItemId === 'openHome') {
         await chrome.tabs.create({ active: true, url: asnHomePageURL })
+    } else if (['registration', 'operator'].includes(ctx.menuItemId)) {
+        console.debug(`${ctx.menuItemId}: ${ctx.selectionText}`)
+        const url = getSearchURL(ctx.selectionText, ctx.menuItemId)
+        console.log('url:', url)
+        await chrome.tabs.create({ active: true, url })
     } else {
         console.warn(`Unknown ctx.menuItemId: ${ctx.menuItemId}`)
     }
@@ -213,8 +218,10 @@ function createContextMenus() {
     chrome.contextMenus.removeAll()
     const ctx = ['all']
     const contexts = [
+        [['selection'], 'operator', 'normal', 'Operator Search'],
+        [['selection'], 'registration', 'normal', 'Registration Search'],
+        [['selection'], 'separator-1', 'separator', 'separator'],
         [ctx, 'openHome', 'normal', 'ASN Home'],
-        [ctx, 'separator-1', 'separator', 'separator'],
         [ctx, 'options', 'normal', 'Open Options'],
     ]
     contexts.forEach((context) => {
