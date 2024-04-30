@@ -39,6 +39,8 @@ async function initPopup() {
     const { options } = await chrome.storage.sync.get(['options'])
     console.debug('options:', options)
     updateOptions(options)
+    document.getElementById('country-url').href =
+        `https://aviation-safety.net/asndb/country/${options.countryCode}`
 
     document.querySelector(
         `input[name="searchType"][value="${options.searchType}"]`

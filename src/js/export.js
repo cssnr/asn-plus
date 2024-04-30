@@ -71,6 +71,7 @@ export async function saveOptions(event) {
         console.info('Country Code:', value)
         if (value.includes('/')) {
             value = value.split('/').at(-1).trim()
+            event.target.value = value
         }
         if (!countryList.includes(value)) {
             // event.target.classList.add('is-invalid')
