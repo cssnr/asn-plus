@@ -167,6 +167,12 @@ function addEntryLink(reg, cell) {
     }
 }
 
+function hideEntryWarning() {
+    console.debug('hideEntryWarning')
+    const div = document.querySelector('div.alertbox')
+    div.style.display = 'none'
+}
+
 function updateLastUpdated() {
     updateLastUpdated = function () {}
     console.debug('updateLastUpdated')
