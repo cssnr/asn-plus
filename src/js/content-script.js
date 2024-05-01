@@ -56,6 +56,12 @@ function processOptions(options) {
         highlightTableRows()
     }
     if (
+        options.hideEntryWarning &&
+        window.location.pathname.startsWith('/wikibase')
+    ) {
+        hideEntryWarning()
+    }
+    if (
         options.updateEntry &&
         /^\/wikibase\/\d+/.test(window.location.pathname)
     ) {

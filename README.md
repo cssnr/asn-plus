@@ -43,9 +43,11 @@ All **Chromium** Based Browsers can install the extension from the
 *   Enable Dark Mode
 *   Highlight Rows with Fatalities
 *   Add Additional Links to Entries
+*   Hide Wiki User Warning on Entries
 *   Update Main Navigation Links
 *   Hide Site Header Image
-*   Search Registration/Operator from Popup
+*   Search Registration/Operator from Selection Text
+*   Search Registration/Operator from Popup Action
 
 ### Upcoming Features and Ideas
 
