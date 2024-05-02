@@ -153,7 +153,7 @@ function updateEntryTable() {
             }
         }
         if (tr.textContent.startsWith('Location:')) {
-            console.debug('location', tr.cells[1].textContent)
+            // console.debug('location', tr.cells[1].textContent)
             const iframes = document.querySelectorAll('iframe')
             for (const el of iframes) {
                 if (el.src.includes('geographical/kml_map_iframe_wiki.php')) {
@@ -162,7 +162,7 @@ function updateEntryTable() {
                     loc = loc.replace(',', ';')
                     console.debug('loc:', loc)
                     const name = registration || operator || 'Plane Crash'
-                    const geo = `https://geohack.toolforge.org/en/${loc}_type:city?pagename=${name}`
+                    const geo = `https://geohack.toolforge.org/en/${loc}_type:event?pagename=${name}`
                     const link = document.createElement('a')
                     link.target = '_blank'
                     link.rel = 'noopener'
@@ -194,6 +194,24 @@ function addEntryLink(reg, cell) {
         link.textContent = key
         cell.appendChild(document.createTextNode(' | '))
         cell.appendChild(link)
+    }
+}
+
+function expandImages() {
+    expandImages = function () {}
+    console.log('innertube time')
+    const inner = document.querySelector('.innertube')
+    const links = inner.querySelectorAll('a')
+    const div = document.querySelectorAll('div.captionhr')[1]
+    for (const link of links) {
+        if (/\.(png|jpg|jpeg|gif|bmp|webp)$/i.test(link.href)) {
+            console.debug('adding image:', link.href)
+            const img = document.createElement('img')
+            img.src = link.href
+            img.style.maxWidth = '100%'
+            img.style.display = 'block'
+            div.parentElement.insertBefore(img, div)
+        }
     }
 }
 

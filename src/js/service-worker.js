@@ -41,6 +41,7 @@ async function onInstalled(details) {
             darkMode: true,
             highlightTable: true,
             updateEntry: true,
+            expandImages: true,
             hideEntryWarning: true,
             updateNavigation: true,
             hideHeaderImage: true,

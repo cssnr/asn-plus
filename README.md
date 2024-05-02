@@ -43,7 +43,8 @@ All **Chromium** Based Browsers can install the extension from the
 *   Enable Dark Mode
 *   Highlight Rows with Fatalities
 *   Add Additional Links to Entries
-*   Hide Wiki User Warning on Entries
+*   Expand Images from Sources
+*   Hide Wiki Warnings on Entries
 *   Update Main Navigation Links
 *   Hide Site Header Image
 *   Add Keyboard Shortcuts for Navigation
