@@ -211,9 +211,21 @@ function updateLastUpdated() {
 let playButton
 let pauseButton
 
-function addPlayButton() {
-    addPlayButton = function () {}
-    console.debug('addPlayButton')
+function onStart(event) {
+    console.log('onStart', event)
+}
+
+function onResume(event) {
+    console.log('onResume', event)
+}
+
+function onEnd(event) {
+    console.log('onEnd', event)
+}
+
+function addButtons() {
+    addButtons = function () {}
+    console.debug('addButtons')
     const caption = document.querySelector('span.caption')
     caption.appendChild(document.createTextNode(' '))
 
@@ -229,20 +241,22 @@ function addPlayButton() {
     pauseButton.href = '#'
     pauseButton.addEventListener('click', pauseAudioClick)
     caption.appendChild(pauseButton)
-
-    // caption.parentElement.insertBefore()
-    // const span = document.querySelectorAll('[lang="en-US"]')
 }
 
 function playAudioClick(event) {
     // console.debug('playAudioClick')
     event.preventDefault()
-    // console.debug('event.target.textContent:', event.target.textContent)
     if (event.target.textContent === 'Play') {
         console.debug('Play Audio')
         const span = document.querySelector('[lang="en-US"]')
         const utterance = new SpeechSynthesisUtterance(span.textContent)
+        utterance.addEventListener('start', onStart)
+        utterance.addEventListener('resume', onResume)
+        utterance.addEventListener('end', onEnd)
+        // TODO: Add Speech Options
+        utterance.rate = 1.3
         speechSynthesis.speak(utterance)
+        console.debug('utterance:', utterance)
         event.target.textContent = 'Stop'
     } else {
         console.debug('Stop Audio')
@@ -255,7 +269,6 @@ function playAudioClick(event) {
 function pauseAudioClick(event) {
     // console.debug('pauseAudioClick')
     event.preventDefault()
-    // console.debug('event.target.textContent:', event.target.textContent)
     if (speechSynthesis.speaking && !speechSynthesis.paused) {
         console.debug('Pause Audio')
         speechSynthesis.pause()
