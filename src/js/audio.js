@@ -74,7 +74,7 @@ function playAudioClick(event) {
 }
 
 function pauseAudioClick(event) {
-    console.debug('pauseAudioClick', speechSynthesis)
+    // console.debug('pauseAudioClick', speechSynthesis)
     event.preventDefault()
     // Chrome Voices always return false for speechSynthesis.paused
     // if (speechSynthesis.speaking && !speechSynthesis.paused) {
