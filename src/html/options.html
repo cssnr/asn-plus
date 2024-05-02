@@ -95,30 +95,24 @@
                 </span>
             </label>
         </div>
-<!--        <div class="form-check form-switch">-->
-<!--            <input class="form-check-input" id="useCustomCountry" type="checkbox" role="switch" data-related="customCountryDiv">-->
-<!--            <label class="form-check-label" for="useCustomCountry" aria-describedby="useCustomCountryHelp">-->
-<!--                Use Custom Country in Popup-->
-<!--                <span data-bs-toggle="tooltip" data-bs-title="Use Custom Country in Popup.">-->
-<!--                    <i class="fa-solid fa-circle-info ms-1"></i>-->
-<!--                </span>-->
-<!--            </label>-->
-<!--        </div>-->
-<!--        <div id="customCountryDiv" class="ms-5 text-success-emphasis" style="display: none;">-->
-<!--            <form class="row gx-3 gy-2 align-items-center">-->
-<!--                <div class="col-sm-3">-->
-<!--                    <label class="visually-hidden" for="specificSizeInputName">Name</label>-->
-<!--                    <input type="text" class="form-control" id="specificSizeInputName" placeholder="Jane Doe">-->
-<!--                </div>-->
-<!--                <div class="col-sm-3">-->
-<!--                    <label class="visually-hidden" for="specificSizeInputGroupUsername">Username</label>-->
-<!--                    <div class="input-group">-->
-<!--                        <div class="input-group-text">@</div>-->
-<!--                        <input type="text" class="form-control" id="specificSizeInputGroupUsername" placeholder="Username">-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </form>-->
-<!--        </div>-->
+        <div class="form-check form-switch">
+            <input class="form-check-input" id="enableKeyboard" type="checkbox" role="switch" data-related="keybinds">
+            <label class="form-check-label" for="enableKeyboard" aria-describedby="enableKeyboardHelp">
+                Enable Keyboard Shortcuts
+                <span data-bs-toggle="tooltip" data-bs-title="Enable Keyboard Shortcuts.">
+                    <i class="fa-solid fa-circle-info ms-1"></i>
+                </span>
+            </label>
+        </div>
+        <div id="keybinds" class="ms-4" style="display: none;">
+            <p>
+                <span class="d-inline-block me-2"><kbd>H</kbd> Home</span>
+                <span class="d-inline-block me-2"><kbd>W</kbd> Wiki</span>
+                <span class="d-inline-block me-2"><kbd>S</kbd> Search</span>
+                <span class="d-inline-block me-2"><kbd>A</kbd> Add</span>
+                <span class="d-inline-block me-2"><kbd>E</kbd> Edit</span>
+            </p>
+        </div>
         <div class="row mt-2">
             <div class="col-sm-6 col-12 mb-2">
                 <label for="countryDisplay" class="form-label">

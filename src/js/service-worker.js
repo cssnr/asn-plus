@@ -44,6 +44,7 @@ async function onInstalled(details) {
             hideEntryWarning: true,
             updateNavigation: true,
             hideHeaderImage: true,
+            enableKeyboard: true,
             countryDisplay: 'USA',
             countryCode: 'N',
             searchType: 'registration',

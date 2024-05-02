@@ -55,6 +55,9 @@ function processOptions(options) {
     if (options.highlightTable) {
         highlightTableRows()
     }
+    if (options.enableKeyboard) {
+        enableKeyboard()
+    }
     if (window.location.pathname.startsWith('/wikibase')) {
         if (options.hideEntryWarning) {
             hideEntryWarning()

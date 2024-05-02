@@ -2,6 +2,12 @@
 
 console.info('LOADED: asn.js')
 
+const keyLocations = {
+    KeyH: '/',
+    KeyA: '/wikibase/web_db_input.php',
+    KeyS: '/wikibase/wikisearch.php',
+}
+
 const navigationMenu = [
     {
         href: '/',
@@ -206,4 +212,45 @@ function updateLastUpdated() {
     console.debug('updated:', updated)
     const count = table.rows.length - 1
     lastupdated.innerHTML += ` - Updated <strong>${count}</strong> times on <strong>${updated}</strong>`
+}
+
+function enableKeyboard() {
+    enableKeyboard = function () {}
+    const tagNames = ['INPUT', 'TEXTAREA', 'SELECT', 'OPTION']
+    window.addEventListener('keydown', (e) => {
+        // console.log('handleKeyboard:', e)
+        if (
+            e.altKey ||
+            e.ctrlKey ||
+            e.metaKey ||
+            e.shiftKey ||
+            e.repeat ||
+            tagNames.includes(e.target.tagName)
+        ) {
+            return
+        }
+        if (['KeyE'].includes(e.code)) {
+            if (/^\/wikibase\/\d+/.test(window.location.pathname)) {
+                const match = RegExp(/\d+$/).exec(window.location.pathname)
+                const number = match ? parseInt(match[0]) : null
+                if (number) {
+                    console.debug('keyboard: Edit Entry:', number)
+                    window.location = `https://aviation-safety.net/wikibase/web_db_edit.php?id=${number}`
+                }
+            }
+        } else if (['KeyD', 'KeyW'].includes(e.code)) {
+            const date = new Date()
+            let year = date.getFullYear()
+            if (e.code === 'KeyD') {
+                console.debug('keyboard: Database Latest')
+                window.location = `https://aviation-safety.net/database/year/${year}`
+            } else if (e.code === 'KeyW') {
+                console.debug('keyboard: Wiki Latest')
+                window.location = `https://aviation-safety.net/asndb/year/${year}`
+            }
+        } else if (keyLocations[e.code]) {
+            console.debug(`keyLocation: ${e.code}`, keyLocations[e.code])
+            window.location = keyLocations[e.code]
+        }
+    })
 }
