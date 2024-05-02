@@ -126,18 +126,19 @@ function updateEntryTable() {
     if (!table) {
         return console.debug('table not found', table)
     }
-
+    let registration
+    let operator
     for (const tr of table.rows) {
         if (tr.textContent.startsWith('Registration:')) {
-            const reg = tr.cells[1].textContent.trim()
-            console.debug('reg:', reg)
-            if (reg) {
+            registration = tr.cells[1].textContent.trim()
+            console.debug('reg:', registration)
+            if (registration) {
                 const cell = tr.cells[1]
-                addEntryLink(reg, cell)
+                addEntryLink(registration, cell)
             }
         }
         if (tr.textContent.startsWith('Owner/operator:')) {
-            let operator = tr.cells[1].textContent.trim()
+            operator = tr.cells[1].textContent.trim()
             console.debug('operator:', operator)
             if (
                 operator &&
@@ -149,6 +150,27 @@ function updateEntryTable() {
                 link.textContent = 'Wiki Search'
                 tr.cells[1].appendChild(document.createTextNode(' - '))
                 tr.cells[1].appendChild(link)
+            }
+        }
+        if (tr.textContent.startsWith('Location:')) {
+            console.debug('location', tr.cells[1].textContent)
+            const iframes = document.querySelectorAll('iframe')
+            for (const el of iframes) {
+                if (el.src.includes('geographical/kml_map_iframe_wiki.php')) {
+                    const url = new URL(el.src)
+                    let loc = url.searchParams.get('ll')
+                    loc = loc.replace(',', ';')
+                    console.debug('loc:', loc)
+                    const name = registration || operator || 'Plane Crash'
+                    const geo = `https://geohack.toolforge.org/en/${loc}_type:city?pagename=${name}`
+                    const link = document.createElement('a')
+                    link.target = '_blank'
+                    link.rel = 'noopener'
+                    link.href = geo
+                    link.textContent = 'GeoHack'
+                    tr.cells[1].appendChild(document.createTextNode(' - '))
+                    tr.cells[1].appendChild(link)
+                }
             }
         }
     }
