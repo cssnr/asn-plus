@@ -10,7 +10,11 @@ function addButtons() {
     const caption = document.querySelector('span.caption')
     caption.appendChild(document.createTextNode(' '))
 
-    playButton = document.createElement('a')
+    const link = document.createElement('a')
+    // link.setAttribute('style', 'color: #0669cd !important')
+    link.style.textDecoration = 'none'
+
+    playButton = link.cloneNode(true)
     playButton.textContent = 'Play'
     playButton.href = '#'
     playButton.addEventListener('click', playAudioClick)
@@ -18,7 +22,7 @@ function addButtons() {
 
     caption.appendChild(document.createTextNode(' '))
 
-    pauseButton = document.createElement('a')
+    pauseButton = link.cloneNode(true)
     pauseButton.textContent = 'Pause'
     pauseButton.href = '#'
     pauseButton.addEventListener('click', pauseAudioClick)
