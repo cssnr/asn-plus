@@ -2,11 +2,12 @@
 
 let playButton
 let pauseButton
+let options
 
-function addButtons() {
-    addButtons = function () {}
-    console.debug('addButtons')
-
+function addAudioButtons(opts) {
+    addAudioButtons = function () {}
+    console.debug('addAudioButtons')
+    options = opts
     const caption = document.querySelector('span.caption')
     caption.appendChild(document.createTextNode(' '))
 
@@ -33,16 +34,25 @@ function playAudioClick(event) {
     // console.debug('playAudioClick')
     event.preventDefault()
     if (!speechSynthesis.speaking) {
+        // const { options } = await chrome.storage.sync.get(['options'])
+        // console.debug('options:', options)
         console.debug('Play Audio')
         const span = document.querySelector('[lang="en-US"]')
         const utterance = new SpeechSynthesisUtterance(span.textContent)
-        utterance.addEventListener('start', onStart)
-        utterance.addEventListener('resume', onResume)
+        // utterance.addEventListener('start', onStart)
+        // utterance.addEventListener('resume', onResume)
         utterance.addEventListener('end', onEnd)
-        // TODO: Add Speech Options
-        utterance.rate = 1.3
+        utterance.rate = options.speechRate
+        if (options.speechVoice) {
+            speechSynthesis.getVoices().forEach((voice) => {
+                // console.log('voice:', voice)
+                if (voice.name === options.speechVoice) {
+                    // console.debug('voice set:', voice)
+                    utterance.voice = voice
+                }
+            })
+        }
         speechSynthesis.speak(utterance)
-        console.debug('utterance:', utterance)
         event.target.textContent = 'Stop'
     } else {
         console.debug('Stop Audio')
@@ -66,13 +76,13 @@ function pauseAudioClick(event) {
     }
 }
 
-function onStart(event) {
-    console.debug('onStart', event)
-}
+// function onStart(event) {
+//     console.debug('onStart', event)
+// }
 
-function onResume(event) {
-    console.debug('onResume', event)
-}
+// function onResume(event) {
+//     console.debug('onResume', event)
+// }
 
 function onEnd(event) {
     console.debug('onEnd', event)

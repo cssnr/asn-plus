@@ -65,6 +65,8 @@ function processOptions(options) {
             updateEntryTable()
             updateLastUpdated()
         }
-        addButtons()
+        if (typeof speechSynthesis !== 'undefined') {
+            addAudioButtons(options)
+        }
     }
 }

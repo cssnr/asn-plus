@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', initOptions)
 document.getElementById('grant-perms').addEventListener('click', grantPerms)
 document.getElementById('reset-country').addEventListener('click', resetCountry)
 document
-    .querySelectorAll('#options-form input')
+    .querySelectorAll('#options-form input,select')
     .forEach((el) => el.addEventListener('change', saveOptions))
 document
     .getElementById('options-form')
@@ -26,6 +26,8 @@ document
 document
     .querySelectorAll('[data-bs-toggle="tooltip"]')
     .forEach((el) => new bootstrap.Tooltip(el))
+
+const voiceSelect = document.getElementById('speechVoice')
 
 /**
  * Initialize Options
@@ -46,6 +48,22 @@ async function initOptions() {
     console.debug('options:', options)
     updateOptions(options)
     await checkPerms()
+    if (typeof speechSynthesis !== 'undefined') {
+        addSpeechVoices(options)
+    }
+}
+
+function addSpeechVoices(options) {
+    speechSynthesis.getVoices().forEach((voice) => {
+        // console.log('voice:', voice)
+        const option = document.createElement('option')
+        option.textContent = `${voice.name} ${voice.lang}`
+        option.value = voice.name
+        voiceSelect.appendChild(option)
+    })
+    if (options.speechVoice) {
+        voiceSelect.value = options.speechVoice
+    }
 }
 
 /**
