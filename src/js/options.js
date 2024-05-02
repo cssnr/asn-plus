@@ -58,11 +58,17 @@ async function initOptions() {
 
 function addSpeechVoices(options) {
     console.debug('addSpeechVoices:', options)
+    const voices = []
     speechSynthesis.getVoices().forEach((voice) => {
         // console.debug('voice:', voice)
+        voices.push(voice.name)
+    })
+    voices.sort()
+    voices.forEach((voice) => {
         const option = document.createElement('option')
-        option.textContent = `${voice.name} ${voice.lang}`
-        option.value = voice.name
+        // option.textContent = `${voice.name} ${voice.lang}`
+        option.textContent = voice
+        option.value = voice
         voiceSelect.appendChild(option)
     })
     if (options.speechVoice) {
