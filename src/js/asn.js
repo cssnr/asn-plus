@@ -208,32 +208,61 @@ function updateLastUpdated() {
     lastupdated.innerHTML += ` - Updated <strong>${count}</strong> times on <strong>${updated}</strong>`
 }
 
+let playButton
+let pauseButton
+
 function addPlayButton() {
     addPlayButton = function () {}
     console.debug('addPlayButton')
     const caption = document.querySelector('span.caption')
-    const play = document.createElement('a')
-    play.textContent = 'Play'
-    play.href = '#'
-    play.addEventListener('click', playAudioClick)
     caption.appendChild(document.createTextNode(' '))
-    caption.appendChild(play)
+
+    playButton = document.createElement('a')
+    playButton.textContent = 'Play'
+    playButton.href = '#'
+    playButton.addEventListener('click', playAudioClick)
+    caption.appendChild(playButton)
+    caption.appendChild(document.createTextNode(' '))
+
+    pauseButton = document.createElement('a')
+    pauseButton.textContent = 'Pause'
+    pauseButton.href = '#'
+    pauseButton.addEventListener('click', pauseAudioClick)
+    caption.appendChild(pauseButton)
+
     // caption.parentElement.insertBefore()
     // const span = document.querySelectorAll('[lang="en-US"]')
 }
 
 function playAudioClick(event) {
-    console.debug('playAudioClick')
+    // console.debug('playAudioClick')
     event.preventDefault()
-    const cur = event.target.textContent
-    console.debug('cur:', cur)
-    if (cur === 'Play') {
+    // console.debug('event.target.textContent:', event.target.textContent)
+    if (event.target.textContent === 'Play') {
+        console.debug('Play Audio')
         const span = document.querySelector('[lang="en-US"]')
-        speech.text = span.textContent
-        window.speechSynthesis.speak(speech)
+        const utterance = new SpeechSynthesisUtterance(span.textContent)
+        speechSynthesis.speak(utterance)
         event.target.textContent = 'Stop'
     } else {
-        // speech.cancel()
+        console.debug('Stop Audio')
+        speechSynthesis.cancel()
         event.target.textContent = 'Play'
+        pauseButton.textContent = 'Pause'
+    }
+}
+
+function pauseAudioClick(event) {
+    // console.debug('pauseAudioClick')
+    event.preventDefault()
+    // console.debug('event.target.textContent:', event.target.textContent)
+    if (speechSynthesis.speaking && !speechSynthesis.paused) {
+        console.debug('Pause Audio')
+        speechSynthesis.pause()
+        event.target.textContent = 'Resume'
+    } else if (speechSynthesis.paused) {
+        console.debug('Resume Audio')
+        speechSynthesis.resume()
+        event.target.textContent = 'Pause'
     }
 }
