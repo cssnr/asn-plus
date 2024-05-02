@@ -4,6 +4,15 @@ let playButton
 let pauseButton
 let options
 
+window.addEventListener('beforeunload', beforeUnload)
+
+function beforeUnload(event) {
+    console.debug('beforeunload:', event)
+    if (speechSynthesis.speaking) {
+        speechSynthesis.cancel()
+    }
+}
+
 function addAudioButtons(opts) {
     addAudioButtons = function () {}
     console.debug('addAudioButtons')

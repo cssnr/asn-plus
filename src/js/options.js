@@ -48,14 +48,18 @@ async function initOptions() {
     console.debug('options:', options)
     updateOptions(options)
     await checkPerms()
+
     if (typeof speechSynthesis !== 'undefined') {
-        addSpeechVoices(options)
+        speechSynthesis.onvoiceschanged = () => {
+            addSpeechVoices(options)
+        }
     }
 }
 
 function addSpeechVoices(options) {
+    console.debug('addSpeechVoices:', options)
     speechSynthesis.getVoices().forEach((voice) => {
-        // console.log('voice:', voice)
+        // console.debug('voice:', voice)
         const option = document.createElement('option')
         option.textContent = `${voice.name} ${voice.lang}`
         option.value = voice.name
