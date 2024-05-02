@@ -46,6 +46,7 @@ All **Chromium** Based Browsers can install the extension from the
 *   Hide Wiki User Warning on Entries
 *   Update Main Navigation Links
 *   Hide Site Header Image
+*   Add Keyboard Shortcuts for Navigation
 *   Easily Play Narrative as Text to Speech
 *   Search Registration/Operator from Selection Text
 *   Search Registration/Operator from Popup Action

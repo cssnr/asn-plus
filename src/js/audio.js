@@ -16,6 +16,7 @@ function addAudioButtons(opts) {
     link.style.textDecoration = 'none'
 
     playButton = link.cloneNode(true)
+    playButton.id = 'play-button'
     playButton.textContent = 'Play'
     playButton.href = '#'
     playButton.addEventListener('click', playAudioClick)
@@ -24,6 +25,7 @@ function addAudioButtons(opts) {
     caption.appendChild(document.createTextNode(' '))
 
     pauseButton = link.cloneNode(true)
+    pauseButton.id = 'pause-button'
     pauseButton.textContent = 'Pause'
     pauseButton.href = '#'
     pauseButton.addEventListener('click', pauseAudioClick)
