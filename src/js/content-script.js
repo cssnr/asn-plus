@@ -71,5 +71,8 @@ function processOptions(options) {
         if (typeof speechSynthesis !== 'undefined') {
             addAudioButtons(options)
         }
+        if (options.expandImages) {
+            expandImages()
+        }
     }
 }

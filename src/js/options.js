@@ -48,17 +48,35 @@ async function initOptions() {
     console.debug('options:', options)
     updateOptions(options)
     await checkPerms()
+
     if (typeof speechSynthesis !== 'undefined') {
-        addSpeechVoices(options)
+        console.debug('speechSynthesis')
+        // Mozilla does not send onvoiceschanged on page loads nor requires it
+        const voices = speechSynthesis.getVoices()
+        if (voices.length) {
+            addSpeechVoices(options, voices)
+        } else {
+            speechSynthesis.onvoiceschanged = () => {
+                const voices = speechSynthesis.getVoices()
+                addSpeechVoices(options, voices)
+            }
+        }
     }
 }
 
-function addSpeechVoices(options) {
-    speechSynthesis.getVoices().forEach((voice) => {
-        // console.log('voice:', voice)
+function addSpeechVoices(options, voices) {
+    console.debug('addSpeechVoices:', options)
+    const names = []
+    voices.forEach((voice) => {
+        // console.debug('voice:', voice)
+        names.push(voice.name)
+    })
+    names.sort()
+    names.forEach((voice) => {
         const option = document.createElement('option')
-        option.textContent = `${voice.name} ${voice.lang}`
-        option.value = voice.name
+        // option.textContent = `${voice.name} ${voice.lang}`
+        option.textContent = voice
+        option.value = voice
         voiceSelect.appendChild(option)
     })
     if (options.speechVoice) {

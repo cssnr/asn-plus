@@ -4,6 +4,15 @@ let playButton
 let pauseButton
 let options
 
+window.addEventListener('beforeunload', beforeUnload)
+
+function beforeUnload(event) {
+    console.debug('beforeunload:', event)
+    if (speechSynthesis.speaking) {
+        speechSynthesis.cancel()
+    }
+}
+
 function addAudioButtons(opts) {
     addAudioButtons = function () {}
     console.debug('addAudioButtons')
@@ -65,13 +74,18 @@ function playAudioClick(event) {
 }
 
 function pauseAudioClick(event) {
-    // console.debug('pauseAudioClick')
+    // console.debug('pauseAudioClick', speechSynthesis)
     event.preventDefault()
-    if (speechSynthesis.speaking && !speechSynthesis.paused) {
+    // Chrome Voices always return false for speechSynthesis.paused
+    // if (speechSynthesis.speaking && !speechSynthesis.paused) {
+    if (!speechSynthesis.speaking) {
+        return console.debug('not speaking')
+    }
+    if (event.target.textContent === 'Pause') {
         console.debug('Pause Audio')
         speechSynthesis.pause()
         event.target.textContent = 'Resume'
-    } else if (speechSynthesis.paused) {
+    } else {
         console.debug('Resume Audio')
         speechSynthesis.resume()
         event.target.textContent = 'Pause'
