@@ -49,7 +49,7 @@ async function onInstalled(details) {
             countryCode: 'N',
             searchType: 'registration',
             speechVoice: '',
-            speechRate: '1.0',
+            speechRate: '1.1',
             contextMenu: true,
             showUpdate: false,
         })

@@ -229,7 +229,22 @@ function enableKeyboard() {
         ) {
             return
         }
-        if (['KeyE'].includes(e.code)) {
+        if (e.code === 'KeyB') {
+            console.debug('keyboard: Back')
+            history.back()
+        } else if (e.code === 'KeyP') {
+            console.debug('keyboard: Play')
+            if (typeof speechSynthesis === 'undefined') {
+                return console.debug('speechSynthesis is undefined')
+            }
+            if (!speechSynthesis.speaking) {
+                const play = document.getElementById('play-button')
+                play.click()
+            } else {
+                const pause = document.getElementById('pause-button')
+                pause.click()
+            }
+        } else if (['KeyE'].includes(e.code)) {
             if (/^\/wikibase\/\d+/.test(window.location.pathname)) {
                 const match = RegExp(/\d+$/).exec(window.location.pathname)
                 const number = match ? parseInt(match[0]) : null
