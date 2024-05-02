@@ -4,6 +4,8 @@ console.info('LOADED: content-script.js')
 
 window.addEventListener('DOMContentLoaded', domContentLoaded)
 
+const speech = new SpeechSynthesisUtterance()
+
 if (!chrome.storage.onChanged.hasListener(onChanged)) {
     chrome.storage.onChanged.addListener(onChanged)
 }
@@ -12,6 +14,8 @@ async function domContentLoaded() {
     console.info('domContentLoaded')
     const { options } = await chrome.storage.sync.get(['options'])
     console.debug('options:', options)
+    // TODO: Add Speech Options
+    speech.rate = 1.3
     processOptions(options)
 }
 
@@ -55,17 +59,16 @@ function processOptions(options) {
     if (options.highlightTable) {
         highlightTableRows()
     }
-    if (
-        options.hideEntryWarning &&
-        window.location.pathname.startsWith('/wikibase')
-    ) {
-        hideEntryWarning()
+    if (window.location.pathname.startsWith('/wikibase')) {
+        if (options.hideEntryWarning) {
+            hideEntryWarning()
+        }
     }
-    if (
-        options.updateEntry &&
-        /^\/wikibase\/\d+/.test(window.location.pathname)
-    ) {
-        updateEntryTable()
-        updateLastUpdated()
+    if (/^\/wikibase\/\d+/.test(window.location.pathname)) {
+        if (options.updateEntry) {
+            updateEntryTable()
+            updateLastUpdated()
+        }
+        addPlayButton()
     }
 }

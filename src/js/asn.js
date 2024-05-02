@@ -207,3 +207,33 @@ function updateLastUpdated() {
     const count = table.rows.length - 1
     lastupdated.innerHTML += ` - Updated <strong>${count}</strong> times on <strong>${updated}</strong>`
 }
+
+function addPlayButton() {
+    addPlayButton = function () {}
+    console.debug('addPlayButton')
+    const caption = document.querySelector('span.caption')
+    const play = document.createElement('a')
+    play.textContent = 'Play'
+    play.href = '#'
+    play.addEventListener('click', playAudioClick)
+    caption.appendChild(document.createTextNode(' '))
+    caption.appendChild(play)
+    // caption.parentElement.insertBefore()
+    // const span = document.querySelectorAll('[lang="en-US"]')
+}
+
+function playAudioClick(event) {
+    console.debug('playAudioClick')
+    event.preventDefault()
+    const cur = event.target.textContent
+    console.debug('cur:', cur)
+    if (cur === 'Play') {
+        const span = document.querySelector('[lang="en-US"]')
+        speech.text = span.textContent
+        window.speechSynthesis.speak(speech)
+        event.target.textContent = 'Stop'
+    } else {
+        // speech.cancel()
+        event.target.textContent = 'Play'
+    }
+}
