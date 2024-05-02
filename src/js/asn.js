@@ -221,6 +221,7 @@ function onResume(event) {
 
 function onEnd(event) {
     console.log('onEnd', event)
+    playButton.textContent = 'Play'
 }
 
 function addButtons() {
@@ -246,7 +247,7 @@ function addButtons() {
 function playAudioClick(event) {
     // console.debug('playAudioClick')
     event.preventDefault()
-    if (event.target.textContent === 'Play') {
+    if (!speechSynthesis.speaking) {
         console.debug('Play Audio')
         const span = document.querySelector('[lang="en-US"]')
         const utterance = new SpeechSynthesisUtterance(span.textContent)
