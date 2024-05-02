@@ -47,6 +47,8 @@ async function onInstalled(details) {
             countryDisplay: 'USA',
             countryCode: 'N',
             searchType: 'registration',
+            speechVoice: '',
+            speechRate: '1.0',
             contextMenu: true,
             showUpdate: false,
         })

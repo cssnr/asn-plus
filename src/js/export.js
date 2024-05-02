@@ -78,6 +78,10 @@ export async function saveOptions(event) {
             event.target.value = options['countryCode']
             return showToast(`Invalid Country Code: ${value}`, 'danger')
         }
+    } else if (key === 'speechVoice') {
+        const selectedOption = event.target.selectedOptions[0]
+        console.debug('value:', selectedOption.value)
+        value = selectedOption.value
     } else if (key === 'reset-country') {
         options['countryCode'] = 'N'
         key = 'countryDisplay'
@@ -125,10 +129,11 @@ export function updateOptions(options) {
         }
         // console.debug(`${key}: ${value}`)
         const el = document.getElementById(key)
+        // console.debug('el:', el)
         if (!el) {
             continue
         }
-        if (el.tagName !== 'INPUT') {
+        if (!['INPUT', 'SELECT'].includes(el.tagName)) {
             el.textContent = value.toString()
         } else if (el.type === 'checkbox') {
             el.checked = value

@@ -122,7 +122,7 @@
         <div class="row mt-2">
             <div class="col-sm-6 col-12 mb-2">
                 <label for="countryDisplay" class="form-label">
-                    <i class="fa-solid fa-tag me-2"></i> Country Display
+                    <i class="fa-solid fa-tag me-1"></i> Country Display
                     <span data-bs-toggle="tooltip" data-bs-title="What is displayed in the popup at the top.">
                         <i class="fa-solid fa-circle-info ms-1"></i>
                     </span>
@@ -135,7 +135,7 @@
             <div class="col-sm-6 col-12 mb-2">
                 <a id="reset-country" class="float-end align-bottom small" role="button">Reset</a>
                 <label for="countryCode" class="form-label">
-                    <i class="fa-solid fa-earth-americas me-2"></i> Country Code
+                    <i class="fa-solid fa-earth-americas me-1"></i> Country Code
                     <span data-bs-toggle="tooltip" data-bs-title="Paste in the Full URL or just the Country Code.">
                         <i class="fa-solid fa-circle-info ms-1"></i>
                     </span>
@@ -145,6 +145,35 @@
                     Country URL or Code from
                     <a class="d-inline-block" href="https://aviation-safety.net/asndb/countries/" target="_blank" rel="noopener">
                         ASN</a>.
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-sm-8 col-12 mb-2">
+                <label for="speechVoice" class="form-label">
+                    <i class="fa-solid fa-volume-high me-1"></i> Speech Voice
+<!--                    <span data-bs-toggle="tooltip" data-bs-title="Voice for Speech Playback.">-->
+<!--                        <i class="fa-solid fa-circle-info ms-1"></i>-->
+<!--                    </span>-->
+                </label>
+                <select id="speechVoice" class="form-select" aria-label="Default select example">
+                    <option value="">Browser Default</option>
+                </select>
+                <div class="form-text" id="speechVoiceHelp">
+                    Voice for Speech Playback.
+                </div>
+            </div>
+            <div class="col-sm-4 col-12 mb-2">
+                <label for="speechRate" class="form-label">
+                    <i class="fa-solid fa-gauge-simple me-1"></i> Speech Rate
+<!--                    <span data-bs-toggle="tooltip" data-bs-title="Playback Rate of the Speech.">-->
+<!--                        <i class="fa-solid fa-circle-info ms-1"></i>-->
+<!--                    </span>-->
+                </label>
+                <input id="speechRate" aria-describedby="speechRateHelp" type="number" class="form-control" autocomplete="off"
+                       step="0.1" min="0.1" max="10">
+                <div class="form-text" id="speechRateHelp">
+                    Playback Rate.
                 </div>
             </div>
         </div>

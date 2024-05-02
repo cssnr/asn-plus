@@ -55,17 +55,18 @@ function processOptions(options) {
     if (options.highlightTable) {
         highlightTableRows()
     }
-    if (
-        options.hideEntryWarning &&
-        window.location.pathname.startsWith('/wikibase')
-    ) {
-        hideEntryWarning()
+    if (window.location.pathname.startsWith('/wikibase')) {
+        if (options.hideEntryWarning) {
+            hideEntryWarning()
+        }
     }
-    if (
-        options.updateEntry &&
-        /^\/wikibase\/\d+/.test(window.location.pathname)
-    ) {
-        updateEntryTable()
-        updateLastUpdated()
+    if (/^\/wikibase\/\d+/.test(window.location.pathname)) {
+        if (options.updateEntry) {
+            updateEntryTable()
+            updateLastUpdated()
+        }
+        if (typeof speechSynthesis !== 'undefined') {
+            addAudioButtons(options)
+        }
     }
 }
