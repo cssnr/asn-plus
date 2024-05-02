@@ -246,11 +246,11 @@ function enableKeyboard() {
             }
         } else if (['KeyE'].includes(e.code)) {
             if (/^\/wikibase\/\d+/.test(window.location.pathname)) {
-                const match = RegExp(/\d+$/).exec(window.location.pathname)
-                const number = match ? parseInt(match[0]) : null
-                if (number) {
-                    console.debug('keyboard: Edit Entry:', number)
-                    window.location = `https://aviation-safety.net/wikibase/web_db_edit.php?id=${number}`
+                const match = RegExp(/\d+/).exec(window.location.pathname)
+                if (match) {
+                    const id = match[0]
+                    console.debug('keyboard: Edit Entry:', id)
+                    window.location = `https://aviation-safety.net/wikibase/web_db_edit.php?id=${id}`
                 }
             }
         } else if (['KeyD', 'KeyW'].includes(e.code)) {
