@@ -25,7 +25,12 @@
     {
       "matches": ["*://aviation-safety.net/*"],
       "run_at": "document_start",
-      "js": ["dist/jquery/jquery.min.js", "js/asn.js", "js/content-script.js"]
+      "js": [
+        "dist/jquery/jquery.min.js",
+        "js/asn.js",
+        "js/audio.js",
+        "js/content-script.js"
+      ]
     }
   ],
   "web_accessible_resources": [
