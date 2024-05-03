@@ -83,6 +83,10 @@ function updateNavigation(options) {
         li.appendChild(a)
     }
     a.style.borderRight = 'none'
+    // This should be its own options or default css
+    document
+        .querySelectorAll('.infobox')
+        .forEach((el) => (el.style.marginBottom = '12px'))
 }
 
 function hideHeaderImage() {
