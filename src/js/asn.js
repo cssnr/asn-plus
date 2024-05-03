@@ -275,7 +275,7 @@ function enableKeyboard() {
     window.addEventListener('keydown', keyboardEvent)
 }
 
-function keyboardEvent(e) {
+async function keyboardEvent(e) {
     // console.log('handleKeyboard:', e)
     if (
         e.altKey ||
@@ -321,6 +321,9 @@ function keyboardEvent(e) {
             console.debug('keyboard: Wiki Latest')
             window.location = `https://aviation-safety.net/asndb/year/${year}`
         }
+    } else if (['KeyC'].includes(e.code)) {
+        const { options } = await chrome.storage.sync.get(['options'])
+        window.location = `https://aviation-safety.net/asndb/country/${options.countryCode}`
     } else if (keyLocations[e.code]) {
         console.debug(`keyLocation: ${e.code}`, keyLocations[e.code])
         window.location = keyLocations[e.code]
