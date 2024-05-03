@@ -65,10 +65,11 @@ function updateNavigation(options) {
 
     const date = new Date()
     let year = date.getFullYear()
+    let a
     for (const item of navigationMenu) {
         const li = document.createElement('li')
         ul.appendChild(li)
-        const a = document.createElement('a')
+        a = document.createElement('a')
         if (item.year) {
             a.href = `${item.href}${year}`
             a.textContent = `${item.text} ${year}`
@@ -81,6 +82,7 @@ function updateNavigation(options) {
         }
         li.appendChild(a)
     }
+    a.style.borderRight = 'none'
 }
 
 function hideHeaderImage() {
