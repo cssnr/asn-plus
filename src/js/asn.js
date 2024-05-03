@@ -34,14 +34,19 @@ const navigationMenu = [
         year: true,
     },
     {
+        href: '/asndb/country/',
+        text: 'Wiki',
+        country: true,
+    },
+    {
         href: '/wikibase/wikisearch.php',
         text: 'Wiki Search',
     },
 ]
 
-function updateNavigation() {
+function updateNavigation(options) {
     updateNavigation = function () {}
-    console.debug('updateNavigation')
+    console.debug('updateNavigation', options)
 
     const div = document.querySelector('div.navigation')
     if (!div) {
@@ -60,19 +65,28 @@ function updateNavigation() {
 
     const date = new Date()
     let year = date.getFullYear()
+    let a
     for (const item of navigationMenu) {
         const li = document.createElement('li')
         ul.appendChild(li)
-        const a = document.createElement('a')
+        a = document.createElement('a')
         if (item.year) {
             a.href = `${item.href}${year}`
             a.textContent = `${item.text} ${year}`
+        } else if (item.country) {
+            a.href = `${item.href}${options.countryCode}`
+            a.textContent = `${item.text} ${options.countryDisplay}`
         } else {
             a.href = item.href
             a.textContent = item.text
         }
         li.appendChild(a)
     }
+    a.style.borderRight = 'none'
+    // This should be its own options or default css
+    document
+        .querySelectorAll('.infobox')
+        .forEach((el) => (el.style.marginBottom = '12px'))
 }
 
 function hideHeaderImage() {
@@ -199,7 +213,7 @@ function addEntryLink(reg, cell) {
 
 function expandImages() {
     expandImages = function () {}
-    console.log('innertube time')
+    console.log('expandImages')
     const inner = document.querySelector('.innertube')
     const links = inner.querySelectorAll('a')
     const div = document.querySelectorAll('div.captionhr')[1]
@@ -261,7 +275,7 @@ function enableKeyboard() {
     window.addEventListener('keydown', keyboardEvent)
 }
 
-function keyboardEvent(e) {
+async function keyboardEvent(e) {
     // console.log('handleKeyboard:', e)
     if (
         e.altKey ||
@@ -307,6 +321,9 @@ function keyboardEvent(e) {
             console.debug('keyboard: Wiki Latest')
             window.location = `https://aviation-safety.net/asndb/year/${year}`
         }
+    } else if (['KeyC'].includes(e.code)) {
+        const { options } = await chrome.storage.sync.get(['options'])
+        window.location = `https://aviation-safety.net/asndb/country/${options.countryCode}`
     } else if (keyLocations[e.code]) {
         console.debug(`keyLocation: ${e.code}`, keyLocations[e.code])
         window.location = keyLocations[e.code]

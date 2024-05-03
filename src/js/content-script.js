@@ -50,7 +50,7 @@ function processOptions(options) {
         hideHeaderImage()
     }
     if (options.updateNavigation) {
-        updateNavigation()
+        updateNavigation(options)
     }
     if (options.highlightTable) {
         highlightTableRows()
