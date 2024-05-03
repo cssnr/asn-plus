@@ -34,14 +34,19 @@ const navigationMenu = [
         year: true,
     },
     {
+        href: '/asndb/country/',
+        text: 'Wiki',
+        country: true,
+    },
+    {
         href: '/wikibase/wikisearch.php',
         text: 'Wiki Search',
     },
 ]
 
-function updateNavigation() {
+function updateNavigation(options) {
     updateNavigation = function () {}
-    console.debug('updateNavigation')
+    console.debug('updateNavigation', options)
 
     const div = document.querySelector('div.navigation')
     if (!div) {
@@ -67,6 +72,9 @@ function updateNavigation() {
         if (item.year) {
             a.href = `${item.href}${year}`
             a.textContent = `${item.text} ${year}`
+        } else if (item.country) {
+            a.href = `${item.href}${options.countryCode}`
+            a.textContent = `${item.text} ${options.countryDisplay}`
         } else {
             a.href = item.href
             a.textContent = item.text
@@ -199,7 +207,7 @@ function addEntryLink(reg, cell) {
 
 function expandImages() {
     expandImages = function () {}
-    console.log('innertube time')
+    console.log('expandImages')
     const inner = document.querySelector('.innertube')
     const links = inner.querySelectorAll('a')
     const div = document.querySelectorAll('div.captionhr')[1]
