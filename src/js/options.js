@@ -21,8 +21,8 @@ document
     .getElementById('options-form')
     .addEventListener('submit', (e) => e.preventDefault())
 document
-    .querySelectorAll('.open-oninstall')
-    .forEach((el) => el.addEventListener('click', openOnInstall))
+    .querySelectorAll('.open-permissions')
+    .forEach((el) => el.addEventListener('click', openPermissions))
 document
     .querySelectorAll('[data-bs-toggle="tooltip"]')
     .forEach((el) => new bootstrap.Tooltip(el))
@@ -131,13 +131,13 @@ async function grantPerms(event) {
 }
 
 /**
- * Open OnInstall Page Click Callback
- * @function openOnInstall
+ * Open Permissions Page Click Callback
+ * @function openPermissions
  * @param {MouseEvent} event
  */
-async function openOnInstall(event) {
-    console.debug('openOnInstall:', event)
-    const url = chrome.runtime.getURL('../html/oninstall.html')
+async function openPermissions(event) {
+    console.debug('openPermissions:', event)
+    const url = chrome.runtime.getURL('/html/permissions.html')
     await chrome.tabs.create({ active: true, url })
     window.close()
 }

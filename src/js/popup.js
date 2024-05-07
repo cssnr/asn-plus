@@ -40,10 +40,10 @@ async function initPopup() {
     const { options } = await chrome.storage.sync.get(['options'])
     console.debug('options:', options)
     updateOptions(options)
+
     document.getElementById('country-url').href =
         `https://aviation-safety.net/asndb/country/${options.countryCode}`
     searchTerm.placeholder = options.searchType
-
     document.querySelector(
         `input[name="searchType"][value="${options.searchType}"]`
     ).checked = true
@@ -59,17 +59,6 @@ async function initPopup() {
     if (chrome.runtime.lastError) {
         showToast(chrome.runtime.lastError.message, 'warning')
     }
-
-    // const platformInfo = await chrome.runtime.getPlatformInfo()
-    // console.log('platformInfo:', platformInfo)
-
-    // const tabs = await chrome.tabs.query({ highlighted: true })
-    // console.log('tabs:', tabs)
-
-    // const views = chrome.extension.getViews()
-    // console.log('views:', views)
-    // const result = views.find((item) => item.location.href.endsWith('html/home.html'))
-    // console.log('result:', result)
 }
 
 function populateYearLinks() {
@@ -104,30 +93,27 @@ async function popupLinks(event) {
     console.debug('popupLinks:', event)
     event.preventDefault()
     const anchor = event.target.closest('a')
-    console.debug(`anchor.href: ${anchor.href}`, anchor)
+    const href = anchor.getAttribute('href').replace(/^\.+/g, '')
+    console.debug('href:', href)
     let url
     if (anchor.href.endsWith('html/options.html')) {
         chrome.runtime.openOptionsPage()
         return window.close()
-    } else if (anchor.href.endsWith('html/page.html')) {
-        await chrome.windows.create({
-            type: 'detached_panel',
-            url: '/html/page.html',
-            width: 720,
-            height: 480,
-        })
-        return window.close()
-    } else if (
-        anchor.href.startsWith('http') ||
-        anchor.href.startsWith('chrome-extension')
-    ) {
-        // console.debug(`http or chrome-extension`)
-        url = anchor.href
+    } else if (href.startsWith('http')) {
+        url = href
     } else {
-        // console.debug(`else chrome.runtime.getURL`)
-        url = chrome.runtime.getURL(anchor.href)
+        url = chrome.runtime.getURL(href)
     }
-    console.log('url:', url)
+    console.debug('url:', url)
+    const tabs = await chrome.tabs.query({ currentWindow: true })
+    console.log(tabs)
+    for (const tab of tabs) {
+        if (tab.url === url) {
+            console.debug('tab:', tab)
+            await chrome.tabs.update(tab.id, { active: true })
+            return window.close()
+        }
+    }
     await chrome.tabs.create({ active: true, url })
     return window.close()
 }
