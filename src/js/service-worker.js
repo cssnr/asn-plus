@@ -1,6 +1,6 @@
 // JS Background Service Worker
 
-import { checkPerms, getSearchURL } from './export.js'
+import { activateOrOpen, checkPerms, getSearchURL } from './export.js'
 
 chrome.runtime.onStartup.addListener(onStartup)
 chrome.runtime.onInstalled.addListener(onInstalled)
@@ -132,7 +132,7 @@ async function onClicked(ctx, tab) {
     if (ctx.menuItemId === 'options') {
         chrome.runtime.openOptionsPage()
     } else if (ctx.menuItemId === 'openHome') {
-        await chrome.tabs.create({ active: true, url: asnHomePageURL })
+        await activateOrOpen(asnHomePageURL)
     } else if (['registration', 'operator'].includes(ctx.menuItemId)) {
         console.debug(`${ctx.menuItemId}: ${ctx.selectionText}`)
         const url = getSearchURL(ctx.selectionText, ctx.menuItemId)
@@ -151,7 +151,7 @@ async function onClicked(ctx, tab) {
 async function onCommand(command) {
     console.debug('onCommand:', command)
     if (command === 'openHome') {
-        await chrome.tabs.create({ active: true, url: asnHomePageURL })
+        await activateOrOpen(asnHomePageURL)
     } else {
         console.warn('Unknown command:', command)
     }
