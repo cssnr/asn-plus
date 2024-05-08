@@ -151,7 +151,7 @@ async function onClicked(ctx, tab) {
 async function onCommand(command) {
     console.debug('onCommand:', command)
     if (command === 'openHome') {
-        await chrome.tabs.create({ active: true, url: asnHomePageURL })
+        await activateOrOpen(asnHomePageURL)
     } else {
         console.warn('Unknown command:', command)
     }
