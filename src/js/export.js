@@ -5,11 +5,11 @@ import { countryList } from './vars.js'
 /**
  * Request Host Permissions
  * @function getSearchURL
- * @param {String} value
  * @param {String} type
+ * @param {String} value
  * @return {String}
  */
-export function getSearchURL(value, type) {
+export function getSearchURL(type, value) {
     value = value.trim()
     if (type === 'registration') {
         return `https://aviation-safety.net/wikibase/dblist2.php?yr=&at=&re=${value}&pc=&op=&lo=&co=&ph=&na=&submit=Submit`

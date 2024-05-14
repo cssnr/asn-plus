@@ -14,6 +14,7 @@ chrome.permissions.onAdded.addListener(onAdded)
 document.addEventListener('DOMContentLoaded', initOptions)
 document.getElementById('grant-perms').addEventListener('click', grantPerms)
 document.getElementById('reset-country').addEventListener('click', resetCountry)
+document.getElementById('test-voice').addEventListener('click', testVoice)
 document
     .querySelectorAll('#options-form input,select')
     .forEach((el) => el.addEventListener('change', saveOptions))
@@ -101,6 +102,42 @@ async function resetCountry(event) {
     // form.submit()
     await saveOptions(event)
     showToast('Country Display and Code Reset.')
+}
+
+/**
+ * Test Voice Click Callback
+ * @function testVoice
+ * @param {InputEvent} event
+ */
+async function testVoice(event) {
+    console.log('testVoice:', event)
+    event.preventDefault()
+    const { options } = await chrome.storage.sync.get(['options'])
+    const utterance = getUtterance('Voice for Speech Playback.', options)
+    speechSynthesis.speak(utterance)
+}
+
+/**
+ * Get Utterance
+ * @param {String} text
+ * @param {Object} options
+ * @return {SpeechSynthesisUtterance}
+ */
+function getUtterance(text, options) {
+    const utterance = new SpeechSynthesisUtterance(text)
+    if (options.speechRate) {
+        utterance.rate = options.speechRate
+    }
+    if (options.speechVoice) {
+        speechSynthesis.getVoices().forEach((voice) => {
+            // console.log('voice:', voice)
+            if (voice.name === options.speechVoice) {
+                // console.debug('voice set:', voice)
+                utterance.voice = voice
+            }
+        })
+    }
+    return utterance
 }
 
 /**

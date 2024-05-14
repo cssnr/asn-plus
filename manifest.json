@@ -3,7 +3,7 @@
   "description": "Aviation Safety Network Plus - Additional Features, Display and Search Options.",
   "homepage_url": "https://asn-plus.cssnr.com/",
   "author": "Shane",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "manifest_version": 3,
   "commands": {
     "_execute_action": {
@@ -18,6 +18,9 @@
       },
       "description": "Open ASN Home Page"
     }
+  },
+  "omnibox": {
+    "keyword": "asn"
   },
   "permissions": ["contextMenus", "scripting", "storage"],
   "host_permissions": ["*://aviation-safety.net/*"],

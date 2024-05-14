@@ -8,7 +8,11 @@ chrome.runtime.onMessage.addListener(onMessage)
 chrome.contextMenus.onClicked.addListener(onClicked)
 chrome.commands.onCommand.addListener(onCommand)
 chrome.storage.onChanged.addListener(onChanged)
+chrome.omnibox.onInputChanged.addListener(onInputChanged)
+chrome.omnibox.onInputCancelled.addListener(onInputCancelled)
+chrome.omnibox.onInputEntered.addListener(onInputEntered)
 
+const omniboxDefault = 'ASN - registration OR operator Search'
 const asnHomePageURL = 'https://aviation-safety.net/'
 const uninstallURL = 'https://asn-plus.cssnr.com/uninstall/'
 
@@ -135,7 +139,7 @@ async function onClicked(ctx, tab) {
         await activateOrOpen(asnHomePageURL)
     } else if (['registration', 'operator'].includes(ctx.menuItemId)) {
         console.debug(`${ctx.menuItemId}: ${ctx.selectionText}`)
-        const url = getSearchURL(ctx.selectionText, ctx.menuItemId)
+        const url = getSearchURL(ctx.menuItemId, ctx.selectionText)
         console.log('url:', url)
         await chrome.tabs.create({ active: true, url })
     } else {
@@ -191,6 +195,99 @@ function onChanged(changes, namespace) {
     }
 }
 
+async function parseInput(text) {
+    console.debug('parseInput:', text)
+    text = text.trim()
+    const split = text.split(' ')
+    const length = split.length
+    let command = split.shift().toLowerCase()
+    let search = split.join('')
+    if (length === 1) {
+        command = ''
+        search = text
+    }
+    console.debug('command:', command)
+    if (command.startsWith('r') && 'registration'.includes(command)) {
+        return ['registration', search]
+    } else if (command.startsWith('o') && 'operator'.includes(command)) {
+        return ['operator', search]
+    } else {
+        search = text.replace(/ /g, '')
+        let { options } = await chrome.storage.sync.get(['options'])
+        return [options.searchType, search]
+    }
+}
+
+/**
+ * Omnibox Input Changed Callback
+ * @function onInputChanged
+ * @param {String} text
+ * @param {Function} suggest
+ */
+async function onInputChanged(text, suggest) {
+    console.debug('onInputChanged:', text, suggest)
+    text = text.trim()
+    const split = text.split(' ')
+    // console.debug('split:', split)
+    if (split.length) {
+        let command = split.shift().toLowerCase()
+        // console.debug('command:', command)
+        let search = split.join('')
+        console.debug('search:', search)
+        if (command.startsWith('r') && 'registration'.includes(command)) {
+            chrome.omnibox.setDefaultSuggestion({
+                description: 'ASN - Registration Search',
+            })
+        } else if (command.startsWith('o') && 'operator'.includes(command)) {
+            chrome.omnibox.setDefaultSuggestion({
+                description: 'ASN - Operator Search',
+            })
+        } else {
+            let { options } = await chrome.storage.sync.get(['options'])
+            // search = text.replace(/\s/g, '')
+            const type =
+                options.searchType.charAt(0).toUpperCase() +
+                options.searchType.slice(1)
+            chrome.omnibox.setDefaultSuggestion({
+                description: `Aviation Tools - ${type} Search`,
+            })
+        }
+    }
+}
+
+/**
+ * Omnibox Input Cancelled Callback
+ * @function onInputCancelled
+ */
+async function onInputCancelled() {
+    console.debug('onInputCancelled')
+    chrome.omnibox.setDefaultSuggestion({
+        description: omniboxDefault,
+    })
+}
+
+/**
+ * Omnibox Input Entered Callback
+ * @function onInputEntered
+ * @param {String} text
+ */
+async function onInputEntered(text) {
+    console.debug('onInputEntered:', text)
+    text = text.trim()
+    // console.debug('text:', text)
+    let [type, search] = await parseInput(text)
+    console.debug('type:', type)
+    console.debug('search:', search)
+    let url
+    if (!search) {
+        url = 'https://aviation-safety.net/wikibase/wikisearch.php'
+    } else {
+        url = getSearchURL(type, search)
+    }
+    console.log('url:', url)
+    await chrome.tabs.create({ active: true, url })
+}
+
 /**
  * Register Dark Mode Content Script, yea its that hard
  * @function registerDarkMode
@@ -224,8 +321,8 @@ function createContextMenus() {
     console.debug('createContextMenus')
     chrome.contextMenus.removeAll()
     const contexts = [
-        [['selection'], 'operator', 'normal', 'Operator Search'],
         [['selection'], 'registration', 'normal', 'Registration Search'],
+        [['selection'], 'operator', 'normal', 'Operator Search'],
         [['selection'], 'separator-1', 'separator', 'separator'],
         [['selection'], 'openHome', 'normal', 'ASN Home Page'],
         [['selection'], 'options', 'normal', 'Open Options'],
