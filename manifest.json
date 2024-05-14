@@ -19,6 +19,9 @@
       "description": "Open ASN Home Page"
     }
   },
+  "omnibox": {
+    "keyword": "asn"
+  },
   "permissions": ["contextMenus", "scripting", "storage"],
   "host_permissions": ["*://aviation-safety.net/*"],
   "content_scripts": [

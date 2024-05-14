@@ -152,7 +152,7 @@ async function searchFormSubmit(event) {
     if (!value) {
         return searchForm.elements.searchTerm.focus()
     }
-    const url = getSearchURL(value, searchType)
+    const url = getSearchURL(searchType, value)
     console.log(`url: ${url}`)
     await chrome.tabs.create({ active: true, url })
     window.close()
