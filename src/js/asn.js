@@ -230,6 +230,7 @@ function expandImages() {
 }
 
 function hideEntryWarning() {
+    hideEntryWarning = function () {}
     console.debug('hideEntryWarning')
     const div = document.querySelector('div.alertbox')
     div.style.display = 'none'
@@ -291,7 +292,7 @@ async function keyboardEvent(e) {
         console.debug('keyboard: Back')
         history.back()
     } else if (e.code === 'KeyP') {
-        console.debug('keyboard: Play')
+        console.debug('keyboard: Play/Pause')
         if (typeof speechSynthesis === 'undefined') {
             return console.debug('speechSynthesis is undefined')
         }
@@ -323,6 +324,7 @@ async function keyboardEvent(e) {
         }
     } else if (['KeyC'].includes(e.code)) {
         const { options } = await chrome.storage.sync.get(['options'])
+        console.debug('keyLocation: Country:', options.countryCode)
         window.location = `https://aviation-safety.net/asndb/country/${options.countryCode}`
     } else if (keyLocations[e.code]) {
         console.debug(`keyLocation: ${e.code}`, keyLocations[e.code])
