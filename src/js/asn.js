@@ -124,8 +124,8 @@ function highlightTableRows() {
                 // console.debug('skipping TH row', tr)
                 continue
             }
-            const text = tr.cells[fatIdx].textContent.trim()
-            if (text && text !== '0') {
+            const text = tr.cells[fatIdx]?.textContent.trim()
+            if (/^[0-9+ ]+$/.test(text) && text !== '0') {
                 tr.style.backgroundColor = 'rgba(255,0,0,0.2)'
             }
         }

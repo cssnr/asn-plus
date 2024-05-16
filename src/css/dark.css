@@ -23,6 +23,10 @@ td.listnoline {
     color: white !important;
 }
 
+.navigation a:visited {
+    color: white !important;
+}
+
 .infobox {
     background-color: #222 !important;
 }
