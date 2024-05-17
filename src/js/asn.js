@@ -369,6 +369,22 @@ function enableAUtoFill(options) {
     ).slice(-2)
     document.querySelector('[name="Year"]').value = date.getFullYear()
 
+    const operator = document.querySelector('[name="Operator"]')
+    const clone = operator.cloneNode(true)
+    clone.size = '40'
+    const td = operator.parentElement
+    td.textContent = ''
+    td.appendChild(clone)
+    const privateBtn = document.createElement('button')
+    privateBtn.id = 'operator-private'
+    privateBtn.textContent = 'Set Private'
+    privateBtn.style.marginLeft = '10px'
+    privateBtn.addEventListener('click', (e) => {
+        e.preventDefault()
+        clone.value = 'Private'
+    })
+    td.appendChild(privateBtn)
+
     // const innertube = document.querySelector('.innertube')
     const contentwrapper = document.getElementById('contentwrapper')
 
@@ -417,7 +433,7 @@ function processResponse(message) {
     }
     if (message.manufacturer || message.model) {
         document.querySelector('[name="AcType"]').value =
-            `${message.manufacturer} ${message.model}`
+            `${message.manufacturer} ${message.model}`.trim()
     }
     if (message.name) {
         document.querySelector('[name="Operator"]').value = message.name
@@ -425,7 +441,6 @@ function processResponse(message) {
     if (message.type === 'Fixed Wing Single-Engine') {
         document.querySelector('[name="Plane_cat"]').value = 'A'
     }
-
     if (message.registration) {
         const source = document.getElementById('source')
         const text =
@@ -434,10 +449,13 @@ function processResponse(message) {
         // `https://globe.adsbexchange.com/?icao=${message.hex.toLowerCase()}\n`
         source.value = text.trim()
     }
+    document.querySelector('[name="Comments"]').value =
+        'Added New Incident. Auto Filled w/ ASN Plus.'
 }
 
 async function doAutoFill(event) {
     console.log('doAutoFill', event)
+    event.preventDefault()
 
     // TODO: Add separate permissions requests for asn and faa
     // const hasPerms = await chrome.runtime.sendMessage({
