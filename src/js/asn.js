@@ -101,6 +101,27 @@ function hideHeaderImage() {
     }
 }
 
+function increaseMaxWidth() {
+    increaseMaxWidth = function () {}
+    console.debug('increaseMaxWidth')
+
+    const wrap = document.getElementById('page-wrap')
+    if (!wrap) {
+        return console.debug('page-wrap not found')
+    }
+    wrap.style.maxWidth = '100%'
+    // wrap.style.margin = '5px'
+    const footer = wrap.children[wrap.children.length - 1]
+    if (!footer) {
+        return
+    }
+    // console.debug('footer:', footer)
+    if (footer.style.height === '175px') {
+        console.debug('set footer height to 190px')
+        footer.style.height = '190px'
+    }
+}
+
 function highlightTableRows() {
     highlightTableRows = function () {}
     console.debug('highlightTableRows')
@@ -124,8 +145,8 @@ function highlightTableRows() {
                 // console.debug('skipping TH row', tr)
                 continue
             }
-            const text = tr.cells[fatIdx].textContent.trim()
-            if (text && text !== '0') {
+            const text = tr.cells[fatIdx]?.textContent.trim()
+            if (/^[0-9+ ]+$/.test(text) && text !== '0') {
                 tr.style.backgroundColor = 'rgba(255,0,0,0.2)'
             }
         }
@@ -230,6 +251,7 @@ function expandImages() {
 }
 
 function hideEntryWarning() {
+    hideEntryWarning = function () {}
     console.debug('hideEntryWarning')
     const div = document.querySelector('div.alertbox')
     div.style.display = 'none'
@@ -291,7 +313,7 @@ async function keyboardEvent(e) {
         console.debug('keyboard: Back')
         history.back()
     } else if (e.code === 'KeyP') {
-        console.debug('keyboard: Play')
+        console.debug('keyboard: Play/Pause')
         if (typeof speechSynthesis === 'undefined') {
             return console.debug('speechSynthesis is undefined')
         }
@@ -323,6 +345,7 @@ async function keyboardEvent(e) {
         }
     } else if (['KeyC'].includes(e.code)) {
         const { options } = await chrome.storage.sync.get(['options'])
+        console.debug('keyLocation: Country:', options.countryCode)
         window.location = `https://aviation-safety.net/asndb/country/${options.countryCode}`
     } else if (keyLocations[e.code]) {
         console.debug(`keyLocation: ${e.code}`, keyLocations[e.code])

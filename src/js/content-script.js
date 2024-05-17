@@ -46,11 +46,14 @@ async function onChanged(changes, namespace) {
  */
 function processOptions(options) {
     console.debug('processOptions:', options)
+    if (options.updateNavigation) {
+        updateNavigation(options)
+    }
     if (options.hideHeaderImage) {
         hideHeaderImage()
     }
-    if (options.updateNavigation) {
-        updateNavigation(options)
+    if (options.increaseMaxWidth) {
+        increaseMaxWidth()
     }
     if (options.highlightTable) {
         highlightTableRows()
