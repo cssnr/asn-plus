@@ -43,7 +43,7 @@
   "web_accessible_resources": [
     {
       "resources": ["css/dark.css"],
-      "matches": ["*://aviation-safety.net/*"]
+      "matches": ["*://*.aviation-safety.net/*"]
     }
   ],
   "background": { "type": "module" },

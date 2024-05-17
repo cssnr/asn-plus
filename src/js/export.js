@@ -27,7 +27,7 @@ export function getSearchURL(type, value) {
 export async function requestPerms() {
     return await chrome.permissions.request({
         origins: [
-            '*://aviation-safety.net/*',
+            '*://*.aviation-safety.net/*',
             '*://registry.faa.gov/AircraftInquiry/Search/*',
         ],
     })
@@ -41,7 +41,7 @@ export async function requestPerms() {
 export async function checkPerms() {
     const hasPerms = await chrome.permissions.contains({
         origins: [
-            '*://aviation-safety.net/*',
+            '*://*.aviation-safety.net/*',
             '*://registry.faa.gov/AircraftInquiry/Search/*',
         ],
     })

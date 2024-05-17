@@ -319,7 +319,7 @@ async function registerDarkMode() {
     const asnDark = {
         id: 'asn-dark',
         css: ['css/dark.css'],
-        matches: ['*://aviation-safety.net/*'],
+        matches: ['*://*.aviation-safety.net/*'],
         runAt: 'document_start',
     }
     console.log('registerDarkMode', asnDark)
