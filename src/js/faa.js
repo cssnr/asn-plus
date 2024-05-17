@@ -5,6 +5,7 @@ console.info('LOADED: faa.js')
 const searchParams = new URLSearchParams(window.location.search)
 console.debug('searchParams:', searchParams)
 const tab = searchParams.get('tab')
+
 if (tab) {
     getData()
 }

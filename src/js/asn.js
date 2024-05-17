@@ -225,6 +225,8 @@ function addEntryLink(reg, cell) {
             continue
         }
         const link = document.createElement('a')
+        link.target = '_blank'
+        link.rel = 'noopener'
         link.href = value
         link.textContent = key
         cell.appendChild(document.createTextNode(' | '))
