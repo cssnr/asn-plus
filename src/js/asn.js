@@ -101,6 +101,27 @@ function hideHeaderImage() {
     }
 }
 
+function increaseMaxWidth() {
+    increaseMaxWidth = function () {}
+    console.debug('increaseMaxWidth')
+
+    const wrap = document.getElementById('page-wrap')
+    if (!wrap) {
+        return console.debug('page-wrap not found')
+    }
+    wrap.style.maxWidth = '100%'
+    // wrap.style.margin = '5px'
+    const footer = wrap.children[wrap.children.length - 1]
+    if (!footer) {
+        return
+    }
+    // console.debug('footer:', footer)
+    if (footer.style.height === '175px') {
+        console.debug('set footer height to 190px')
+        footer.style.height = '190px'
+    }
+}
+
 function highlightTableRows() {
     highlightTableRows = function () {}
     console.debug('highlightTableRows')

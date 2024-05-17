@@ -50,6 +50,7 @@ async function onInstalled(details) {
             updateNavigation: true,
             hideHeaderImage: true,
             enableKeyboard: true,
+            increaseMaxWidth: false,
             countryDisplay: 'USA',
             countryCode: 'N',
             searchType: 'registration',
