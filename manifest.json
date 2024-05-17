@@ -34,6 +34,10 @@
         "js/audio.js",
         "js/content-script.js"
       ]
+    },
+    {
+      "matches": ["*://registry.faa.gov/AircraftInquiry/Search/*"],
+      "js": ["js/faa.js"]
     }
   ],
   "web_accessible_resources": [

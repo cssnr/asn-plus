@@ -254,7 +254,9 @@ function hideEntryWarning() {
     hideEntryWarning = function () {}
     console.debug('hideEntryWarning')
     const div = document.querySelector('div.alertbox')
-    div.style.display = 'none'
+    if (div) {
+        div.style.display = 'none'
+    }
 }
 
 function updateLastUpdated() {
@@ -351,4 +353,112 @@ async function keyboardEvent(e) {
         console.debug(`keyLocation: ${e.code}`, keyLocations[e.code])
         window.location = keyLocations[e.code]
     }
+}
+
+function enableAUtoFill() {
+    enableAUtoFill = function () {}
+    console.debug('enableAUtoFill')
+
+    // const innertube = document.querySelector('.innertube')
+    const contentwrapper = document.getElementById('contentwrapper')
+
+    const input = document.createElement('input')
+    input.id = 'registration-autofill'
+    input.type = 'text'
+    input.placeholder = 'Registration: N-Number'
+    input.style.marginLeft = '40px'
+
+    const button = document.createElement('button')
+    button.id = 'button-autofill'
+    button.textContent = 'Auto Fill'
+    button.style.marginLeft = '10px'
+    button.addEventListener('click', doAutoFill)
+
+    contentwrapper.insertBefore(button, contentwrapper.children[0])
+    contentwrapper.insertBefore(input, contentwrapper.children[0])
+
+    if (!chrome.runtime.onMessage.hasListener(onMessage)) {
+        console.debug('chrome.runtime.onMessage.addListener')
+        chrome.runtime.onMessage.addListener(onMessage)
+    }
+}
+
+function onMessage(request, sender) {
+    console.log('onMessage', request, sender)
+    if (request.error) {
+        console.warn('ERROR:', request.error)
+        return
+    }
+    processResponse(request)
+}
+
+function processResponse(request) {
+    if (request.registration) {
+        document.querySelector('[name="Registration"]').value =
+            request.registration
+    }
+    if (request.serial) {
+        document.querySelector('[name="Cn"]').value = request.serial
+    }
+    if (request.manufacturer || request.model) {
+        document.querySelector('[name="AcType"]').value =
+            `${request.manufacturer} ${request.model}`
+    }
+    if (request.name) {
+        document.querySelector('[name="Operator"]').value = request.name
+    }
+
+    const date = new Date()
+    document.querySelector('[name="Day"]').value = date.getDay()
+    document.querySelector('[name="Month"]').value = (
+        '0' + date.getMonth()
+    ).slice(-2)
+    document.querySelector('[name="Year"]').value = date.getFullYear()
+
+    if (request.registration) {
+        const source = document.getElementById('source')
+        const text =
+            `${source.value}\n` +
+            `https://registry.faa.gov/AircraftInquiry/Search/NNumberResult?nNumberTxt=${request.registration}\n`
+        // `https://globe.adsbexchange.com/?icao=${request.hex.toLowerCase()}\n`
+        source.value = text.trim()
+    }
+}
+
+async function doAutoFill(event) {
+    console.log('doAutoFill', event)
+    const input = document.getElementById('registration-autofill')
+    const button = document.getElementById('button-autofill')
+
+    if (!input.value) {
+        return console.debug('empty input')
+    }
+    button.disabled = true
+    const value = input.value.trim()
+    console.log('value', value)
+    const url = `https://registry.faa.gov/AircraftInquiry/Search/NNumberResult?nNumberTxt=${value}`
+    console.log('url', url)
+    chrome.runtime.sendMessage({ faa: url })
+
+    // const response = await fetch(url)
+    // console.log('response:', response)
+    // const text = await response.text()
+    // // console.log('text:', text)
+    // const parser = new DOMParser()
+    // const htmlDocument = parser.parseFromString(text, 'text/html')
+    // console.log('htmlDocument:', htmlDocument)
+    //
+    // const serial = htmlDocument.querySelector(
+    //     '[data-label="Serial Number"]'
+    // )?.textContent
+    // const manufacturer = htmlDocument.querySelector(
+    //     '[data-label="Manufacturer Name"]'
+    // )?.textContent
+    // const model = htmlDocument.querySelector(
+    //     '[data-label="Model"]'
+    // )?.textContent
+    //
+    // console.log('serial:', serial)
+    // console.log('manufacturer:', manufacturer)
+    // console.log('model:', model)
 }

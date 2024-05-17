@@ -120,6 +120,16 @@ function onMessage(message, sender, sendResponse) {
             }
         }
         sendResponse('Success')
+    } else if (message.faa) {
+        console.debug('faa:', message.faa)
+        const url = new URL(message.faa)
+        url.searchParams.append('tab', sender.tab.id.toString())
+        chrome.tabs.create({ active: false, url: url.href })
+    } else if (message.autofill) {
+        console.debug('autofill:', message.autofill)
+        const tabID = parseInt(message.autofill.tab)
+        console.debug('tabID:', tabID)
+        chrome.tabs.sendMessage(tabID, message.autofill)
     } else {
         console.warn('Unmatched Message:', message)
         sendResponse('NOT Handled')
