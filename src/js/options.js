@@ -10,6 +10,7 @@ import {
 
 chrome.storage.onChanged.addListener(onChanged)
 chrome.permissions.onAdded.addListener(onAdded)
+chrome.permissions.onRemoved.addListener(onRemoved)
 
 document.addEventListener('DOMContentLoaded', initOptions)
 document.getElementById('grant-perms').addEventListener('click', grantPerms)
@@ -66,18 +67,13 @@ async function initOptions() {
 }
 
 function addSpeechVoices(options, voices) {
-    console.debug('addSpeechVoices:', options)
-    const names = []
+    console.debug('addSpeechVoices:', options, voices)
+    voices.sort((a, b) => a.lang.localeCompare(b.lang))
     voices.forEach((voice) => {
         // console.debug('voice:', voice)
-        names.push(voice.name)
-    })
-    names.sort()
-    names.forEach((voice) => {
         const option = document.createElement('option')
-        // option.textContent = `${voice.name} ${voice.lang}`
-        option.textContent = voice
-        option.value = voice
+        option.textContent = `${voice.name} (${voice.lang})`
+        option.value = voice.name
         voiceSelect.appendChild(option)
     })
     if (options.speechVoice) {
@@ -205,5 +201,14 @@ async function setShortcuts(mapping) {
  */
 async function onAdded(permissions) {
     console.debug('onAdded', permissions)
+    await checkPerms()
+}
+
+/**
+ * Permissions On Removed Callback
+ * @param permissions
+ */
+async function onRemoved(permissions) {
+    console.debug('onRemoved', permissions)
     await checkPerms()
 }

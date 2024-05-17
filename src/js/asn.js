@@ -225,6 +225,8 @@ function addEntryLink(reg, cell) {
             continue
         }
         const link = document.createElement('a')
+        link.target = '_blank'
+        link.rel = 'noopener'
         link.href = value
         link.textContent = key
         cell.appendChild(document.createTextNode(' | '))
@@ -254,7 +256,9 @@ function hideEntryWarning() {
     hideEntryWarning = function () {}
     console.debug('hideEntryWarning')
     const div = document.querySelector('div.alertbox')
-    div.style.display = 'none'
+    if (div) {
+        div.style.display = 'none'
+    }
 }
 
 function updateLastUpdated() {
@@ -351,4 +355,132 @@ async function keyboardEvent(e) {
         console.debug(`keyLocation: ${e.code}`, keyLocations[e.code])
         window.location = keyLocations[e.code]
     }
+}
+
+function enableAUtoFill(options) {
+    enableAUtoFill = function () {}
+    console.debug('enableAUtoFill:', options)
+
+    document.querySelector('[name="Username"]').value = options.asnUsername
+    document.querySelector('[name="Email"]').value = options.asnEmail
+
+    const date = new Date()
+    document.querySelector('[name="Day"]').value = date.getDay()
+    document.querySelector('[name="Month"]').value = (
+        '0' + date.getMonth()
+    ).slice(-2)
+    document.querySelector('[name="Year"]').value = date.getFullYear()
+
+    const operator = document.querySelector('[name="Operator"]')
+    const clone = operator.cloneNode(true)
+    clone.size = '40'
+    const td = operator.parentElement
+    td.textContent = ''
+    td.appendChild(clone)
+    const privateBtn = document.createElement('button')
+    privateBtn.id = 'operator-private'
+    privateBtn.textContent = 'Set Private'
+    privateBtn.style.marginLeft = '10px'
+    privateBtn.addEventListener('click', (e) => {
+        e.preventDefault()
+        clone.value = 'Private'
+    })
+    td.appendChild(privateBtn)
+
+    // const innertube = document.querySelector('.innertube')
+    const contentwrapper = document.getElementById('contentwrapper')
+
+    const input = document.createElement('input')
+    input.id = 'registration-autofill'
+    input.type = 'text'
+    input.placeholder = 'Registration: N-Number'
+    input.style.marginLeft = '40px'
+
+    const button = document.createElement('button')
+    button.id = 'button-autofill'
+    button.textContent = 'Auto Fill'
+    button.style.marginLeft = '10px'
+    button.addEventListener('click', doAutoFill)
+
+    const span = document.createElement('span')
+    span.textContent = '(Only Works for FAA N-Numbers)'
+    span.style.color = '#cc0000'
+    span.style.marginLeft = '10px'
+    contentwrapper.insertBefore(span, contentwrapper.children[0])
+    contentwrapper.insertBefore(button, contentwrapper.children[0])
+    contentwrapper.insertBefore(input, contentwrapper.children[0])
+
+    if (!chrome.runtime.onMessage.hasListener(onMessage)) {
+        console.debug('chrome.runtime.onMessage.addListener')
+        chrome.runtime.onMessage.addListener(onMessage)
+    }
+}
+
+function onMessage(message, sender) {
+    console.log('onMessage', message, sender)
+    if (message.error) {
+        console.warn('ERROR:', message.error)
+        return
+    }
+    processResponse(message)
+}
+
+function processResponse(message) {
+    if (message.registration) {
+        document.querySelector('[name="Registration"]').value =
+            message.registration
+    }
+    if (message.serial) {
+        document.querySelector('[name="Cn"]').value = message.serial
+    }
+    if (message.manufacturer || message.model) {
+        document.querySelector('[name="AcType"]').value =
+            `${message.manufacturer} ${message.model}`.trim()
+    }
+    if (message.name) {
+        document.querySelector('[name="Operator"]').value = message.name
+    }
+    if (message.type === 'Fixed Wing Single-Engine') {
+        document.querySelector('[name="Plane_cat"]').value = 'A'
+    }
+    if (message.registration) {
+        const source = document.getElementById('source')
+        const text =
+            `${source.value}\n` +
+            `https://registry.faa.gov/AircraftInquiry/Search/NNumberResult?nNumberTxt=${message.registration}\n`
+        // `https://globe.adsbexchange.com/?icao=${message.hex.toLowerCase()}\n`
+        source.value = text.trim()
+    }
+    document.querySelector('[name="Comments"]').value =
+        'Added New Incident. Auto Filled w/ ASN Plus.'
+}
+
+async function doAutoFill(event) {
+    console.log('doAutoFill', event)
+    event.preventDefault()
+
+    // TODO: Add separate permissions requests for asn and faa
+    // const hasPerms = await chrome.runtime.sendMessage({
+    //     permissions: ['*://registry.faa.gov/AircraftInquiry/Search/*'],
+    // })
+    // console.log('hasPerms', hasPerms)
+    // if (!hasPerms) {
+    //     // TODO: Open Permissions Request Page because it can't be done here
+    //     console.warn('MISSING HOST PERMISSIONS')
+    //     return
+    // }
+
+    const input = document.getElementById('registration-autofill')
+    const value = input.value.trim()
+    console.log('value', value)
+    if (!value) {
+        return console.debug('empty input')
+    }
+
+    const button = document.getElementById('button-autofill')
+    button.disabled = true
+
+    const url = `https://registry.faa.gov/AircraftInquiry/Search/NNumberResult?nNumberTxt=${value}`
+    console.log('url', url)
+    chrome.runtime.sendMessage({ faa: url })
 }

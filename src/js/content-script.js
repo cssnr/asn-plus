@@ -78,4 +78,9 @@ function processOptions(options) {
             expandImages()
         }
     }
+    if (window.location.pathname === '/wikibase/web_db_input.php') {
+        if (options.autoFill) {
+            enableAUtoFill(options)
+        }
+    }
 }

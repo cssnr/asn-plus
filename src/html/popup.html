@@ -16,15 +16,15 @@
 <div class="container-fluid p-2">
     <div class="d-grid g-2 gap-2">
         <div class="d-none grant-perms">
-            <a id="grant-perms" class="btn btn-lg btn-success w-100 mb-1" role="button">
+            <a id="grant-perms" class="btn btn-success w-100 mb-1" role="button">
                 <i class="fa-solid fa-check-double me-1"></i> Grant Host Permissions</a>
-            <p class="text-center mb-1"><a role="button" href="../html/permissions.html" class="">More Information on Permissions</a></p>
+            <p class="text-center mb-1"><a role="button" href="../html/permissions.html" class="small">More Information on Permissions</a></p>
             <hr class="my-2">
         </div>
     </div>
 
     <div class="d-grid g-2 gap-2 mb-2">
-    <div class="btn-group btn-group" role="group" aria-label="Basic example">
+    <div class="btn-group btn-group btn-group-sm" role="group" aria-label="ASN Links">
         <a type="button" class="btn btn-outline-primary" href="https://aviation-safety.net/">
             ASN</a>
         <a type="button" class="btn btn-outline-primary" href="https://aviation-safety.net/asndb/country/N" id="country-url">
@@ -143,28 +143,37 @@
                 </span>
             </label>
         </div>
-        <hr class="my-2">
         <div class="form-check form-switch">
-            <input class="form-check-input" id="contextMenu" type="checkbox" role="switch">
-            <label class="form-check-label" for="contextMenu" aria-describedby="contextMenuHelp">
-                Enable Right Click Menu
-                <span data-bs-toggle="tooltip" data-bs-title="Show Context Menu on Right Click.">
+            <input class="form-check-input" id="autoFill" type="checkbox" role="switch" data-related="autoFillOptions">
+            <label class="form-check-label" for="autoFill" aria-describedby="autoFillHelp">
+                Enable New Incident Auto Fill
+                <span data-bs-toggle="tooltip" data-bs-title="Enable New Incident Auto Fill.">
                     <i class="fa-solid fa-circle-info ms-1"></i>
                 </span>
             </label>
         </div>
-        <div class="form-check form-switch">
-            <input class="form-check-input" id="showUpdate" type="checkbox" role="switch">
-            <label class="form-check-label" for="showUpdate" aria-describedby="showUpdateHelp">
-                Show Release Notes on Update
-                <span data-bs-toggle="tooltip" data-bs-title="Show Release Notes on Version Update.">
-                    <i class="fa-solid fa-circle-info ms-1"></i>
-                </span>
-            </label>
-        </div>
+<!--        <hr class="my-2">-->
+<!--        <div class="form-check form-switch">-->
+<!--            <input class="form-check-input" id="contextMenu" type="checkbox" role="switch">-->
+<!--            <label class="form-check-label" for="contextMenu" aria-describedby="contextMenuHelp">-->
+<!--                Enable Right Click Menu-->
+<!--                <span data-bs-toggle="tooltip" data-bs-title="Show Context Menu on Right Click.">-->
+<!--                    <i class="fa-solid fa-circle-info ms-1"></i>-->
+<!--                </span>-->
+<!--            </label>-->
+<!--        </div>-->
+<!--        <div class="form-check form-switch">-->
+<!--            <input class="form-check-input" id="showUpdate" type="checkbox" role="switch">-->
+<!--            <label class="form-check-label" for="showUpdate" aria-describedby="showUpdateHelp">-->
+<!--                Show Release Notes on Update-->
+<!--                <span data-bs-toggle="tooltip" data-bs-title="Show Release Notes on Version Update.">-->
+<!--                    <i class="fa-solid fa-circle-info ms-1"></i>-->
+<!--                </span>-->
+<!--            </label>-->
+<!--        </div>-->
     </form>
 
-    <a class="btn btn-outline-primary w-100" role="button" href="../html/options.html">
+    <a class="btn btn-sm btn-outline-primary w-100" role="button" href="../html/options.html">
         <i class="fa-solid fa-sliders me-1"></i> Open Options</a>
     <hr class="my-2">
 

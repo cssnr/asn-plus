@@ -56,6 +56,9 @@ async function onInstalled(details) {
             searchType: 'registration',
             speechVoice: '',
             speechRate: '1.1',
+            autoFill: true,
+            asnUsername: '',
+            asnEmail: '',
             contextMenu: true,
             showUpdate: false,
         })
@@ -98,7 +101,16 @@ async function onInstalled(details) {
  */
 function onMessage(message, sender, sendResponse) {
     console.debug('onMessage: message, sender:', message, sender, sendResponse)
-    if (message.dark) {
+    if (message.permissions) {
+        chrome.permissions
+            .contains({
+                origins: message.permissions,
+            })
+            .then((perms) => {
+                console.log('perms', perms)
+                sendResponse(perms)
+            })
+    } else if (message.dark) {
         const darkCss = {
             files: ['css/dark.css'],
             target: {
@@ -120,6 +132,16 @@ function onMessage(message, sender, sendResponse) {
             }
         }
         sendResponse('Success')
+    } else if (message.faa) {
+        console.debug('faa:', message.faa)
+        const url = new URL(message.faa)
+        url.searchParams.append('tab', sender.tab.id.toString())
+        chrome.tabs.create({ active: false, url: url.href })
+    } else if (message.autofill) {
+        console.debug('autofill:', message.autofill)
+        const tabID = parseInt(message.autofill.tab)
+        console.debug('tabID:', tabID)
+        chrome.tabs.sendMessage(tabID, message.autofill)
     } else {
         console.warn('Unmatched Message:', message)
         sendResponse('NOT Handled')
@@ -297,7 +319,7 @@ async function registerDarkMode() {
     const asnDark = {
         id: 'asn-dark',
         css: ['css/dark.css'],
-        matches: ['*://aviation-safety.net/*'],
+        matches: ['*://*.aviation-safety.net/*'],
         runAt: 'document_start',
     }
     console.log('registerDarkMode', asnDark)
