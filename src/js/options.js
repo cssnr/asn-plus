@@ -67,18 +67,13 @@ async function initOptions() {
 }
 
 function addSpeechVoices(options, voices) {
-    console.debug('addSpeechVoices:', options)
-    const names = []
+    console.debug('addSpeechVoices:', options, voices)
+    voices.sort((a, b) => a.lang.localeCompare(b.lang))
     voices.forEach((voice) => {
         // console.debug('voice:', voice)
-        names.push(voice.name)
-    })
-    names.sort()
-    names.forEach((voice) => {
         const option = document.createElement('option')
-        // option.textContent = `${voice.name} ${voice.lang}`
-        option.textContent = voice
-        option.value = voice
+        option.textContent = `${voice.name} (${voice.lang})`
+        option.value = voice.name
         voiceSelect.appendChild(option)
     })
     if (options.speechVoice) {
