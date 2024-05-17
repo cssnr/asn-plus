@@ -355,9 +355,19 @@ async function keyboardEvent(e) {
     }
 }
 
-function enableAUtoFill() {
+function enableAUtoFill(options) {
     enableAUtoFill = function () {}
-    console.debug('enableAUtoFill')
+    console.debug('enableAUtoFill:', options)
+
+    document.querySelector('[name="Username"]').value = options.asnUsername
+    document.querySelector('[name="Email"]').value = options.asnEmail
+
+    const date = new Date()
+    document.querySelector('[name="Day"]').value = date.getDay()
+    document.querySelector('[name="Month"]').value = (
+        '0' + date.getMonth()
+    ).slice(-2)
+    document.querySelector('[name="Year"]').value = date.getFullYear()
 
     // const innertube = document.querySelector('.innertube')
     const contentwrapper = document.getElementById('contentwrapper')
@@ -374,6 +384,11 @@ function enableAUtoFill() {
     button.style.marginLeft = '10px'
     button.addEventListener('click', doAutoFill)
 
+    const span = document.createElement('span')
+    span.textContent = '(Only Works for FAA N-Numbers)'
+    span.style.color = '#cc0000'
+    span.style.marginLeft = '10px'
+    contentwrapper.insertBefore(span, contentwrapper.children[0])
     contentwrapper.insertBefore(button, contentwrapper.children[0])
     contentwrapper.insertBefore(input, contentwrapper.children[0])
 
@@ -383,82 +398,69 @@ function enableAUtoFill() {
     }
 }
 
-function onMessage(request, sender) {
-    console.log('onMessage', request, sender)
-    if (request.error) {
-        console.warn('ERROR:', request.error)
+function onMessage(message, sender) {
+    console.log('onMessage', message, sender)
+    if (message.error) {
+        console.warn('ERROR:', message.error)
         return
     }
-    processResponse(request)
+    processResponse(message)
 }
 
-function processResponse(request) {
-    if (request.registration) {
+function processResponse(message) {
+    if (message.registration) {
         document.querySelector('[name="Registration"]').value =
-            request.registration
+            message.registration
     }
-    if (request.serial) {
-        document.querySelector('[name="Cn"]').value = request.serial
+    if (message.serial) {
+        document.querySelector('[name="Cn"]').value = message.serial
     }
-    if (request.manufacturer || request.model) {
+    if (message.manufacturer || message.model) {
         document.querySelector('[name="AcType"]').value =
-            `${request.manufacturer} ${request.model}`
+            `${message.manufacturer} ${message.model}`
     }
-    if (request.name) {
-        document.querySelector('[name="Operator"]').value = request.name
+    if (message.name) {
+        document.querySelector('[name="Operator"]').value = message.name
+    }
+    if (message.type === 'Fixed Wing Single-Engine') {
+        document.querySelector('[name="Plane_cat"]').value = 'A'
     }
 
-    const date = new Date()
-    document.querySelector('[name="Day"]').value = date.getDay()
-    document.querySelector('[name="Month"]').value = (
-        '0' + date.getMonth()
-    ).slice(-2)
-    document.querySelector('[name="Year"]').value = date.getFullYear()
-
-    if (request.registration) {
+    if (message.registration) {
         const source = document.getElementById('source')
         const text =
             `${source.value}\n` +
-            `https://registry.faa.gov/AircraftInquiry/Search/NNumberResult?nNumberTxt=${request.registration}\n`
-        // `https://globe.adsbexchange.com/?icao=${request.hex.toLowerCase()}\n`
+            `https://registry.faa.gov/AircraftInquiry/Search/NNumberResult?nNumberTxt=${message.registration}\n`
+        // `https://globe.adsbexchange.com/?icao=${message.hex.toLowerCase()}\n`
         source.value = text.trim()
     }
 }
 
 async function doAutoFill(event) {
     console.log('doAutoFill', event)
-    const input = document.getElementById('registration-autofill')
-    const button = document.getElementById('button-autofill')
 
-    if (!input.value) {
-        return console.debug('empty input')
-    }
-    button.disabled = true
+    // TODO: Add separate permissions requests for asn and faa
+    // const hasPerms = await chrome.runtime.sendMessage({
+    //     permissions: ['*://registry.faa.gov/AircraftInquiry/Search/*'],
+    // })
+    // console.log('hasPerms', hasPerms)
+    // if (!hasPerms) {
+    //     // TODO: Open Permissions Request Page because it can't be done here
+    //     console.warn('MISSING HOST PERMISSIONS')
+    //     return
+    // }
+
+    const input = document.getElementById('registration-autofill')
     const value = input.value.trim()
     console.log('value', value)
+    if (!value) {
+        return console.debug('empty input')
+    }
+
+    const button = document.getElementById('button-autofill')
+    button.disabled = true
+
     const url = `https://registry.faa.gov/AircraftInquiry/Search/NNumberResult?nNumberTxt=${value}`
     console.log('url', url)
     chrome.runtime.sendMessage({ faa: url })
-
-    // const response = await fetch(url)
-    // console.log('response:', response)
-    // const text = await response.text()
-    // // console.log('text:', text)
-    // const parser = new DOMParser()
-    // const htmlDocument = parser.parseFromString(text, 'text/html')
-    // console.log('htmlDocument:', htmlDocument)
-    //
-    // const serial = htmlDocument.querySelector(
-    //     '[data-label="Serial Number"]'
-    // )?.textContent
-    // const manufacturer = htmlDocument.querySelector(
-    //     '[data-label="Manufacturer Name"]'
-    // )?.textContent
-    // const model = htmlDocument.querySelector(
-    //     '[data-label="Model"]'
-    // )?.textContent
-    //
-    // console.log('serial:', serial)
-    // console.log('manufacturer:', manufacturer)
-    // console.log('model:', model)
 }

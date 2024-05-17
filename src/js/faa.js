@@ -32,6 +32,9 @@ function getData() {
     const name = document
         .querySelector('[data-label="Name"]')
         ?.textContent.trim()
+    const type = document
+        .querySelector('[data-label="Aircraft Type"]')
+        ?.textContent.trim()
     const hex = document
         .querySelector('[data-label="Mode S Code (Base 16 / Hex)"]')
         ?.textContent.trim()
@@ -43,6 +46,7 @@ function getData() {
         model: model,
         hex: hex,
         name: name,
+        type: type,
         tab: tab,
     }
     console.log('data:', data)

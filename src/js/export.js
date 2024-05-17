@@ -26,7 +26,10 @@ export function getSearchURL(type, value) {
  */
 export async function requestPerms() {
     return await chrome.permissions.request({
-        origins: ['*://aviation-safety.net/*'],
+        origins: [
+            '*://aviation-safety.net/*',
+            '*://registry.faa.gov/AircraftInquiry/Search/*',
+        ],
     })
 }
 
@@ -37,7 +40,10 @@ export async function requestPerms() {
  */
 export async function checkPerms() {
     const hasPerms = await chrome.permissions.contains({
-        origins: ['*://aviation-safety.net/*'],
+        origins: [
+            '*://aviation-safety.net/*',
+            '*://registry.faa.gov/AircraftInquiry/Search/*',
+        ],
     })
     console.debug('checkPerms:', hasPerms)
     // Firefox still uses DOM Based Background Scripts
@@ -147,6 +153,7 @@ export function updateOptions(options) {
 }
 
 function hideShowElement(selector, show, speed = 'fast') {
+    console.debug('hideShowElement:', selector)
     const element = $(`${selector}`)
     // console.debug('hideShowElement:', show, element)
     if (show) {

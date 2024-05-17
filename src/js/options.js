@@ -10,6 +10,7 @@ import {
 
 chrome.storage.onChanged.addListener(onChanged)
 chrome.permissions.onAdded.addListener(onAdded)
+chrome.permissions.onRemoved.addListener(onRemoved)
 
 document.addEventListener('DOMContentLoaded', initOptions)
 document.getElementById('grant-perms').addEventListener('click', grantPerms)
@@ -205,5 +206,14 @@ async function setShortcuts(mapping) {
  */
 async function onAdded(permissions) {
     console.debug('onAdded', permissions)
+    await checkPerms()
+}
+
+/**
+ * Permissions On Removed Callback
+ * @param permissions
+ */
+async function onRemoved(permissions) {
+    console.debug('onRemoved', permissions)
     await checkPerms()
 }

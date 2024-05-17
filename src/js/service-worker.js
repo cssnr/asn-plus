@@ -56,6 +56,9 @@ async function onInstalled(details) {
             searchType: 'registration',
             speechVoice: '',
             speechRate: '1.1',
+            autoFill: true,
+            asnUsername: '',
+            asnEmail: '',
             contextMenu: true,
             showUpdate: false,
         })
@@ -98,7 +101,16 @@ async function onInstalled(details) {
  */
 function onMessage(message, sender, sendResponse) {
     console.debug('onMessage: message, sender:', message, sender, sendResponse)
-    if (message.dark) {
+    if (message.permissions) {
+        chrome.permissions
+            .contains({
+                origins: message.permissions,
+            })
+            .then((perms) => {
+                console.log('perms', perms)
+                sendResponse(perms)
+            })
+    } else if (message.dark) {
         const darkCss = {
             files: ['css/dark.css'],
             target: {

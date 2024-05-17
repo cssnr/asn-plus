@@ -15,7 +15,7 @@
 
 <div class="container-fluid p-3 h-100">
 <div class="d-flex align-items-center h-100">
-<div class="col-xxl-6 col-md-8 col-12 m-auto">
+<div class="col-xxl-6 col-lg-8 col-md-10 col-12 m-auto">
 <div class="card mb-3">
 <div class="card-body">
     <div class="d-flex justify-content-center align-items-center">
@@ -140,6 +140,40 @@
                 <span class="d-inline-block me-2"><kbd>P</kbd> Play</span>
             </p>
         </div>
+
+        <div class="form-check form-switch">
+            <input class="form-check-input" id="autoFill" type="checkbox" role="switch" data-related="autoFillOptions">
+            <label class="form-check-label" for="autoFill" aria-describedby="autoFillHelp">
+                Enable New Incident Auto Fill
+                <span data-bs-toggle="tooltip" data-bs-title="Enable New Incident Auto Fill.">
+                    <i class="fa-solid fa-circle-info ms-1"></i>
+                </span>
+            </label>
+        </div>
+
+        <div class="row mt-2" id="autoFillOptions" style="display: none;">
+            <div class="col-sm-6 col-lg-4 col-12 mb-2">
+                <label for="asnUsername" class="form-label">
+                    <i class="fa-solid fa-signature me-1"></i> ASN Username
+                </label>
+                <input id="asnUsername" aria-describedby="asnUsernameHelp" type="text" class="form-control" autocomplete="off">
+                <div class="form-text" id="asnUsernameHelp">
+                    Username Used for Auto Fill.
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-8 col-12 mb-2">
+                <label for="asnEmail" class="form-label">
+                    <i class="fa-solid fa-at me-1"></i> ASN E-Mail
+                </label>
+                <input id="asnEmail" aria-describedby="asnEmailHelp" type="email" class="form-control" autocomplete="off">
+                <div class="form-text" id="asnEmailHelp">
+                    E-Mail Used for Auto Fill.
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
         <div class="row mt-2">
             <div class="col-sm-6 col-12 mb-2">
                 <label for="countryDisplay" class="form-label">
@@ -177,11 +211,11 @@
 <!--                        <i class="fa-solid fa-circle-info ms-1"></i>-->
 <!--                    </span>-->
                 </label>
-                <select id="speechVoice" class="form-select" aria-label="Default select example">
+                <select id="speechVoice" class="form-select" aria-label="Speech Voice">
                     <option value="">Browser Default</option>
                 </select>
                 <div class="form-text" id="speechVoiceHelp">
-                    Voice for Speech Playback, <a id="test-voice" class="align-bottom" role="button">Test</a>.
+                    Voice for Speech Playback. <a id="test-voice" class="align-bottom" role="button">Test</a>.
                 </div>
             </div>
             <div class="col-sm-4 col-12 mb-2">
@@ -198,6 +232,7 @@
                 </div>
             </div>
         </div>
+
         <hr class="my-2">
         <div class="form-check form-switch">
             <input class="form-check-input" id="contextMenu" type="checkbox" role="switch">
