@@ -393,7 +393,7 @@ function enableAUtoFill(options) {
     const input = document.createElement('input')
     input.id = 'registration-autofill'
     input.type = 'text'
-    input.placeholder = 'Registration: N-Number'
+    input.placeholder = 'Reg: N-Number, C-Number'
     input.style.marginLeft = '40px'
 
     const button = document.createElement('button')
@@ -403,7 +403,7 @@ function enableAUtoFill(options) {
     button.addEventListener('click', doAutoFill)
 
     const span = document.createElement('span')
-    span.textContent = '(Only Works for FAA N-Numbers)'
+    span.textContent = '(Only Works for USA/Canada N or C Numbers)'
     span.style.color = '#cc0000'
     span.style.marginLeft = '10px'
     contentwrapper.insertBefore(span, contentwrapper.children[0])
@@ -440,15 +440,17 @@ function processResponse(message) {
     if (message.name) {
         document.querySelector('[name="Operator"]').value = message.name
     }
-    if (message.type.toLowerCase().includes('fixed wing')) {
-        document.querySelector('[name="Plane_cat"]').value = 'A'
+    if (message.type) {
+        const value = message.type.toLowerCase()
+        if (value.includes('fixed wing') || value.includes('aeroplane')) {
+            document.querySelector('[name="Plane_cat"]').value = 'A'
+        } else if (value.includes('helicopter')) {
+            document.querySelector('[name="Plane_cat"]').value = 'H'
+        }
     }
-    if (message.registration) {
+    if (message.url) {
         const source = document.getElementById('source')
-        const text =
-            `${source.value}\n` +
-            `https://registry.faa.gov/AircraftInquiry/Search/NNumberResult?nNumberTxt=${message.registration}\n`
-        // `https://globe.adsbexchange.com/?icao=${message.hex.toLowerCase()}\n`
+        const text = `${source.value}\n${message.url}\n`
         source.value = text.trim()
     }
     document.querySelector('[name="Comments"]').value =
@@ -480,7 +482,5 @@ async function doAutoFill(event) {
     const button = document.getElementById('button-autofill')
     button.disabled = true
 
-    const url = `https://registry.faa.gov/AircraftInquiry/Search/NNumberResult?nNumberTxt=${value}`
-    console.log('url', url)
-    chrome.runtime.sendMessage({ faa: url })
+    chrome.runtime.sendMessage({ registration: value })
 }

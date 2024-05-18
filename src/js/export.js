@@ -41,10 +41,13 @@ export async function checkPerms() {
         origins: ['*://*.aviation-safety.net/*'],
     })
     updatePermsEl(reqPerms, '.has-perms', '.grant-perms')
-    const faaPerms = await chrome.permissions.contains({
-        origins: ['*://registry.faa.gov/AircraftInquiry/Search/*'],
+    const extraPerms = await chrome.permissions.contains({
+        origins: [
+            '*://registry.faa.gov/AircraftInquiry/Search/*',
+            '*://wwwapps.tc.gc.ca/saf-sec-sur/2/ccarcs-riacc/*',
+        ],
     })
-    updatePermsEl(faaPerms, '.faa-perms', '.faa-grant')
+    updatePermsEl(extraPerms, '.extra-perms', '.extra-grant')
     return reqPerms
 }
 

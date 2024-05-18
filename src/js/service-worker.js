@@ -70,13 +70,13 @@ async function onInstalled(details) {
     if (options.darkMode) {
         await registerDarkMode()
     }
-    await registerFAA()
+    await registerContentScripts()
     // if (options.autoFill) {
     //     const hasPerms = await checkPerms([
     //         '*://registry.faa.gov/AircraftInquiry/Search/*',
     //     ])
     //     if (hasPerms) {
-    //         await registerFAA()
+    //         await registerContentScripts()
     //     }
     // }
     if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
@@ -141,11 +141,9 @@ function onMessage(message, sender, sendResponse) {
             }
         }
         sendResponse('Success')
-    } else if (message.faa) {
-        console.debug('faa:', message.faa)
-        const url = new URL(message.faa)
-        url.searchParams.append('tab', sender.tab.id.toString())
-        chrome.tabs.create({ active: false, url: url.href })
+    } else if (message.registration) {
+        console.debug('message.registration:', message.registration)
+        processRegistration(message.registration, sender)
     } else if (message.autofill) {
         console.debug('autofill:', message.autofill)
         const tabID = parseInt(message.autofill.tab)
@@ -155,6 +153,31 @@ function onMessage(message, sender, sendResponse) {
         console.warn('Unmatched Message:', message)
         sendResponse('NOT Handled')
     }
+}
+
+function processRegistration(registration, sender) {
+    console.log('processRegistration', registration, sender)
+    const value = registration.toLowerCase()
+    console.log('value', value)
+    let url
+    if (value.startsWith('n')) {
+        url = new URL(
+            'https://registry.faa.gov/AircraftInquiry/Search/NNumberResult'
+        )
+        url.searchParams.append('nNumberTxt', value)
+        // console.log('url', url)
+    } else if (value.startsWith('c')) {
+        url = new URL(
+            'https://wwwapps.tc.gc.ca/saf-sec-sur/2/ccarcs-riacc/RchSimp.aspx'
+        )
+        url.searchParams.append('registration', value)
+        // console.log('url', url)
+    } else {
+        console.warn('UNKNOWN REGISTRATION - Handle Error!')
+    }
+    url.searchParams.append('tab', sender.tab.id.toString())
+    console.log('url', url)
+    chrome.tabs.create({ active: false, url: url.href })
 }
 
 /**
@@ -349,15 +372,22 @@ async function registerDarkMode() {
  * Extra content-scripts have to be registered post-install in order to be an optional permission
  * @function registerDarkMode
  */
-async function registerFAA() {
+async function registerContentScripts() {
     const faa = {
         id: 'faa',
         js: ['js/faa.js'],
         matches: ['*://registry.faa.gov/AircraftInquiry/Search/*'],
+        // https://registry.faa.gov/AircraftInquiry/Search/NNumberResult?nNumberTxt=N1701Q
     }
-    console.log('registerFAA', faa)
+    const cca = {
+        id: 'cca',
+        js: ['js/cca.js'],
+        matches: ['*://wwwapps.tc.gc.ca/saf-sec-sur/2/ccarcs-riacc/*'],
+        // https://wwwapps.tc.gc.ca/saf-sec-sur/2/ccarcs-riacc/RchSimp.aspx?registration=c-gfxp&tab=36
+    }
+    console.log('Register Content Scripts', faa, cca)
     try {
-        await chrome.scripting.registerContentScripts([faa])
+        await chrome.scripting.registerContentScripts([faa, cca])
     } catch (e) {
         console.log('Error scripting.registerContentScripts', e)
     }
