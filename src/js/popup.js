@@ -124,9 +124,9 @@ async function popupLinks(event) {
 async function grantPerms(event) {
     console.debug('grantPerms:', event)
     const button = event.target.closest('button')
-    const origins = button.dataset.origins.split(' ')
-    console.debug('origins:', origins)
-    requestPerms(origins)
+    const extra = !!button.dataset.extra
+    console.debug('extra:', extra)
+    requestPerms(extra)
     window.close()
 }
 

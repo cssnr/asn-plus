@@ -147,9 +147,9 @@ function getUtterance(text, options) {
 async function grantPerms(event) {
     console.debug('grantPerms:', event)
     const button = event.target.closest('button')
-    const origins = button.dataset.origins.split(' ')
-    console.debug('origins:', origins)
-    await requestPerms(origins)
+    const extra = !!button.dataset.extra
+    console.debug('extra:', extra)
+    requestPerms(extra)
 }
 
 /**
@@ -159,9 +159,11 @@ async function grantPerms(event) {
  */
 export async function revokePerms(event) {
     console.debug('revokePerms:', event)
-    const button = event.target.closest('button')
-    const origins = button.dataset.origins.split(' ')
-    console.debug('origins:', origins)
+    // const button = event.target.closest('button')
+    const origins = [
+        '*://registry.faa.gov/AircraftInquiry/Search/*',
+        '*://wwwapps.tc.gc.ca/saf-sec-sur/2/ccarcs-riacc/*',
+    ]
     try {
         await chrome.permissions.remove({
             origins: origins,

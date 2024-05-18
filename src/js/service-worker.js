@@ -375,17 +375,15 @@ async function registerDarkMode() {
 async function registerContentScripts() {
     const faa = {
         id: 'faa',
-        js: ['js/faa.js'],
+        js: ['js/extra/faa.js'],
         matches: ['*://registry.faa.gov/AircraftInquiry/Search/*'],
-        // https://registry.faa.gov/AircraftInquiry/Search/NNumberResult?nNumberTxt=N1701Q
     }
     const cca = {
         id: 'cca',
-        js: ['js/cca.js'],
+        js: ['js/extra/cca.js'],
         matches: ['*://wwwapps.tc.gc.ca/saf-sec-sur/2/ccarcs-riacc/*'],
-        // https://wwwapps.tc.gc.ca/saf-sec-sur/2/ccarcs-riacc/RchSimp.aspx?registration=c-gfxp&tab=36
     }
-    console.log('Register Content Scripts', faa, cca)
+    console.log('Register Extra Content Scripts:', faa, cca)
     try {
         await chrome.scripting.registerContentScripts([faa, cca])
     } catch (e) {

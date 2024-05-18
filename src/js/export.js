@@ -22,10 +22,17 @@ export function getSearchURL(type, value) {
 /**
  * Request Host Permissions
  * @function requestPerms
+ * @param {Boolean} extra
  * @return {chrome.permissions.request}
- * @return {Array} origins
  */
-export async function requestPerms(origins) {
+export async function requestPerms(extra = false) {
+    let origins = ['*://*.aviation-safety.net/*']
+    if (extra) {
+        origins = [
+            '*://registry.faa.gov/AircraftInquiry/Search/*',
+            '*://wwwapps.tc.gc.ca/saf-sec-sur/2/ccarcs-riacc/*',
+        ]
+    }
     return await chrome.permissions.request({
         origins: origins,
     })
