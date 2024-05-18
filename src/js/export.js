@@ -23,13 +23,11 @@ export function getSearchURL(type, value) {
  * Request Host Permissions
  * @function requestPerms
  * @return {chrome.permissions.request}
+ * @return {Array} origins
  */
-export async function requestPerms() {
+export async function requestPerms(origins) {
     return await chrome.permissions.request({
-        origins: [
-            '*://*.aviation-safety.net/*',
-            '*://registry.faa.gov/AircraftInquiry/Search/*',
-        ],
+        origins: origins,
     })
 }
 
@@ -39,27 +37,28 @@ export async function requestPerms() {
  * @return {Boolean}
  */
 export async function checkPerms() {
-    const hasPerms = await chrome.permissions.contains({
-        origins: [
-            '*://*.aviation-safety.net/*',
-            '*://registry.faa.gov/AircraftInquiry/Search/*',
-        ],
+    const reqPerms = await chrome.permissions.contains({
+        origins: ['*://*.aviation-safety.net/*'],
     })
-    console.debug('checkPerms:', hasPerms)
-    // Firefox still uses DOM Based Background Scripts
-    if (typeof document === 'undefined') {
-        return hasPerms
-    }
-    const hasPermsEl = document.querySelectorAll('.has-perms')
-    const grantPermsEl = document.querySelectorAll('.grant-perms')
+    updatePermsEl(reqPerms, '.has-perms', '.grant-perms')
+    const faaPerms = await chrome.permissions.contains({
+        origins: ['*://registry.faa.gov/AircraftInquiry/Search/*'],
+    })
+    updatePermsEl(faaPerms, '.faa-perms', '.faa-grant')
+    return reqPerms
+}
+
+function updatePermsEl(hasPerms, has, grant) {
+    console.debug('updatePermsEl:', hasPerms, has, grant)
+    const hasEl = document.querySelectorAll(has)
+    const grantEl = document.querySelectorAll(grant)
     if (hasPerms) {
-        hasPermsEl.forEach((el) => el.classList.remove('d-none'))
-        grantPermsEl.forEach((el) => el.classList.add('d-none'))
+        hasEl.forEach((el) => el.classList.remove('d-none'))
+        grantEl.forEach((el) => el.classList.add('d-none'))
     } else {
-        grantPermsEl.forEach((el) => el.classList.remove('d-none'))
-        hasPermsEl.forEach((el) => el.classList.add('d-none'))
+        grantEl.forEach((el) => el.classList.remove('d-none'))
+        hasEl.forEach((el) => el.classList.add('d-none'))
     }
-    return hasPerms
 }
 
 /**
@@ -161,6 +160,32 @@ function hideShowElement(selector, show, speed = 'fast') {
     } else {
         element.hide(speed)
     }
+}
+
+/**
+ * On Changed Callback
+ * @function onChanged
+ * @param {Object} changes
+ * @param {String} namespace
+ */
+export function onChanged(changes, namespace) {
+    console.debug('onChanged:', changes, namespace)
+    for (const [key, { newValue }] of Object.entries(changes)) {
+        if (namespace === 'sync' && key === 'options') {
+            console.debug('newValue:', newValue)
+            updateOptions(newValue)
+        }
+    }
+}
+
+export function updateManifest() {
+    const manifest = chrome.runtime.getManifest()
+    document
+        .querySelectorAll('.version')
+        .forEach((el) => (el.textContent = manifest.version))
+    document
+        .querySelectorAll('[href="homepage_url"]')
+        .forEach((el) => (el.href = manifest.homepage_url))
 }
 
 /**

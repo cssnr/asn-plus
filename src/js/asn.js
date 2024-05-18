@@ -440,7 +440,7 @@ function processResponse(message) {
     if (message.name) {
         document.querySelector('[name="Operator"]').value = message.name
     }
-    if (message.type === 'Fixed Wing Single-Engine') {
+    if (message.type.toLowerCase().includes('fixed wing')) {
         document.querySelector('[name="Plane_cat"]').value = 'A'
     }
     if (message.registration) {

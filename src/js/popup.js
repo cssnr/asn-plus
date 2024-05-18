@@ -4,17 +4,22 @@ import {
     activateOrOpen,
     checkPerms,
     getSearchURL,
+    onChanged,
     requestPerms,
     saveOptions,
     showToast,
     updateOptions,
 } from './export.js'
 
+chrome.storage.onChanged.addListener(onChanged)
+
 document.addEventListener('DOMContentLoaded', initPopup)
-document.getElementById('grant-perms').addEventListener('click', grantPerms)
 document
     .querySelectorAll('#options-form input')
     .forEach((el) => el.addEventListener('change', saveOptions))
+document
+    .querySelectorAll('.grant-permissions')
+    .forEach((el) => el.addEventListener('click', grantPerms))
 document
     .getElementsByName('searchType')
     .forEach((el) => el.addEventListener('change', updateSearchType))
@@ -55,7 +60,7 @@ async function initPopup() {
         .querySelectorAll('a[href]')
         .forEach((el) => el.addEventListener('click', popupLinks))
 
-    searchForm.elements.searchTerm.focus()
+    searchTerm.focus()
 
     if (chrome.runtime.lastError) {
         showToast(chrome.runtime.lastError.message, 'warning')
@@ -112,13 +117,16 @@ async function popupLinks(event) {
 
 /**
  * Grant Permissions Button Click Callback
- * Firefox requires us to ignore the promise and call window.close()
+ * Move to export and use anonymous function
  * @function grantPerms
- * @param {Event} event
+ * @param {MouseEvent} event
  */
 async function grantPerms(event) {
     console.debug('grantPerms:', event)
-    requestPerms()
+    const button = event.target.closest('button')
+    const origins = button.dataset.origins.split(' ')
+    console.debug('origins:', origins)
+    requestPerms(origins)
     window.close()
 }
 
@@ -147,10 +155,10 @@ async function searchFormSubmit(event) {
     event.preventDefault()
     const searchType = searchForm.elements.searchType.value.toString().trim()
     console.debug(`searchType: ${searchType}`)
-    let value = searchForm.elements.searchTerm.value.toString().trim()
+    let value = searchTerm.value.toString().trim()
     console.debug(`value: ${value}`)
     if (!value) {
-        return searchForm.elements.searchTerm.focus()
+        return searchTerm.focus()
     }
     const url = getSearchURL(searchType, value)
     console.log(`url: ${url}`)

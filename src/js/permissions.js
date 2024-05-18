@@ -1,12 +1,14 @@
 // JS for permissions.html
 
-import { checkPerms, requestPerms } from './export.js'
+import { checkPerms, requestPerms, updateManifest } from './export.js'
 
 chrome.permissions.onAdded.addListener(onAdded)
 
 document.addEventListener('DOMContentLoaded', domContentLoaded)
-document.getElementById('grant-perms').addEventListener('click', grantPerms)
 document.getElementById('open-options').addEventListener('click', openOptions)
+document
+    .querySelectorAll('.grant-permissions')
+    .forEach((el) => el.addEventListener('click', grantPerms))
 
 /**
  * DOMContentLoaded
@@ -14,6 +16,7 @@ document.getElementById('open-options').addEventListener('click', openOptions)
  */
 async function domContentLoaded() {
     console.debug('domContentLoaded')
+    updateManifest()
     await checkPerms()
 }
 
@@ -24,12 +27,10 @@ async function domContentLoaded() {
  */
 async function grantPerms(event) {
     console.debug('grantPerms:', event)
-    await requestPerms()
-    const hasPerms = await checkPerms()
-    if (hasPerms) {
-        chrome.runtime.openOptionsPage()
-        window.close()
-    }
+    console.debug('grantPerms:', event)
+    const origins = event.target.dataset.origins
+    console.debug('origins:', origins)
+    await requestPerms([origins])
 }
 
 /**

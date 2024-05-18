@@ -23,10 +23,8 @@
     "keyword": "asn"
   },
   "permissions": ["contextMenus", "scripting", "storage"],
-  "host_permissions": [
-    "*://*.aviation-safety.net/*",
-    "*://registry.faa.gov/AircraftInquiry/Search/*"
-  ],
+  "host_permissions": ["*://*.aviation-safety.net/*"],
+  "optional_permissions": ["*://registry.faa.gov/AircraftInquiry/Search/*"],
   "content_scripts": [
     {
       "matches": ["*://*.aviation-safety.net/*"],
@@ -37,10 +35,6 @@
         "js/audio.js",
         "js/content-script.js"
       ]
-    },
-    {
-      "matches": ["*://registry.faa.gov/AircraftInquiry/Search/*"],
-      "js": ["js/faa.js"]
     }
   ],
   "web_accessible_resources": [

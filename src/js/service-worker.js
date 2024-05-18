@@ -56,7 +56,7 @@ async function onInstalled(details) {
             searchType: 'registration',
             speechVoice: '',
             speechRate: '1.1',
-            autoFill: true,
+            autoFill: false,
             asnUsername: '',
             asnEmail: '',
             contextMenu: true,
@@ -70,6 +70,15 @@ async function onInstalled(details) {
     if (options.darkMode) {
         await registerDarkMode()
     }
+    await registerFAA()
+    // if (options.autoFill) {
+    //     const hasPerms = await checkPerms([
+    //         '*://registry.faa.gov/AircraftInquiry/Search/*',
+    //     ])
+    //     if (hasPerms) {
+    //         await registerFAA()
+    //     }
+    // }
     if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
         const hasPerms = await checkPerms()
         console.debug('hasPerms:', hasPerms)
@@ -331,6 +340,24 @@ async function registerDarkMode() {
     // }
     try {
         await chrome.scripting.registerContentScripts([asnDark])
+    } catch (e) {
+        console.log('Error scripting.registerContentScripts', e)
+    }
+}
+
+/**
+ * Extra content-scripts have to be registered post-install in order to be an optional permission
+ * @function registerDarkMode
+ */
+async function registerFAA() {
+    const faa = {
+        id: 'faa',
+        js: ['js/faa.js'],
+        matches: ['*://registry.faa.gov/AircraftInquiry/Search/*'],
+    }
+    console.log('registerFAA', faa)
+    try {
+        await chrome.scripting.registerContentScripts([faa])
     } catch (e) {
         console.log('Error scripting.registerContentScripts', e)
     }
