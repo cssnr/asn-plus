@@ -357,7 +357,7 @@ async function keyboardEvent(e) {
     }
 }
 
-function enableAUtoFill(options) {
+async function enableAUtoFill(options) {
     enableAUtoFill = function () {}
     console.debug('enableAUtoFill:', options)
 
@@ -370,6 +370,34 @@ function enableAUtoFill(options) {
         '0' + date.getMonth()
     ).slice(-2)
     document.querySelector('[name="Year"]').value = date.getFullYear()
+
+    const contentwrapper = document.getElementById('contentwrapper')
+
+    const extraPerms = await chrome.runtime.sendMessage('extraPerms')
+    console.log('extraPerms', extraPerms)
+    if (!extraPerms) {
+        console.warn('MISSING EXTRA PERMISSIONS')
+
+        const p = document.createElement('p')
+        p.textContent =
+            'Missing Extra Permissions for Auto Fill. You can grant permissions from the popup or options. After granting, reload this page.'
+        p.style.marginLeft = '40px'
+
+        const link = document.createElement('a')
+        link.addEventListener('click', () => {
+            chrome.runtime.sendMessage('openOptionsPage')
+        })
+        link.textContent = 'Open Options Page.'
+        link.style.marginLeft = '40px'
+
+        contentwrapper.insertBefore(link, contentwrapper.children[0])
+        contentwrapper.insertBefore(
+            document.createElement('br'),
+            contentwrapper.children[0]
+        )
+        contentwrapper.insertBefore(p, contentwrapper.children[0])
+        return
+    }
 
     const operator = document.querySelector('[name="Operator"]')
     const clone = operator.cloneNode(true)
@@ -386,9 +414,6 @@ function enableAUtoFill(options) {
         clone.value = 'Private'
     })
     td.appendChild(privateBtn)
-
-    // const innertube = document.querySelector('.innertube')
-    const contentwrapper = document.getElementById('contentwrapper')
 
     const input = document.createElement('input')
     input.id = 'registration-autofill'

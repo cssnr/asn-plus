@@ -110,15 +110,21 @@ async function onInstalled(details) {
  */
 function onMessage(message, sender, sendResponse) {
     console.debug('onMessage: message, sender:', message, sender, sendResponse)
-    if (message.permissions) {
+    if (message === 'extraPerms') {
         chrome.permissions
             .contains({
-                origins: message.permissions,
+                origins: [
+                    '*://registry.faa.gov/AircraftInquiry/Search/*',
+                    '*://wwwapps.tc.gc.ca/saf-sec-sur/2/ccarcs-riacc/*',
+                ],
             })
             .then((perms) => {
                 console.log('perms', perms)
                 sendResponse(perms)
             })
+        return true
+    } else if (message === 'openOptionsPage') {
+        chrome.runtime.openOptionsPage()
     } else if (message.dark) {
         const darkCss = {
             files: ['css/dark.css'],
