@@ -2,9 +2,11 @@
 
 import {
     checkPerms,
+    onChanged,
     requestPerms,
     saveOptions,
     showToast,
+    updateManifest,
     updateOptions,
 } from './export.js'
 
@@ -13,7 +15,6 @@ chrome.permissions.onAdded.addListener(onAdded)
 chrome.permissions.onRemoved.addListener(onRemoved)
 
 document.addEventListener('DOMContentLoaded', initOptions)
-document.getElementById('grant-perms').addEventListener('click', grantPerms)
 document.getElementById('reset-country').addEventListener('click', resetCountry)
 document.getElementById('test-voice').addEventListener('click', testVoice)
 document
@@ -23,13 +24,17 @@ document
     .getElementById('options-form')
     .addEventListener('submit', (e) => e.preventDefault())
 document
+    .querySelectorAll('.grant-permissions')
+    .forEach((el) => el.addEventListener('click', grantPerms))
+document
+    .querySelectorAll('.revoke-permissions')
+    .forEach((el) => el.addEventListener('click', revokePerms))
+document
     .querySelectorAll('.open-permissions')
     .forEach((el) => el.addEventListener('click', openPermissions))
 document
     .querySelectorAll('[data-bs-toggle="tooltip"]')
     .forEach((el) => new bootstrap.Tooltip(el))
-
-const voiceSelect = document.getElementById('speechVoice')
 
 /**
  * Initialize Options
@@ -37,15 +42,11 @@ const voiceSelect = document.getElementById('speechVoice')
  */
 async function initOptions() {
     console.debug('initOptions')
-    const manifest = chrome.runtime.getManifest()
-    document.querySelector('.version').textContent = manifest.version
-    document.querySelector('[href="homepage_url"]').href = manifest.homepage_url
-
     await setShortcuts({
         mainKey: '_execute_action',
         openHome: 'openHome',
     })
-
+    updateManifest()
     const { options } = await chrome.storage.sync.get(['options'])
     console.debug('options:', options)
     updateOptions(options)
@@ -68,6 +69,7 @@ async function initOptions() {
 
 function addSpeechVoices(options, voices) {
     console.debug('addSpeechVoices:', options, voices)
+    const voiceSelect = document.getElementById('speechVoice')
     voices.sort((a, b) => a.lang.localeCompare(b.lang))
     voices.forEach((voice) => {
         // console.debug('voice:', voice)
@@ -137,30 +139,40 @@ function getUtterance(text, options) {
 }
 
 /**
- * On Changed Callback
- * @function onChanged
- * @param {Object} changes
- * @param {String} namespace
- */
-function onChanged(changes, namespace) {
-    console.debug('onChanged:', changes, namespace)
-    for (const [key, { newValue }] of Object.entries(changes)) {
-        if (namespace === 'sync' && key === 'options') {
-            console.debug('newValue:', newValue)
-            updateOptions(newValue)
-        }
-    }
-}
-
-/**
  * Grant Permissions Click Callback
+ * Move to export and use anonymous function
  * @function grantPerms
  * @param {MouseEvent} event
  */
 async function grantPerms(event) {
-    console.debug('grantPermsBtn:', event)
-    await requestPerms()
-    await checkPerms()
+    console.debug('grantPerms:', event)
+    const button = event.target.closest('button')
+    const extra = !!button.dataset.extra
+    console.debug('extra:', extra)
+    requestPerms(extra)
+}
+
+/**
+ * Revoke Permissions Click Callback
+ * @function revokePerms
+ * @param {MouseEvent} event
+ */
+export async function revokePerms(event) {
+    console.debug('revokePerms:', event)
+    // const button = event.target.closest('button')
+    const origins = [
+        '*://registry.faa.gov/AircraftInquiry/Search/*',
+        '*://wwwapps.tc.gc.ca/saf-sec-sur/2/ccarcs-riacc/*',
+    ]
+    try {
+        await chrome.permissions.remove({
+            origins: origins,
+        })
+        await checkPerms()
+    } catch (e) {
+        console.log(e)
+        showToast(e.toString(), 'danger')
+    }
 }
 
 /**

@@ -19,7 +19,7 @@ function getData() {
         return
     }
 
-    const registration = searchParams.get('nNumberTxt')
+    const registration = searchParams.get('nNumberTxt').toUpperCase()
 
     const serial = document
         .querySelector('[data-label="Serial Number"]')
@@ -40,6 +40,10 @@ function getData() {
         .querySelector('[data-label="Mode S Code (Base 16 / Hex)"]')
         ?.textContent.trim()
 
+    const url = new URL(window.location)
+    url.searchParams.delete('tab')
+    console.log(`url: ${url.href}`, url)
+
     const data = {
         registration: registration,
         serial: serial,
@@ -49,6 +53,7 @@ function getData() {
         name: name,
         type: type,
         tab: tab,
+        url: url.href,
     }
     console.log('data:', data)
     chrome.runtime.sendMessage({ autofill: data })

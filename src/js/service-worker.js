@@ -56,7 +56,7 @@ async function onInstalled(details) {
             searchType: 'registration',
             speechVoice: '',
             speechRate: '1.1',
-            autoFill: true,
+            autoFill: false,
             asnUsername: '',
             asnEmail: '',
             contextMenu: true,
@@ -70,6 +70,15 @@ async function onInstalled(details) {
     if (options.darkMode) {
         await registerDarkMode()
     }
+    await registerContentScripts()
+    // if (options.autoFill) {
+    //     const hasPerms = await checkPerms([
+    //         '*://registry.faa.gov/AircraftInquiry/Search/*',
+    //     ])
+    //     if (hasPerms) {
+    //         await registerContentScripts()
+    //     }
+    // }
     if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
         const hasPerms = await checkPerms()
         console.debug('hasPerms:', hasPerms)
@@ -101,15 +110,21 @@ async function onInstalled(details) {
  */
 function onMessage(message, sender, sendResponse) {
     console.debug('onMessage: message, sender:', message, sender, sendResponse)
-    if (message.permissions) {
+    if (message === 'extraPerms') {
         chrome.permissions
             .contains({
-                origins: message.permissions,
+                origins: [
+                    '*://registry.faa.gov/AircraftInquiry/Search/*',
+                    '*://wwwapps.tc.gc.ca/saf-sec-sur/2/ccarcs-riacc/*',
+                ],
             })
             .then((perms) => {
                 console.log('perms', perms)
                 sendResponse(perms)
             })
+        return true
+    } else if (message === 'openOptionsPage') {
+        chrome.runtime.openOptionsPage()
     } else if (message.dark) {
         const darkCss = {
             files: ['css/dark.css'],
@@ -132,11 +147,9 @@ function onMessage(message, sender, sendResponse) {
             }
         }
         sendResponse('Success')
-    } else if (message.faa) {
-        console.debug('faa:', message.faa)
-        const url = new URL(message.faa)
-        url.searchParams.append('tab', sender.tab.id.toString())
-        chrome.tabs.create({ active: false, url: url.href })
+    } else if (message.registration) {
+        console.debug('message.registration:', message.registration)
+        processRegistration(message.registration, sender)
     } else if (message.autofill) {
         console.debug('autofill:', message.autofill)
         const tabID = parseInt(message.autofill.tab)
@@ -146,6 +159,31 @@ function onMessage(message, sender, sendResponse) {
         console.warn('Unmatched Message:', message)
         sendResponse('NOT Handled')
     }
+}
+
+function processRegistration(registration, sender) {
+    console.log('processRegistration', registration, sender)
+    const value = registration.toLowerCase()
+    console.log('value', value)
+    let url
+    if (value.startsWith('n')) {
+        url = new URL(
+            'https://registry.faa.gov/AircraftInquiry/Search/NNumberResult'
+        )
+        url.searchParams.append('nNumberTxt', value)
+        // console.log('url', url)
+    } else if (value.startsWith('c')) {
+        url = new URL(
+            'https://wwwapps.tc.gc.ca/saf-sec-sur/2/ccarcs-riacc/RchSimp.aspx'
+        )
+        url.searchParams.append('registration', value)
+        // console.log('url', url)
+    } else {
+        console.warn('UNKNOWN REGISTRATION - Handle Error!')
+    }
+    url.searchParams.append('tab', sender.tab.id.toString())
+    console.log('url', url)
+    chrome.tabs.create({ active: false, url: url.href })
 }
 
 /**
@@ -331,6 +369,29 @@ async function registerDarkMode() {
     // }
     try {
         await chrome.scripting.registerContentScripts([asnDark])
+    } catch (e) {
+        console.log('Error scripting.registerContentScripts', e)
+    }
+}
+
+/**
+ * Extra content-scripts have to be registered post-install in order to be an optional permission
+ * @function registerDarkMode
+ */
+async function registerContentScripts() {
+    const faa = {
+        id: 'faa',
+        js: ['js/extra/faa.js'],
+        matches: ['*://registry.faa.gov/AircraftInquiry/Search/*'],
+    }
+    const cca = {
+        id: 'cca',
+        js: ['js/extra/cca.js'],
+        matches: ['*://wwwapps.tc.gc.ca/saf-sec-sur/2/ccarcs-riacc/*'],
+    }
+    console.log('Register Extra Content Scripts:', faa, cca)
+    try {
+        await chrome.scripting.registerContentScripts([faa, cca])
     } catch (e) {
         console.log('Error scripting.registerContentScripts', e)
     }

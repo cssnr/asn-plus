@@ -357,7 +357,7 @@ async function keyboardEvent(e) {
     }
 }
 
-function enableAUtoFill(options) {
+async function enableAUtoFill(options) {
     enableAUtoFill = function () {}
     console.debug('enableAUtoFill:', options)
 
@@ -370,6 +370,34 @@ function enableAUtoFill(options) {
         '0' + date.getMonth()
     ).slice(-2)
     document.querySelector('[name="Year"]').value = date.getFullYear()
+
+    const contentwrapper = document.getElementById('contentwrapper')
+
+    const extraPerms = await chrome.runtime.sendMessage('extraPerms')
+    console.log('extraPerms', extraPerms)
+    if (!extraPerms) {
+        console.warn('MISSING EXTRA PERMISSIONS')
+
+        const p = document.createElement('p')
+        p.textContent =
+            'Missing Extra Permissions for Auto Fill. You can grant permissions from the popup or options. After granting, reload this page.'
+        p.style.marginLeft = '40px'
+
+        const link = document.createElement('a')
+        link.addEventListener('click', () => {
+            chrome.runtime.sendMessage('openOptionsPage')
+        })
+        link.textContent = 'Open Options Page.'
+        link.style.marginLeft = '40px'
+
+        contentwrapper.insertBefore(link, contentwrapper.children[0])
+        contentwrapper.insertBefore(
+            document.createElement('br'),
+            contentwrapper.children[0]
+        )
+        contentwrapper.insertBefore(p, contentwrapper.children[0])
+        return
+    }
 
     const operator = document.querySelector('[name="Operator"]')
     const clone = operator.cloneNode(true)
@@ -387,13 +415,10 @@ function enableAUtoFill(options) {
     })
     td.appendChild(privateBtn)
 
-    // const innertube = document.querySelector('.innertube')
-    const contentwrapper = document.getElementById('contentwrapper')
-
     const input = document.createElement('input')
     input.id = 'registration-autofill'
     input.type = 'text'
-    input.placeholder = 'Registration: N-Number'
+    input.placeholder = 'Reg: N-Number, C-Number'
     input.style.marginLeft = '40px'
 
     const button = document.createElement('button')
@@ -403,7 +428,7 @@ function enableAUtoFill(options) {
     button.addEventListener('click', doAutoFill)
 
     const span = document.createElement('span')
-    span.textContent = '(Only Works for FAA N-Numbers)'
+    span.textContent = '(Only Works for USA/Canada N or C Numbers)'
     span.style.color = '#cc0000'
     span.style.marginLeft = '10px'
     contentwrapper.insertBefore(span, contentwrapper.children[0])
@@ -440,15 +465,17 @@ function processResponse(message) {
     if (message.name) {
         document.querySelector('[name="Operator"]').value = message.name
     }
-    if (message.type === 'Fixed Wing Single-Engine') {
-        document.querySelector('[name="Plane_cat"]').value = 'A'
+    if (message.type) {
+        const value = message.type.toLowerCase()
+        if (value.includes('fixed wing') || value.includes('aeroplane')) {
+            document.querySelector('[name="Plane_cat"]').value = 'A'
+        } else if (value.includes('helicopter')) {
+            document.querySelector('[name="Plane_cat"]').value = 'H'
+        }
     }
-    if (message.registration) {
+    if (message.url) {
         const source = document.getElementById('source')
-        const text =
-            `${source.value}\n` +
-            `https://registry.faa.gov/AircraftInquiry/Search/NNumberResult?nNumberTxt=${message.registration}\n`
-        // `https://globe.adsbexchange.com/?icao=${message.hex.toLowerCase()}\n`
+        const text = `${source.value}\n${message.url}\n`
         source.value = text.trim()
     }
     document.querySelector('[name="Comments"]').value =
@@ -480,7 +507,5 @@ async function doAutoFill(event) {
     const button = document.getElementById('button-autofill')
     button.disabled = true
 
-    const url = `https://registry.faa.gov/AircraftInquiry/Search/NNumberResult?nNumberTxt=${value}`
-    console.log('url', url)
-    chrome.runtime.sendMessage({ faa: url })
+    chrome.runtime.sendMessage({ registration: value })
 }

@@ -3,7 +3,7 @@
   "description": "Aviation Safety Network Plus - Additional Features, Display and Search Options.",
   "homepage_url": "https://asn-plus.cssnr.com/",
   "author": "Shane",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "manifest_version": 3,
   "commands": {
     "_execute_action": {
@@ -23,9 +23,10 @@
     "keyword": "asn"
   },
   "permissions": ["contextMenus", "scripting", "storage"],
-  "host_permissions": [
-    "*://*.aviation-safety.net/*",
-    "*://registry.faa.gov/AircraftInquiry/Search/*"
+  "host_permissions": ["*://*.aviation-safety.net/*"],
+  "optional_permissions": [
+    "*://registry.faa.gov/AircraftInquiry/Search/*",
+    "*://wwwapps.tc.gc.ca/saf-sec-sur/2/ccarcs-riacc/*"
   ],
   "content_scripts": [
     {
@@ -37,10 +38,6 @@
         "js/audio.js",
         "js/content-script.js"
       ]
-    },
-    {
-      "matches": ["*://registry.faa.gov/AircraftInquiry/Search/*"],
-      "js": ["js/faa.js"]
     }
   ],
   "web_accessible_resources": [
