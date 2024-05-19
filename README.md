@@ -51,10 +51,11 @@ All **Chromium** Based Browsers can install the extension from the
 *   Easily Play Narrative as Text to Speech
 *   Search Registration/Operator from Selection Text
 *   Search Registration/Operator from Popup Action
+*   Auto Fill New Incidents for US and Canada Registration
 
 ### Upcoming Features and Ideas
 
-*   Auto Fill for New Event Submissions
+*   Infinite Scroll when Browsing Incidents
 
 > [!TIP]
 > **Don't see your feature here?**
