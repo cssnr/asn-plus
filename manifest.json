@@ -24,10 +24,6 @@
   },
   "permissions": ["contextMenus", "scripting", "storage"],
   "host_permissions": ["*://*.aviation-safety.net/*"],
-  "optional_permissions": [
-    "*://registry.faa.gov/AircraftInquiry/Search/*",
-    "*://wwwapps.tc.gc.ca/saf-sec-sur/2/ccarcs-riacc/*"
-  ],
   "content_scripts": [
     {
       "matches": ["*://*.aviation-safety.net/*"],

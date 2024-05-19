@@ -376,7 +376,7 @@ async function enableAUtoFill(options) {
     const extraPerms = await chrome.runtime.sendMessage('extraPerms')
     console.log('extraPerms', extraPerms)
     if (!extraPerms) {
-        console.warn('MISSING EXTRA PERMISSIONS')
+        console.debug('Missing Extra Permissions')
 
         const p = document.createElement('p')
         p.textContent =
