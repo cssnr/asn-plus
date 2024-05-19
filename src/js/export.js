@@ -60,6 +60,9 @@ export async function checkPerms() {
 
 function updatePermsEl(hasPerms, has, grant) {
     console.debug('updatePermsEl:', hasPerms, has, grant)
+    if (typeof document === 'undefined') {
+        return console.debug('document undefined')
+    }
     const hasEl = document.querySelectorAll(has)
     const grantEl = document.querySelectorAll(grant)
     if (hasPerms) {

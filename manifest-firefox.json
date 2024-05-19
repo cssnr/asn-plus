@@ -1,4 +1,8 @@
 {
+  "optional_permissions": [
+    "*://registry.faa.gov/AircraftInquiry/Search/*",
+    "*://wwwapps.tc.gc.ca/saf-sec-sur/2/ccarcs-riacc/*"
+  ],
   "background": {
     "scripts": ["js/service-worker.js"]
   },
