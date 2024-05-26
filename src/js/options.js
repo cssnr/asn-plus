@@ -186,7 +186,6 @@ async function openPermissions(event) {
     event.preventDefault()
     const url = chrome.runtime.getURL('/html/permissions.html')
     activateOrOpen(url)
-    console.log(0)
 }
 
 /**
