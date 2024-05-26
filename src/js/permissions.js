@@ -27,10 +27,10 @@ async function domContentLoaded() {
  */
 async function grantPerms(event) {
     console.debug('grantPerms:', event)
-    console.debug('grantPerms:', event)
-    const origins = event.target.dataset.origins
-    console.debug('origins:', origins)
-    await requestPerms([origins])
+    const button = event.target.closest('button')
+    const extra = !!button.dataset.extra
+    console.debug('extra:', extra)
+    requestPerms(extra)
 }
 
 /**
@@ -51,9 +51,5 @@ function openOptions(event) {
  */
 async function onAdded(permissions) {
     console.info('onAdded', permissions)
-    const hasPerms = await checkPerms()
-    if (hasPerms) {
-        chrome.runtime.openOptionsPage()
-        window.close()
-    }
+    await checkPerms()
 }
