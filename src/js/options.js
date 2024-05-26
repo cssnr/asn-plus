@@ -1,6 +1,7 @@
 // JS for options.html
 
 import {
+    activateOrOpen,
     checkPerms,
     onChanged,
     requestPerms,
@@ -182,9 +183,10 @@ export async function revokePerms(event) {
  */
 async function openPermissions(event) {
     console.debug('openPermissions:', event)
+    event.preventDefault()
     const url = chrome.runtime.getURL('/html/permissions.html')
-    await chrome.tabs.create({ active: true, url })
-    window.close()
+    activateOrOpen(url)
+    console.log(0)
 }
 
 /**
