@@ -357,9 +357,21 @@ async function keyboardEvent(e) {
     }
 }
 
-async function enableAUtoFill(options) {
-    enableAUtoFill = function () {}
-    console.debug('enableAUtoFill:', options)
+async function enableAutoFill(options) {
+    enableAutoFill = function () {}
+    console.debug('enableAutoFill:', options)
+
+    const contentwrapper = document.getElementById('contentwrapper')
+
+    if (!options.autoFill) {
+        const p = document.createElement('p')
+        p.textContent = 'Tip: AutoFill can be enabled on the '
+        p.style.marginLeft = '40px'
+        const link = getOptionsLink()
+        p.appendChild(link)
+        contentwrapper.insertBefore(p, contentwrapper.children[0])
+        return console.debug('AutoFill Disabled')
+    }
 
     document.querySelector('[name="Username"]').value = options.asnUsername
     document.querySelector('[name="Email"]').value = options.asnEmail
@@ -371,8 +383,6 @@ async function enableAUtoFill(options) {
     ).slice(-2)
     document.querySelector('[name="Year"]').value = date.getFullYear()
 
-    const contentwrapper = document.getElementById('contentwrapper')
-
     const extraPerms = await chrome.runtime.sendMessage('extraPerms')
     console.log('extraPerms', extraPerms)
     if (!extraPerms) {
@@ -380,21 +390,12 @@ async function enableAUtoFill(options) {
 
         const p = document.createElement('p')
         p.textContent =
-            'Missing Extra Permissions for Auto Fill. You can grant permissions from the popup or options. After granting, reload this page.'
+            'Auto Fill requires additional permissions. You may grant these from the Popup or '
         p.style.marginLeft = '40px'
 
-        const link = document.createElement('a')
-        link.addEventListener('click', () => {
-            chrome.runtime.sendMessage('openOptionsPage')
-        })
-        link.textContent = 'Open Options Page.'
-        link.style.marginLeft = '40px'
+        const link = getOptionsLink()
+        p.appendChild(link)
 
-        contentwrapper.insertBefore(link, contentwrapper.children[0])
-        contentwrapper.insertBefore(
-            document.createElement('br'),
-            contentwrapper.children[0]
-        )
         contentwrapper.insertBefore(p, contentwrapper.children[0])
         return
     }
@@ -486,17 +487,6 @@ async function doAutoFill(event) {
     console.log('doAutoFill', event)
     event.preventDefault()
 
-    // TODO: Add separate permissions requests for asn and faa
-    // const hasPerms = await chrome.runtime.sendMessage({
-    //     permissions: ['*://registry.faa.gov/AircraftInquiry/Search/*'],
-    // })
-    // console.log('hasPerms', hasPerms)
-    // if (!hasPerms) {
-    //     // TODO: Open Permissions Request Page because it can't be done here
-    //     console.warn('MISSING HOST PERMISSIONS')
-    //     return
-    // }
-
     const input = document.getElementById('registration-autofill')
     const value = input.value.trim()
     console.log('value', value)
@@ -508,4 +498,18 @@ async function doAutoFill(event) {
     button.disabled = true
 
     chrome.runtime.sendMessage({ registration: value })
+}
+
+/**
+ * getOptionsLink
+ * @param {String} text
+ * @return {HTMLAnchorElement}
+ */
+function getOptionsLink(text = 'Options Page.') {
+    const link = document.createElement('a')
+    link.addEventListener('click', () => {
+        chrome.runtime.sendMessage('openOptionsPage')
+    })
+    link.textContent = text
+    return link
 }
