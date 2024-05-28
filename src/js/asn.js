@@ -369,6 +369,7 @@ async function enableAutoFill(options) {
         p.style.marginLeft = '40px'
         const link = getOptionsLink()
         p.appendChild(link)
+        p.appendChild(document.createTextNode(' (refresh after enabling).'))
         contentwrapper.insertBefore(p, contentwrapper.children[0])
         return console.debug('AutoFill Disabled')
     }
@@ -390,11 +391,12 @@ async function enableAutoFill(options) {
 
         const p = document.createElement('p')
         p.textContent =
-            'Auto Fill requires additional permissions. You may grant these from the Popup or '
+            'Auto Fill requires additional permissions. See the Popup or '
         p.style.marginLeft = '40px'
 
         const link = getOptionsLink()
         p.appendChild(link)
+        p.appendChild(document.createTextNode(' (refresh after enabling).'))
 
         contentwrapper.insertBefore(p, contentwrapper.children[0])
         return
