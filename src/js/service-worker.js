@@ -149,7 +149,7 @@ function onMessage(message, sender, sendResponse) {
         sendResponse('Success')
     } else if (message.registration) {
         console.debug('message.registration:', message.registration)
-        processRegistration(message.registration, sender)
+        processRegistration(message.registration, sender, sendResponse)
     } else if (message.autofill) {
         console.debug('autofill:', message.autofill)
         const tabID = parseInt(message.autofill.tab)
@@ -161,10 +161,10 @@ function onMessage(message, sender, sendResponse) {
     }
 }
 
-function processRegistration(registration, sender) {
-    console.log('processRegistration', registration, sender)
+function processRegistration(registration, sender, sendResponse) {
+    console.debug('processRegistration', registration, sender, sendResponse)
     const value = registration.toLowerCase()
-    console.log('value', value)
+    console.debug('value', value)
     let url
     if (value.startsWith('n')) {
         url = new URL(
@@ -180,9 +180,11 @@ function processRegistration(registration, sender) {
         // console.log('url', url)
     } else {
         console.warn('UNKNOWN REGISTRATION - Handle Error!')
+        sendResponse('Unsupported Registration.')
+        return
     }
     url.searchParams.append('tab', sender.tab.id.toString())
-    console.log('url', url)
+    console.debug('url', url)
     chrome.tabs.create({ active: false, url: url.href })
 }
 
@@ -370,7 +372,7 @@ async function registerDarkMode() {
     try {
         await chrome.scripting.registerContentScripts([asnDark])
     } catch (e) {
-        console.log('Error scripting.registerContentScripts', e)
+        console.warn('Error scripting.registerContentScripts', e)
     }
 }
 
@@ -393,7 +395,7 @@ async function registerContentScripts() {
     try {
         await chrome.scripting.registerContentScripts([faa, cca])
     } catch (e) {
-        console.log('Error scripting.registerContentScripts', e)
+        console.warn('Error scripting.registerContentScripts', e)
     }
 }
 

@@ -236,7 +236,7 @@ function addEntryLink(reg, cell) {
 
 function expandImages() {
     expandImages = function () {}
-    console.log('expandImages')
+    console.debug('expandImages')
     const inner = document.querySelector('.innertube')
     const links = inner.querySelectorAll('a')
     const div = document.querySelectorAll('div.captionhr')[1]
@@ -385,7 +385,7 @@ async function enableAutoFill(options) {
     document.querySelector('[name="Year"]').value = date.getFullYear()
 
     const extraPerms = await chrome.runtime.sendMessage('extraPerms')
-    console.log('extraPerms', extraPerms)
+    console.debug('extraPerms', extraPerms)
     if (!extraPerms) {
         console.debug('Missing Extra Permissions')
 
@@ -432,8 +432,16 @@ async function enableAutoFill(options) {
 
     const span = document.createElement('span')
     span.textContent = '(Only Works for USA/Canada N or C Numbers)'
-    span.style.color = '#cc0000'
+    span.style.color = '#ffa500'
     span.style.marginLeft = '10px'
+
+    const error = document.createElement('div')
+    error.id = 'autofill-error'
+    // error.textContent = 'This is a test error.'
+    error.style.marginLeft = '40px'
+    error.style.color = '#cc0000'
+
+    contentwrapper.insertBefore(error, contentwrapper.children[0])
     contentwrapper.insertBefore(span, contentwrapper.children[0])
     contentwrapper.insertBefore(button, contentwrapper.children[0])
     contentwrapper.insertBefore(input, contentwrapper.children[0])
@@ -486,8 +494,11 @@ function processResponse(message) {
 }
 
 async function doAutoFill(event) {
-    console.log('doAutoFill', event)
+    console.debug('doAutoFill', event)
     event.preventDefault()
+
+    const error = document.getElementById('autofill-error')
+    error.textContent = ''
 
     const input = document.getElementById('registration-autofill')
     const value = input.value.trim()
@@ -499,7 +510,12 @@ async function doAutoFill(event) {
     const button = document.getElementById('button-autofill')
     button.disabled = true
 
-    chrome.runtime.sendMessage({ registration: value })
+    const response = await chrome.runtime.sendMessage({ registration: value })
+    console.debug('response', response)
+    if (response) {
+        button.disabled = false
+        error.textContent = response
+    }
 }
 
 /**
