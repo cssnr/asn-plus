@@ -179,7 +179,7 @@ function processRegistration(registration, sender, sendResponse) {
         url.searchParams.append('registration', value)
         // console.log('url', url)
     } else {
-        console.warn('UNKNOWN REGISTRATION - Handle Error!')
+        console.debug('Unsupported Registration.')
         sendResponse('Unsupported Registration.')
         return
     }
