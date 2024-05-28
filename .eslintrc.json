@@ -11,7 +11,6 @@
     "sourceType": "module"
   },
   "rules": {
-    "no-empty": "off",
     "no-extra-semi": "off",
     "no-func-assign": "off",
     "no-undef": "off",
