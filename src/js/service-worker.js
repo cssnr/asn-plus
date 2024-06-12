@@ -13,7 +13,7 @@ chrome.omnibox.onInputCancelled.addListener(onInputCancelled)
 chrome.omnibox.onInputEntered.addListener(onInputEntered)
 
 const omniboxDefault = 'ASN - registration OR operator Search'
-const asnHomePageURL = 'https://aviation-safety.net/'
+const asnHomePageURL = 'https://asn.flightsafety.org/'
 const uninstallURL = 'https://asn-plus.cssnr.com/uninstall/'
 
 /**
@@ -343,7 +343,7 @@ async function onInputEntered(text) {
     console.debug('search:', search)
     let url
     if (!search) {
-        url = 'https://aviation-safety.net/wikibase/wikisearch.php'
+        url = 'https://asn.flightsafety.org/wikibase/wikisearch.php'
     } else {
         url = getSearchURL(type, search)
     }
@@ -359,7 +359,7 @@ async function registerDarkMode() {
     const asnDark = {
         id: 'asn-dark',
         css: ['css/dark.css'],
-        matches: ['*://*.aviation-safety.net/*'],
+        matches: ['*://asn.flightsafety.org/*'],
         runAt: 'document_start',
     }
     console.log('registerDarkMode', asnDark)
