@@ -23,10 +23,10 @@
     "keyword": "asn"
   },
   "permissions": ["contextMenus", "scripting", "storage"],
-  "host_permissions": ["*://*.aviation-safety.net/*"],
+  "host_permissions": ["*://asn.flightsafety.org/*"],
   "content_scripts": [
     {
-      "matches": ["*://*.aviation-safety.net/*"],
+      "matches": ["*://asn.flightsafety.org/*"],
       "run_at": "document_start",
       "js": [
         "dist/jquery/jquery.min.js",
@@ -39,7 +39,7 @@
   "web_accessible_resources": [
     {
       "resources": ["css/dark.css"],
-      "matches": ["*://*.aviation-safety.net/*"]
+      "matches": ["*://asn.flightsafety.org/*"]
     }
   ],
   "background": { "type": "module" },

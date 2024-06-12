@@ -12,7 +12,6 @@ import {
 } from './export.js'
 
 chrome.storage.onChanged.addListener(onChanged)
-
 document.addEventListener('DOMContentLoaded', initPopup)
 document
     .querySelectorAll('#options-form input')
@@ -24,12 +23,13 @@ document
     .getElementsByName('searchType')
     .forEach((el) => el.addEventListener('change', updateSearchType))
 document
+    .getElementById('search-form')
+    .addEventListener('submit', searchFormSubmit)
+document
     .querySelectorAll('[data-bs-toggle="tooltip"]')
     .forEach((el) => new bootstrap.Tooltip(el))
 
 const searchTerm = document.getElementById('searchTerm')
-const searchForm = document.getElementById('search-form')
-searchForm.addEventListener('submit', searchFormSubmit)
 
 /**
  * Initialize Popup
@@ -48,7 +48,7 @@ async function initPopup() {
     updateOptions(options)
 
     document.getElementById('country-url').href =
-        `https://aviation-safety.net/asndb/country/${options.countryCode}`
+        `https://asn.flightsafety.org/asndb/country/${options.countryCode}`
     searchTerm.placeholder = options.searchType
     document.querySelector(
         `input[name="searchType"][value="${options.searchType}"]`
@@ -69,7 +69,7 @@ async function initPopup() {
 
 function populateYearLinks() {
     console.debug('populateYearLinks')
-    const url = 'https://aviation-safety.net/asndb/year'
+    const url = 'https://asn.flightsafety.org/asndb/year'
     const yearView = document.getElementById('year-view')
     const yearList = document.getElementById('year-list')
     const date = new Date()
@@ -153,7 +153,7 @@ async function updateSearchType(event) {
 async function searchFormSubmit(event) {
     console.debug('searchFormSubmit:', event)
     event.preventDefault()
-    const searchType = searchForm.elements.searchType.value.toString().trim()
+    const searchType = event.target.elements.searchType.value.toString().trim()
     console.debug(`searchType: ${searchType}`)
     let value = searchTerm.value.toString().trim()
     console.debug(`value: ${value}`)

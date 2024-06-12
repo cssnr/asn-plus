@@ -12,10 +12,10 @@ import { countryList } from './vars.js'
 export function getSearchURL(type, value) {
     value = value.trim()
     if (type === 'registration') {
-        return `https://aviation-safety.net/wikibase/dblist2.php?yr=&at=&re=${value}&pc=&op=&lo=&co=&ph=&na=&submit=Submit`
+        return `https://asn.flightsafety.org/wikibase/dblist2.php?yr=&at=&re=${value}&pc=&op=&lo=&co=&ph=&na=&submit=Submit`
     } else if (type === 'operator') {
         value = value.replaceAll(' ', '+')
-        return `https://aviation-safety.net/wikibase/dblist2.php?yr=&at=&re=&pc=&op=${value}&lo=&co=&ph=&na=&submit=Submit`
+        return `https://asn.flightsafety.org/wikibase/dblist2.php?yr=&at=&re=&pc=&op=${value}&lo=&co=&ph=&na=&submit=Submit`
     }
 }
 
@@ -26,7 +26,7 @@ export function getSearchURL(type, value) {
  * @return {chrome.permissions.request}
  */
 export async function requestPerms(extra = false) {
-    let origins = ['*://*.aviation-safety.net/*']
+    let origins = ['*://asn.flightsafety.org/*']
     if (extra) {
         origins = [
             '*://registry.faa.gov/AircraftInquiry/Search/*',
@@ -45,7 +45,7 @@ export async function requestPerms(extra = false) {
  */
 export async function checkPerms() {
     const reqPerms = await chrome.permissions.contains({
-        origins: ['*://*.aviation-safety.net/*'],
+        origins: ['*://asn.flightsafety.org/*'],
     })
     updatePermsEl(reqPerms, '.has-perms', '.grant-perms')
     const extraPerms = await chrome.permissions.contains({

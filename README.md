@@ -10,7 +10,7 @@
 
 Modern [Chrome](https://chromewebstore.google.com/detail/asn-plus/phcbcnpmcbkcnijkpfohkdmcofcofibh)
 Web Extension and [Firefox](https://addons.mozilla.org/addon/asn-plus)
-Browser Addon for [The Aviation Safety Network](https://aviation-safety.net/)
+Browser Addon for [The Aviation Safety Network](https://asn.flightsafety.org/)
 to enable dark mode plus add additional features.
 
 *   [Install](#install)
@@ -93,15 +93,11 @@ You may also access the Options and Home page from a Right Click if Enabled in O
 
 **Quick Start**
 
-First, clone (or download) this repository and change into the directory:
-```shell
-git clone https://github.com/cssnr/asn-plus.git
-cd simple-extension
-```
+First, clone (or download) this repository and change into the directory.
 
 Second, install the dependencies:
 ```shell
-npm isntall
+npm install
 ```
 
 Finally, to run Chrome or Firefox with web-ext, run one of the following:
