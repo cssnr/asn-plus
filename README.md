@@ -3,7 +3,6 @@
 [![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/phcbcnpmcbkcnijkpfohkdmcofcofibh?label=chrome&logo=googlechrome)](https://chromewebstore.google.com/detail/asn-plus/phcbcnpmcbkcnijkpfohkdmcofcofibh)
 [![Mozilla Add-on Version](https://img.shields.io/amo/v/asn-plus?label=firefox&logo=firefox)](https://addons.mozilla.org/addon/asn-plus)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/asn-plus?logo=github)](https://github.com/cssnr/asn-plus/releases/latest)
-[![Manifest Version](https://img.shields.io/github/manifest-json/v/cssnr/asn-plus?filename=manifest.json&logo=json&label=manifest)](https://github.com/cssnr/asn-plus/blob/master/manifest.json)
 [![Build](https://github.com/cssnr/asn-plus/actions/workflows/build.yaml/badge.svg)](https://github.com/cssnr/asn-plus/actions/workflows/build.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_asn-plus&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_asn-plus)
 # ASN Plus
