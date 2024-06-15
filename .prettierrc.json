@@ -5,7 +5,7 @@
   "singleQuote": true,
   "overrides": [
     {
-      "files": ["**/*.html", "**/*.yaml"],
+      "files": ["**/*.html"],
       "options": {
         "singleQuote": false
       }

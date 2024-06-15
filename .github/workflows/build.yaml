@@ -1,4 +1,4 @@
-name: "Build"
+name: 'Build'
 
 on:
   workflow_dispatch:
@@ -7,35 +7,35 @@ on:
 
 jobs:
   build:
-    name: "Build"
+    name: 'Build'
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v4
 
-      - name: "Setup Node"
+      - name: 'Setup Node'
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: "Update Manifest Version"
+      - name: 'Update Manifest Version'
         uses: cssnr/update-json-value-action@master
         if: ${{ github.event_name == 'release' }}
 
-      - name: "Build All"
+      - name: 'Build All'
         run: |
           npm install
           npm run build
 
-      - name: "Upload to Actions"
+      - name: 'Upload to Actions'
         uses: actions/upload-artifact@v4
         with:
           name: artifacts
           path: web-ext-artifacts/
 
-      - name: "Upload to Release"
+      - name: 'Upload to Release'
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
