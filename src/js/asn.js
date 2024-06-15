@@ -165,11 +165,10 @@ function updateEntryTable() {
     let operator
     for (const tr of table.rows) {
         if (tr.textContent.startsWith('Registration:')) {
-            registration = tr.cells[1].textContent.trim()
-            console.debug('reg:', registration)
+            registration = tr.cells[1].textContent.replace(/[^a-zA-Z0-9-]/g, '')
+            console.debug('registration:', registration)
             if (registration) {
-                const cell = tr.cells[1]
-                addEntryLink(registration, cell)
+                addEntryLink(registration, tr.cells[1])
             }
         }
         if (tr.textContent.startsWith('Owner/operator:')) {
