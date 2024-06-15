@@ -215,7 +215,7 @@ function addEntryLink(reg, cell) {
     console.debug(`addEntryLink: ${reg}`, cell)
     const links = {
         FAA: `https://registry.faa.gov/AircraftInquiry/Search/NNumberResult?nNumberTxt=${reg}`,
-        ADSBx: `https://globe.adsbexchange.com/?reg=${reg}`,
+        ADSBx: `https://globe.adsbexchange.com/?reg=${reg.replace('-', '')}`,
         FA: `https://flightaware.com/resources/registration/${reg}`,
         FR24: `https://www.flightradar24.com/data/aircraft/${reg}`,
         JetPhoto: `https://www.jetphotos.com/registration/${reg}`,
