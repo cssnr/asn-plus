@@ -164,9 +164,11 @@ function updateEntryTable() {
     let registration
     let operator
     let date
-    if (table.rows[0].cells[0].textContent === 'Date:') {
-        const dateString = table.rows[0].cells[1].textContent
-        date = new Date(dateString)
+    if (table?.rows[0]?.cells[0]?.textContent === 'Date:') {
+        const dateString = table.rows[0].cells[1]?.textContent
+        if (dateString) {
+            date = new Date(dateString)
+        }
     }
     for (const tr of table.rows) {
         if (tr.textContent.startsWith('Registration:')) {
@@ -220,7 +222,9 @@ function addEntryLink(reg, cell, date) {
     let query = ''
     if (date) {
         const dateString = date.toISOString().slice(0, 10)
-        query = `&showTrace=${dateString}`
+        if (dateString) {
+            query = `&showTrace=${dateString}`
+        }
     }
     const links = {
         FAA: `https://registry.faa.gov/AircraftInquiry/Search/NNumberResult?nNumberTxt=${reg}`,
