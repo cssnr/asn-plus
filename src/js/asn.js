@@ -163,12 +163,17 @@ function updateEntryTable() {
     }
     let registration
     let operator
+    let date
+    if (table.rows[0].cells[0].textContent === 'Date:') {
+        const dateString = table.rows[0].cells[1].textContent
+        date = new Date(dateString)
+    }
     for (const tr of table.rows) {
         if (tr.textContent.startsWith('Registration:')) {
             registration = tr.cells[1].textContent.replace(/[^a-zA-Z0-9-]/g, '')
             console.debug('registration:', registration)
             if (registration) {
-                addEntryLink(registration, tr.cells[1])
+                addEntryLink(registration, tr.cells[1], date)
             }
         }
         if (tr.textContent.startsWith('Owner/operator:')) {
@@ -210,11 +215,16 @@ function updateEntryTable() {
     }
 }
 
-function addEntryLink(reg, cell) {
-    console.debug(`addEntryLink: ${reg}`, cell)
+function addEntryLink(reg, cell, date) {
+    console.debug(`addEntryLink: ${reg}`, cell, date)
+    let query = ''
+    if (date) {
+        const dateString = date.toISOString().slice(0, 10)
+        query = `&showTrace=${dateString}`
+    }
     const links = {
         FAA: `https://registry.faa.gov/AircraftInquiry/Search/NNumberResult?nNumberTxt=${reg}`,
-        ADSBx: `https://globe.adsbexchange.com/?reg=${reg.replace('-', '')}`,
+        ADSBx: `https://globe.adsbexchange.com/?reg=${reg.replace('-', '')}${query}`,
         FA: `https://flightaware.com/resources/registration/${reg}`,
         FR24: `https://www.flightradar24.com/data/aircraft/${reg}`,
         JetPhoto: `https://www.jetphotos.com/registration/${reg}`,
