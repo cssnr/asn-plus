@@ -5,12 +5,13 @@
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/asn-plus?logo=github)](https://github.com/cssnr/asn-plus/releases/latest)
 [![Build](https://github.com/cssnr/asn-plus/actions/workflows/build.yaml/badge.svg)](https://github.com/cssnr/asn-plus/actions/workflows/build.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_asn-plus&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_asn-plus)
+[![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
 # ASN Plus
 
 Modern [Chrome](https://chromewebstore.google.com/detail/asn-plus/phcbcnpmcbkcnijkpfohkdmcofcofibh)
 Web Extension and [Firefox](https://addons.mozilla.org/addon/asn-plus)
 Browser Addon for [The Aviation Safety Network](https://asn.flightsafety.org/)
-to enable dark mode plus add additional features.
+to enable dark mode **plus** add additional features.
 
 *   [Install](#install)
 *   [Features](#features)
@@ -18,6 +19,7 @@ to enable dark mode plus add additional features.
 *   [Frequently Asked Questions](#frequently-asked-questions)
 *   [Known Issues](#known-issues)
 *   [Configuration](#configuration)
+*   [Support](#support)
 *   [Development](#development)
     -   [Building](#building)
 
@@ -87,6 +89,25 @@ You can pin the Addon by clicking the `Puzzle Piece`, find the Web Extension ico
 To open the options, click on the icon (from above) then click `Open Options`.
 
 You may also access the Options and Home page from a Right Click if Enabled in Options.
+
+# Support
+
+For help using the web extension, utilize any these resources:
+
+- Documentation: https://asn-plus.cssnr.com/docs/
+- Q&A Discussion: https://github.com/cssnr/asn-plus/discussions/categories/q-a
+- Request a Feature: https://github.com/cssnr/asn-plus/discussions/categories/feature-requests
+
+If you are experiencing an issue/bug or getting unexpected results, use:
+
+- Report an Issue: https://github.com/cssnr/asn-plus/issues
+- Chat with us on Discord: https://discord.gg/wXy6m2X8wY
+- Provide Anonymous Feedback: https://cssnr.github.io/feedback
+
+Logs can be found inspecting the page (Ctrl+Shift+I), clicking on the Console, and;
+Firefox: toggling Debug logs, Chrome: toggling Verbose from levels dropdown.
+
+Note: When providing anonymous feedback there is no way to follow up and get more information unless you provide a contact method.
 
 # Development
 
