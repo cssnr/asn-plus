@@ -14,7 +14,6 @@ chrome.omnibox.onInputEntered.addListener(onInputEntered)
 
 const omniboxDefault = 'ASN - registration OR operator Search'
 const asnHomePageURL = 'https://asn.flightsafety.org/'
-const uninstallURL = 'https://asn-plus.cssnr.com/uninstall/'
 
 /**
  * On Startup Callback
@@ -40,6 +39,7 @@ async function onStartup() {
 async function onInstalled(details) {
     console.log('onInstalled:', details)
     const githubURL = 'https://github.com/cssnr/asn-plus'
+    const uninstallURL = new URL('https://asn-plus.cssnr.com/uninstall/')
     const options = await Promise.resolve(
         setDefaultOptions({
             darkMode: true,
@@ -79,6 +79,7 @@ async function onInstalled(details) {
     //         await registerContentScripts()
     //     }
     // }
+    const manifest = chrome.runtime.getManifest()
     if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
         const hasPerms = await checkPerms()
         console.debug('hasPerms:', hasPerms)
@@ -90,14 +91,15 @@ async function onInstalled(details) {
         }
     } else if (details.reason === chrome.runtime.OnInstalledReason.UPDATE) {
         if (options.showUpdate) {
-            const manifest = chrome.runtime.getManifest()
             if (manifest.version !== details.previousVersion) {
                 const url = `${githubURL}/releases/tag/${manifest.version}`
                 await chrome.tabs.create({ active: false, url })
             }
         }
     }
-    await chrome.runtime.setUninstallURL(uninstallURL)
+    uninstallURL.searchParams.append('version', manifest.version)
+    console.log('uninstallURL:', uninstallURL.href)
+    await chrome.runtime.setUninstallURL(uninstallURL.href)
 }
 
 /**

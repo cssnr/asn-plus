@@ -18,6 +18,7 @@ chrome.permissions.onRemoved.addListener(onRemoved)
 document.addEventListener('DOMContentLoaded', initOptions)
 document.getElementById('reset-country').addEventListener('click', resetCountry)
 document.getElementById('test-voice').addEventListener('click', testVoice)
+document.getElementById('copy-support').addEventListener('click', copySupport)
 document
     .querySelectorAll('#options-form input,select')
     .forEach((el) => el.addEventListener('change', saveOptions))
@@ -137,6 +138,29 @@ function getUtterance(text, options) {
         })
     }
     return utterance
+}
+
+/**
+ * Copy Support/Debugging Information
+ * @function copySupport
+ * @param {MouseEvent} event
+ */
+async function copySupport(event) {
+    console.debug('copySupport:', event)
+    event.preventDefault()
+    const manifest = chrome.runtime.getManifest()
+    const { options } = await chrome.storage.sync.get(['options'])
+    delete options.asnEmail
+    delete options.asnUsername
+    const permissions = await chrome.permissions.getAll()
+    const result = [
+        `${manifest.name} - ${manifest.version}`,
+        navigator.userAgent,
+        `permissions.origins: ${JSON.stringify(permissions.origins)}`,
+        `options: ${JSON.stringify(options)}`,
+    ]
+    await navigator.clipboard.writeText(result.join('\n'))
+    showToast('Support Information Copied.')
 }
 
 /**

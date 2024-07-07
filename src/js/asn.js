@@ -1,5 +1,8 @@
 // JS for ASN
 
+/* eslint no-func-assign: "off" */
+/* eslint no-unused-vars: "off" */
+
 console.info('LOADED: asn.js')
 
 const tagNames = ['INPUT', 'TEXTAREA', 'SELECT', 'OPTION']
