@@ -1,5 +1,8 @@
 // JS for Speech
 
+/* eslint no-func-assign: "off" */
+/* eslint no-unused-vars: "off" */
+
 let playButton
 let pauseButton
 let options
