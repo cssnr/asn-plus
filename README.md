@@ -102,7 +102,7 @@ If you are experiencing an issue/bug or getting unexpected results, use:
 
 - Report an Issue: https://github.com/cssnr/asn-plus/issues
 - Chat with us on Discord: https://discord.gg/wXy6m2X8wY
-- Provide Anonymous Feedback: https://cssnr.github.io/feedback
+- Provide Anonymous Feedback: https://cssnr.github.io/feedback/
 
 Logs can be found inspecting the page (Ctrl+Shift+I), clicking on the Console, and;
 Firefox: toggling Debug logs, Chrome: toggling Verbose from levels dropdown.
