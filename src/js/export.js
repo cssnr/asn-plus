@@ -116,7 +116,16 @@ export async function saveOptions(event) {
     } else if (event.target.type === 'checkbox') {
         value = event.target.checked
     } else if (event.target.type === 'number') {
-        value = event.target.value.toString()
+        const number = parseFloat(event.target.value)
+        let min = 0.5
+        let max = 2.0
+        if (!isNaN(number) && number >= min && number <= max) {
+            event.target.value = number.toString()
+            value = number
+        } else {
+            event.target.value = options[event.target.id]
+            return
+        }
     } else {
         value = event.target.value?.trim()
     }
@@ -147,13 +156,12 @@ export function updateOptions(options) {
         }
         // console.debug(`${key}: ${value}`)
         const el = document.getElementById(key)
-        // console.debug('el:', el)
         if (!el) {
             continue
         }
         if (!['INPUT', 'SELECT'].includes(el.tagName)) {
             el.textContent = value.toString()
-        } else if (el.type === 'checkbox') {
+        } else if (['checkbox', 'radio'].includes(el.type)) {
             el.checked = value
         } else {
             el.value = value

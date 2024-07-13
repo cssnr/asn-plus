@@ -59,6 +59,8 @@ async function onInstalled(details) {
             autoFill: false,
             asnUsername: '',
             asnEmail: '',
+            radioBackground: 'bgPicture',
+            pictureURL: 'https://picsum.photos/1920/1080',
             contextMenu: true,
             showUpdate: false,
         })
