@@ -3,7 +3,6 @@
 import {
     activateOrOpen,
     checkPerms,
-    onChanged,
     requestPerms,
     saveOptions,
     showToast,
@@ -15,10 +14,15 @@ chrome.storage.onChanged.addListener(onChanged)
 chrome.permissions.onAdded.addListener(onAdded)
 chrome.permissions.onRemoved.addListener(onRemoved)
 
+window.addEventListener('keydown', handleKeyboard)
+
 document.addEventListener('DOMContentLoaded', initOptions)
-document.getElementById('reset-country').addEventListener('click', resetCountry)
 document.getElementById('test-voice').addEventListener('click', testVoice)
 document.getElementById('copy-support').addEventListener('click', copySupport)
+document.getElementById('reset-country').addEventListener('click', resetCountry)
+document
+    .getElementById('reset-background')
+    .addEventListener('click', resetBackground)
 document
     .querySelectorAll('#options-form input,select')
     .forEach((el) => el.addEventListener('change', saveOptions))
@@ -44,14 +48,12 @@ document
  */
 async function initOptions() {
     console.debug('initOptions')
-    await setShortcuts({
-        mainKey: '_execute_action',
-        openHome: 'openHome',
-    })
+    await setShortcuts('#keyboard-shortcuts')
     updateManifest()
     const { options } = await chrome.storage.sync.get(['options'])
     console.debug('options:', options)
     updateOptions(options)
+    setBackground(options)
     await checkPerms()
 
     if (typeof speechSynthesis !== 'undefined') {
@@ -69,8 +71,34 @@ async function initOptions() {
     }
 }
 
+// /**
+//  * Login Background Change Callback
+//  * @function loginBackgroundChange
+//  * @param {InputEvent} event
+//  */
+// function loginBackgroundChange(event) {
+//     console.debug('loginBackgroundChange:', event.target.id)
+//     updateBackgroundInput(event.target.id)
+// }
+
+/**
+ * Set Background
+ * @function setBackground
+ * @param {Object} options
+ */
+function setBackground(options) {
+    console.debug('setBackground:', options.radioBackground, options.pictureURL)
+    if (options.radioBackground === 'bgPicture') {
+        const url = options.pictureURL || 'https://images.cssnr.com/aviation'
+        document.body.style.background = `url('${url}') no-repeat center fixed`
+        document.body.style.backgroundSize = 'cover'
+    } else {
+        document.body.style.cssText = ''
+    }
+}
+
 function addSpeechVoices(options, voices) {
-    console.debug('addSpeechVoices:', options, voices)
+    console.debug('addSpeechVoices:', options.speechVoice, voices)
     const voiceSelect = document.getElementById('speechVoice')
     voices.sort((a, b) => a.lang.localeCompare(b.lang))
     voices.forEach((voice) => {
@@ -102,6 +130,23 @@ async function resetCountry(event) {
     // form.submit()
     await saveOptions(event)
     showToast('Country Display and Code Reset.')
+}
+
+/**
+ * Reset Background Option Callback
+ * @function resetBackground
+ * @param {InputEvent} event
+ */
+async function resetBackground(event) {
+    console.log('resetBackground:', event)
+    event.preventDefault()
+    const pictureURL = document.getElementById('pictureURL')
+    pictureURL.value = 'https://images.cssnr.com/aviation'
+    pictureURL.focus()
+    // const form = document.getElementById('options-form')
+    // form.submit()
+    await saveOptions(event)
+    showToast('Background Image URL Reset.')
 }
 
 /**
@@ -138,6 +183,39 @@ function getUtterance(text, options) {
         })
     }
     return utterance
+}
+
+/**
+ * Handle Keyboard Shortcuts Callback
+ * @function handleKeyboard
+ * @param {KeyboardEvent} e
+ */
+function handleKeyboard(e) {
+    // console.debug('handleKeyboard:', e)
+    // console.debug('type:', e.target.type)
+    if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || e.repeat) {
+        return
+    }
+    if (
+        [
+            'date',
+            'email',
+            'number',
+            'password',
+            'search',
+            'tel',
+            'text',
+            'url',
+        ].includes(e.target.type)
+    ) {
+        return
+    }
+    if (!document.getElementById('enableKeyboard').checked) {
+        return
+    }
+    if (['KeyZ', 'KeyK'].includes(e.code)) {
+        bootstrap.Modal.getOrCreateInstance('#keybinds-modal').toggle()
+    }
 }
 
 /**
@@ -215,18 +293,52 @@ async function openPermissions(event) {
 /**
  * Set Keyboard Shortcuts
  * @function setShortcuts
- * @param {Object} mapping { elementID: name }
+ * @param {String} selector
  */
-async function setShortcuts(mapping) {
+async function setShortcuts(selector = '#keyboard-shortcuts') {
+    if (!chrome.commands) {
+        return console.debug('Skipping: chrome.commands')
+    }
+    document.getElementById('table-wrapper').classList.remove('d-none')
+    const table = document.querySelector(selector)
+    const tbody = table.querySelector('tbody')
+    const source = tbody.querySelector('tr.d-none').cloneNode(true)
+    source.classList.remove('d-none')
     const commands = await chrome.commands.getAll()
-    for (const [elementID, name] of Object.entries(mapping)) {
-        // console.debug(`${elementID}: ${name}`)
-        const command = commands.find((x) => x.name === name)
-        if (command?.shortcut) {
-            console.debug(`${elementID}: ${command.shortcut}`)
-            const el = document.getElementById(elementID)
-            if (el) {
-                el.textContent = command.shortcut
+    for (const command of commands) {
+        // console.debug('command:', command)
+        const row = source.cloneNode(true)
+        // TODO: Chrome does not parse the description for _execute_action in manifest.json
+        let description = command.description
+        if (!description && command.name === '_execute_action') {
+            description = 'Show Popup'
+        }
+        row.querySelector('.description').textContent = description
+        row.querySelector('kbd').textContent = command.shortcut || 'Not Set'
+        tbody.appendChild(row)
+    }
+}
+
+/**
+ * On Changed Callback
+ * @function onChanged
+ * @param {Object} changes
+ * @param {String} namespace
+ */
+export function onChanged(changes, namespace) {
+    console.debug('onChanged:', changes, namespace)
+    for (const [key, { oldValue, newValue }] of Object.entries(changes)) {
+        if (namespace === 'sync' && key === 'options') {
+            console.debug('newValue:', newValue)
+            updateOptions(newValue)
+            if (oldValue.radioBackground !== newValue.radioBackground) {
+                setBackground(newValue)
+            }
+            if (
+                oldValue.pictureURL !== newValue.pictureURL ||
+                oldValue.videoURL !== newValue.videoURL
+            ) {
+                setBackground(newValue)
             }
         }
     }

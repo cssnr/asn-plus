@@ -59,6 +59,8 @@ async function onInstalled(details) {
             autoFill: false,
             asnUsername: '',
             asnEmail: '',
+            radioBackground: 'bgPicture',
+            pictureURL: 'https://images.cssnr.com/aviation',
             contextMenu: true,
             showUpdate: false,
         })
