@@ -87,7 +87,7 @@ async function initOptions() {
  * @param {Object} options
  */
 function setBackground(options) {
-    console.debug('setBackground:', options)
+    console.debug('setBackground:', options.radioBackground, options.pictureURL)
     if (options.radioBackground === 'bgPicture') {
         const url = options.pictureURL || 'https://images.cssnr.com/aviation'
         document.body.style.background = `url('${url}') no-repeat center fixed`
@@ -98,7 +98,7 @@ function setBackground(options) {
 }
 
 function addSpeechVoices(options, voices) {
-    console.debug('addSpeechVoices:', options, voices)
+    console.debug('addSpeechVoices:', options.speechVoice, voices)
     const voiceSelect = document.getElementById('speechVoice')
     voices.sort((a, b) => a.lang.localeCompare(b.lang))
     voices.forEach((voice) => {
@@ -192,7 +192,7 @@ function getUtterance(text, options) {
  */
 function handleKeyboard(e) {
     // console.debug('handleKeyboard:', e)
-    console.debug('type:', e.target.type)
+    // console.debug('type:', e.target.type)
     if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || e.repeat) {
         return
     }
