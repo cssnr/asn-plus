@@ -12,7 +12,7 @@ body {
 }
 
 [data-bs-theme='dark'] #options-wrapper {
-    background: rgba(0 0 0 / 60%);
+    background: rgba(0 0 0 / 50%);
 }
 [data-bs-theme='light'] #options-wrapper {
     background: rgba(255 255 255 / 60%);
