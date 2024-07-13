@@ -60,7 +60,7 @@ async function onInstalled(details) {
             asnUsername: '',
             asnEmail: '',
             radioBackground: 'bgPicture',
-            pictureURL: 'https://picsum.photos/1920/1080',
+            pictureURL: 'https://images.cssnr.com/aviation',
             contextMenu: true,
             showUpdate: false,
         })

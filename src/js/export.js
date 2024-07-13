@@ -104,6 +104,9 @@ export async function saveOptions(event) {
         options['countryCode'] = 'N'
         key = 'countryDisplay'
         value = 'USA'
+    } else if (key === 'reset-background') {
+        key = 'pictureURL'
+        value = 'https://images.cssnr.com/aviation'
     } else if (event.target.type === 'radio') {
         key = event.target.name
         const radios = document.getElementsByName(key)

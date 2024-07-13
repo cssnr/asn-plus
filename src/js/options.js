@@ -17,9 +17,12 @@ chrome.permissions.onRemoved.addListener(onRemoved)
 window.addEventListener('keydown', handleKeyboard)
 
 document.addEventListener('DOMContentLoaded', initOptions)
-document.getElementById('reset-country').addEventListener('click', resetCountry)
 document.getElementById('test-voice').addEventListener('click', testVoice)
 document.getElementById('copy-support').addEventListener('click', copySupport)
+document.getElementById('reset-country').addEventListener('click', resetCountry)
+document
+    .getElementById('reset-background')
+    .addEventListener('click', resetBackground)
 document
     .querySelectorAll('#options-form input,select')
     .forEach((el) => el.addEventListener('change', saveOptions))
@@ -68,15 +71,15 @@ async function initOptions() {
     }
 }
 
-/**
- * Login Background Change Callback
- * @function loginBackgroundChange
- * @param {InputEvent} event
- */
-function loginBackgroundChange(event) {
-    console.debug('loginBackgroundChange:', event.target.id)
-    updateBackgroundInput(event.target.id)
-}
+// /**
+//  * Login Background Change Callback
+//  * @function loginBackgroundChange
+//  * @param {InputEvent} event
+//  */
+// function loginBackgroundChange(event) {
+//     console.debug('loginBackgroundChange:', event.target.id)
+//     updateBackgroundInput(event.target.id)
+// }
 
 /**
  * Set Background
@@ -86,7 +89,7 @@ function loginBackgroundChange(event) {
 function setBackground(options) {
     console.debug('setBackground:', options)
     if (options.radioBackground === 'bgPicture') {
-        const url = options.pictureURL || 'https://picsum.photos/1920/1080'
+        const url = options.pictureURL || 'https://images.cssnr.com/aviation'
         document.body.style.background = `url('${url}') no-repeat center fixed`
         document.body.style.backgroundSize = 'cover'
     } else {
@@ -127,6 +130,23 @@ async function resetCountry(event) {
     // form.submit()
     await saveOptions(event)
     showToast('Country Display and Code Reset.')
+}
+
+/**
+ * Reset Background Option Callback
+ * @function resetBackground
+ * @param {InputEvent} event
+ */
+async function resetBackground(event) {
+    console.log('resetBackground:', event)
+    event.preventDefault()
+    const pictureURL = document.getElementById('pictureURL')
+    pictureURL.value = 'https://images.cssnr.com/aviation'
+    pictureURL.focus()
+    // const form = document.getElementById('options-form')
+    // form.submit()
+    await saveOptions(event)
+    showToast('Background Image URL Reset.')
 }
 
 /**
