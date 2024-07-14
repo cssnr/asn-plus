@@ -255,41 +255,38 @@
             </label>
         </div>
 
-        <a id="reset-background" class="float-end align-bottom small" role="button">Reset</a>
         <h5 class="mt-3">
             Options Page Background
-            <span class="small" data-bs-toggle="tooltip" data-bs-title="Disabled or Random Picture.">
+            <span class="small" data-bs-toggle="tooltip" data-bs-title="Disabled, Random/Custom Picture or Video Looping.">
                 <i class="fa-solid fa-circle-info ms-1"></i>
             </span>
         </h5>
-        <div class="d-flex flex-column flex-md-row mb-2 align-items-md-center" style="min-height: 38px;">
-            <div class="flex-grow-0 mt-md-0">
-                <div class="ms-2 ms-md-0 mt-auto">
-                    <div class="d-flex">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="radioBackground" id="bgNone" value="none">
-                            <label class="form-check-label" for="bgNone">
-                                <i class="fa-regular fa-square"></i> None
-                            </label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="radioBackground" id="bgPicture" value="picture">
-                            <label class="form-check-label" for="bgPicture">
-                                <i class="fa-regular fa-image"></i> Picture
-                            </label>
-                        </div>
-                    </div>
-                </div>
+
+        <div class=" ms-1 ms-sm-3">
+            <div class="form-check form-check-inline mb-2 mb-sm-0">
+                <input class="form-check-input" type="radio" name="radioBackground" id="bgNone" value="none">
+                <label class="form-check-label" for="bgNone">
+                    <i class="fa-regular fa-square"></i> None
+                </label>
             </div>
-            <div class="flex-fill mt-2 mt-md-0 ms-2 ms-md-0">
-                <div id="bgPictureInput" class="input-group">
+            <div class="form-check form-check-inline mb-2">
+                <input class="form-check-input" type="radio" name="radioBackground" id="bgPicture" value="picture">
+                <label class="form-check-label" for="bgPicture">
+                    <i class="fa-regular fa-image"></i> Picture
+                </label>
+            </div>
+            <a id="reset-background" class="float-end align-bottom small" role="button">Reset</a>
+        </div>
+
+        <div class="ms-0 ms-sm-3">
+            <div id="bgPictureInput" class="input-group">
                     <span class="input-group-text" id="picture-addon" data-bs-toggle="tooltip" data-bs-title="URL to a Web Image or empty for default.">
                         <i class="fa-solid fa-circle-info"></i></span>
-                    <input type="text" class="form-control" placeholder="Background Picture URL" aria-label="Background Picture URL"
-                           id="pictureURL" name="pictureURL" aria-describedby="picture-addon">
-                </div>
+                <input type="text" class="form-control" placeholder="Background Picture URL" aria-label="Background Picture URL"
+                       id="pictureURL" name="pictureURL" aria-describedby="picture-addon">
             </div>
-        </div> <!-- background options -->
+        </div>
+
     </form>
 
     <p class="fst-italic small mt-3">
