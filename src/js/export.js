@@ -23,7 +23,7 @@ export function getSearchURL(type, value) {
  * Request Host Permissions
  * @function requestPerms
  * @param {Boolean} extra
- * @return {chrome.permissions.request}
+ * @return {Promise<*|chrome.permissions.request>}
  */
 export async function requestPerms(extra = false) {
     let origins = ['*://asn.flightsafety.org/*']
@@ -41,7 +41,7 @@ export async function requestPerms(extra = false) {
 /**
  * Check Host Permissions
  * @function checkPerms
- * @return {Boolean}
+ * @return {Promise<*|Boolean>}
  */
 export async function checkPerms() {
     const reqPerms = await chrome.permissions.contains({
@@ -217,7 +217,7 @@ export function updateManifest() {
  * @function activateOrOpen
  * @param {String} url
  * @param {Boolean} [open]
- * @return {Boolean}
+ * @return {Promise<*|Boolean>}
  */
 export async function activateOrOpen(url, open = true) {
     console.debug('activateOrOpen:', url)

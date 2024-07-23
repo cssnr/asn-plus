@@ -40,31 +40,29 @@ async function onInstalled(details) {
     console.log('onInstalled:', details)
     const githubURL = 'https://github.com/cssnr/asn-plus'
     const uninstallURL = new URL('https://asn-plus.cssnr.com/uninstall/')
-    const options = await Promise.resolve(
-        setDefaultOptions({
-            darkMode: true,
-            highlightTable: true,
-            updateEntry: true,
-            expandImages: true,
-            hideEntryWarning: true,
-            updateNavigation: true,
-            hideHeaderImage: true,
-            enableKeyboard: true,
-            increaseMaxWidth: false,
-            countryDisplay: 'USA',
-            countryCode: 'N',
-            searchType: 'registration',
-            speechVoice: '',
-            speechRate: '1.1',
-            autoFill: false,
-            asnUsername: '',
-            asnEmail: '',
-            radioBackground: 'bgPicture',
-            pictureURL: 'https://images.cssnr.com/aviation',
-            contextMenu: true,
-            showUpdate: false,
-        })
-    )
+    const options = await setDefaultOptions({
+        darkMode: true,
+        highlightTable: true,
+        updateEntry: true,
+        expandImages: true,
+        hideEntryWarning: true,
+        updateNavigation: true,
+        hideHeaderImage: true,
+        enableKeyboard: true,
+        increaseMaxWidth: false,
+        countryDisplay: 'USA',
+        countryCode: 'N',
+        searchType: 'registration',
+        speechVoice: '',
+        speechRate: '1.1',
+        autoFill: false,
+        asnUsername: '',
+        asnEmail: '',
+        radioBackground: 'bgPicture',
+        pictureURL: 'https://images.cssnr.com/aviation',
+        contextMenu: true,
+        showUpdate: false,
+    })
     console.debug('options:', options)
     if (options.contextMenu) {
         createContextMenus()
@@ -431,7 +429,7 @@ function createContextMenus() {
  * Set Default Options
  * @function setDefaultOptions
  * @param {Object} defaultOptions
- * @return {Object}
+ * @return {Promise<*|Object>}
  */
 async function setDefaultOptions(defaultOptions) {
     console.log('setDefaultOptions', defaultOptions)
