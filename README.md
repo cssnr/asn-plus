@@ -4,6 +4,7 @@
 [![Mozilla Add-on Version](https://img.shields.io/amo/v/asn-plus?label=firefox&logo=firefox)](https://addons.mozilla.org/addon/asn-plus)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/asn-plus?logo=github&logoColor=white)](https://github.com/cssnr/asn-plus/releases/latest)
 [![Build](https://img.shields.io/github/actions/workflow/status/cssnr/asn-plus/build.yaml?logo=github&logoColor=white&label=build)](https://github.com/cssnr/asn-plus/actions/workflows/build.yaml)
+[![Test](https://img.shields.io/github/actions/workflow/status/cssnr/asn-plus/test.yaml?logo=github&logoColor=white&label=test)](https://github.com/cssnr/asn-plus/actions/workflows/test.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_asn-plus&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_asn-plus)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/asn-plus?logo=github&logoColor=white&label=updated)](https://github.com/cssnr/asn-plus/graphs/commit-activity)
 [![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/asn-plus?logo=htmx&logoColor=white)](https://github.com/cssnr/asn-plus)
