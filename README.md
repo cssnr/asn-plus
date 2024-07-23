@@ -59,7 +59,7 @@ All **Chromium** Based Browsers can install the extension from the
 *   Search Registration/Operator from Popup Action
 *   Auto Fill New Incidents for US and Canada Registration
 
-### Upcoming Features and Ideas
+### Planned Upcoming Features
 
 *   Infinite Scroll when Browsing Incidents
 
