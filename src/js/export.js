@@ -2,6 +2,8 @@
 
 import { countryList } from './vars.js'
 
+export const githubURL = 'https://github.com/cssnr/asn-plus'
+
 /**
  * Request Host Permissions
  * @function getSearchURL
@@ -202,14 +204,21 @@ export function onChanged(changes, namespace) {
     }
 }
 
-export function updateManifest() {
+/**
+ * Update DOM with Manifest Details
+ * @function updateManifest
+ */
+export async function updateManifest() {
     const manifest = chrome.runtime.getManifest()
-    document
-        .querySelectorAll('.version')
-        .forEach((el) => (el.textContent = manifest.version))
-    document
-        .querySelectorAll('[href="homepage_url"]')
-        .forEach((el) => (el.href = manifest.homepage_url))
+    document.querySelectorAll('.version').forEach((el) => {
+        el.textContent = manifest.version
+    })
+    document.querySelectorAll('[href="homepage_url"]').forEach((el) => {
+        el.href = manifest.homepage_url
+    })
+    document.querySelectorAll('[href="version_url"]').forEach((el) => {
+        el.href = `${githubURL}/releases/tag/${manifest.version}`
+    })
 }
 
 /**

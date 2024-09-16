@@ -1,9 +1,14 @@
 // JS Background Service Worker
 
-import { activateOrOpen, checkPerms, getSearchURL } from './export.js'
+import {
+    activateOrOpen,
+    checkPerms,
+    getSearchURL,
+    githubURL,
+} from './export.js'
 
-chrome.runtime.onStartup.addListener(onStartup)
 chrome.runtime.onInstalled.addListener(onInstalled)
+chrome.runtime.onStartup.addListener(onStartup)
 chrome.runtime.onMessage.addListener(onMessage)
 chrome.contextMenus.onClicked.addListener(onClicked)
 chrome.commands.onCommand.addListener(onCommand)
@@ -16,30 +21,12 @@ const omniboxDefault = 'ASN - registration OR operator Search'
 const asnHomePageURL = 'https://asn.flightsafety.org/'
 
 /**
- * On Startup Callback
- * @function onStartup
- */
-async function onStartup() {
-    console.log('onStartup')
-    if (typeof browser !== 'undefined') {
-        console.log('Firefox CTX Menu Workaround')
-        const { options } = await chrome.storage.sync.get(['options'])
-        console.debug('options:', options)
-        if (options.contextMenu) {
-            createContextMenus()
-        }
-    }
-}
-
-/**
  * On Installed Callback
  * @function onInstalled
  * @param {InstalledDetails} details
  */
 async function onInstalled(details) {
     console.log('onInstalled:', details)
-    const githubURL = 'https://github.com/cssnr/asn-plus'
-    const uninstallURL = new URL('https://asn-plus.cssnr.com/uninstall/')
     const options = await setDefaultOptions({
         darkMode: true,
         highlightTable: true,
@@ -79,7 +66,6 @@ async function onInstalled(details) {
     //         await registerContentScripts()
     //     }
     // }
-    const manifest = chrome.runtime.getManifest()
     if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
         const hasPerms = await checkPerms()
         console.debug('hasPerms:', hasPerms)
@@ -91,15 +77,41 @@ async function onInstalled(details) {
         }
     } else if (details.reason === chrome.runtime.OnInstalledReason.UPDATE) {
         if (options.showUpdate) {
+            const manifest = chrome.runtime.getManifest()
             if (manifest.version !== details.previousVersion) {
                 const url = `${githubURL}/releases/tag/${manifest.version}`
                 await chrome.tabs.create({ active: false, url })
             }
         }
     }
-    uninstallURL.searchParams.append('version', manifest.version)
-    console.log('uninstallURL:', uninstallURL.href)
-    await chrome.runtime.setUninstallURL(uninstallURL.href)
+    setUninstallURL()
+}
+
+/**
+ * On Startup Callback
+ * @function onStartup
+ */
+async function onStartup() {
+    console.log('onStartup')
+    // noinspection JSUnresolvedReference
+    if (typeof browser !== 'undefined') {
+        console.log('Firefox Startup Workarounds')
+        const { options } = await chrome.storage.sync.get(['options'])
+        console.debug('options:', options)
+        if (options.contextMenu) {
+            createContextMenus()
+        }
+        setUninstallURL()
+    }
+}
+
+function setUninstallURL() {
+    const manifest = chrome.runtime.getManifest()
+    const url = new URL('https://asn-plus.cssnr.com/uninstall/')
+    url.searchParams.append('version', manifest.version)
+    chrome.runtime.setUninstallURL(url.href)
+    console.debug(`setUninstallURL: ${url.href}`)
+    chrome.runtime.setUninstallURL(url.href)
 }
 
 /**

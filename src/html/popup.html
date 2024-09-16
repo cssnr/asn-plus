@@ -14,6 +14,40 @@
 <body>
 
 <div class="container-fluid p-2">
+    <div class="d-flex flex-row align-items-center">
+        <div class="dropdown">
+            <a id="bs-theme-dropdown" class="nav-link" title="Theme Switcher" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i id="theme-icon" class="fa-solid fa-circle-half-stroke fa-lg" style="min-width: 20px;"></i>
+                <i class="fa-solid fa-caret-down fa-xs mx-1"></i>
+            </a>
+            <ul class="dropdown-menu auto dropdown-menu-end" aria-labelledby="bs-theme-dropdown">
+                <li><button class="dropdown-item" data-bs-theme-value="dark" aria-pressed="false">
+                    <i class="fa-regular fa-moon" style="min-width: 16px;"></i> <span class="ms-3">Dark</span></button></li>
+                <li><button class="dropdown-item" data-bs-theme-value="light" aria-pressed="false">
+                    <i class="fa-solid fa-sun" style="min-width: 16px;"></i> <span class="ms-3">Light</span></button></li>
+                <li><button class="dropdown-item" data-bs-theme-value="auto" aria-pressed="false">
+                    <i class="fa-solid fa-circle-half-stroke" style="min-width: 16px;"></i> <span class="ms-3">Auto</span></button></li>
+            </ul>
+        </div>
+
+        <div class="flex-fill text-center">
+            <a class="link-body-emphasis text-decoration-none fs-4" title="Home Page" href="homepage_url">
+                <img src="../images/logo32.png" alt="Logo" class="mb-1" style="height: 1.1em;">
+                ASN Plus</a>
+            <a class="link-body-emphasis text-decoration-none small" title="Release Notes" href="version_url">
+                v<span class="version"></span></a>
+        </div>
+
+        <div class="">
+            <a class="btn btn-sm btn-outline-primary" role="button" href="../html/options.html" title="Options">
+                <i class="fa-solid fa-gears"></i></a>
+        </div>
+    </div> <!-- d-flex -->
+</div> <!-- container-fluid -->
+
+<hr class="my-0">
+
+<div class="container-fluid p-2">
     <div class="d-grid g-2 gap-2">
         <div class="d-none grant-perms">
             <button class="btn btn-success w-100 mb-1 grant-permissions" type="button">
@@ -163,14 +197,7 @@
     </form>
 
     <a class="btn btn-sm btn-outline-primary w-100" role="button" href="../html/options.html">
-        <i class="fa-solid fa-sliders me-1"></i> Open Options</a>
-    <hr class="my-2">
-
-    <div class="d-flex justify-content-center align-items-center text-center small">
-        <img src="../images/logo16.png" width="16" height="16" alt="ASN Plus" title="ASN Plus">
-        <a class="link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-75-hover mx-2" type="button" rel="noopener"
-           href="homepage_url">ASN Plus</a> v<span class="version"></span>
-    </div>
+        <i class="fa-solid fa-sliders me-1"></i> More Options</a>
 </div> <!-- container -->
 
 <div aria-live="polite" aria-atomic="true" class="">

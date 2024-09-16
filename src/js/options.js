@@ -48,13 +48,20 @@ document
  */
 async function initOptions() {
     console.debug('initOptions')
-    await setShortcuts('#keyboard-shortcuts')
+    // noinspection ES6MissingAwait
+    setShortcuts('#keyboard-shortcuts')
+    // noinspection ES6MissingAwait
     updateManifest()
+    checkPerms().then((hasPerms) => {
+        if (!hasPerms) {
+            console.log('%cHost Permissions Not Granted', 'color: Red')
+        }
+    })
+
     const { options } = await chrome.storage.sync.get(['options'])
     console.debug('options:', options)
     updateOptions(options)
     setBackground(options)
-    await checkPerms()
 
     if (typeof speechSynthesis !== 'undefined') {
         console.debug('speechSynthesis')
