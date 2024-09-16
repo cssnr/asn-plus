@@ -77,6 +77,24 @@ function updatePermsEl(hasPerms, has, grant) {
 }
 
 /**
+ * Grant Permissions Click Callback
+ * @function grantPerms
+ * @param {MouseEvent} event
+ * @param {Boolean} [close]
+ */
+export async function grantPerms(event, close = false) {
+    console.debug('grantPerms:', event)
+    const button = event.target.closest('button')
+    const extra = !!button.dataset.extra
+    console.debug('extra:', extra)
+    // noinspection ES6MissingAwait
+    requestPerms(extra)
+    if (close) {
+        window.close()
+    }
+}
+
+/**
  * Save Options Callback
  * @function saveOptions
  * @param {InputEvent} event
