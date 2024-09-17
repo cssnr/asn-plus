@@ -1,6 +1,6 @@
 // JS for registry.faa.gov
 
-console.info('LOADED: faa.js')
+console.log('%cRUNNING faa.js', 'color: Khaki')
 
 const searchParams = new URLSearchParams(window.location.search)
 console.debug('searchParams:', searchParams)
@@ -15,6 +15,7 @@ function getData() {
     const error = searchParams.get('error')
     if (error) {
         console.log('error:', error)
+        // noinspection JSIgnoredPromiseFromCall
         chrome.runtime.sendMessage({ autofill: { tab: tab, error: error } })
         return
     }
@@ -56,7 +57,8 @@ function getData() {
         url: url.href,
     }
     console.log('data:', data)
+    // noinspection JSIgnoredPromiseFromCall
     chrome.runtime.sendMessage({ autofill: data })
-    // console.info('window.close')
+    // console.debug('window.close')
     window.close()
 }

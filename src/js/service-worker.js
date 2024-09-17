@@ -47,6 +47,9 @@ async function onInstalled(details) {
         asnEmail: '',
         radioBackground: 'bgPicture',
         pictureURL: 'https://images.cssnr.com/aviation',
+        checkUpdates: false,
+        checkURL: 'https://asn.flightsafety.org/asndb/year/2024',
+        checkFrequency: '15',
         contextMenu: true,
         showUpdate: false,
     })
@@ -250,10 +253,10 @@ function onChanged(changes, namespace) {
         if (namespace === 'sync' && key === 'options' && oldValue && newValue) {
             if (oldValue.contextMenu !== newValue.contextMenu) {
                 if (newValue?.contextMenu) {
-                    console.info('Enabled contextMenu...')
+                    console.log('Enabled contextMenu...')
                     createContextMenus()
                 } else {
-                    console.info('Disabled contextMenu...')
+                    console.log('Disabled contextMenu...')
                     chrome.contextMenus.removeAll()
                 }
             }

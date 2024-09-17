@@ -106,7 +106,7 @@ export async function saveOptions(event) {
     let value
     if (key === 'countryCode') {
         value = event.target.value.trim()
-        console.info('Country Code:', value)
+        console.log('Country Code:', value)
         if (value.includes('/')) {
             value = value.split('/').at(-1).trim()
             event.target.value = value
@@ -139,9 +139,10 @@ export async function saveOptions(event) {
     } else if (event.target.type === 'checkbox') {
         value = event.target.checked
     } else if (event.target.type === 'number') {
+        // } else if (key === 'speechRate') {
         const number = parseFloat(event.target.value)
-        let min = 0.5
-        let max = 2.0
+        let min = parseFloat(event.target.min)
+        let max = parseFloat(event.target.max)
         if (!isNaN(number) && number >= min && number <= max) {
             event.target.value = number.toString()
             value = number
@@ -154,7 +155,7 @@ export async function saveOptions(event) {
     }
     if (value !== undefined) {
         options[key] = value
-        console.info(`Set: ${key}:`, value)
+        console.log(`Set %c${key}:`, 'color: Khaki', value)
         await chrome.storage.sync.set({ options })
     } else {
         console.warn('No Value for key:', key)

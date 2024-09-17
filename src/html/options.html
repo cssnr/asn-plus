@@ -174,6 +174,38 @@
             </div>
         </div>
 
+        <div class="form-check form-switch">
+            <input class="form-check-input" id="checkUpdates" type="checkbox" role="switch" data-related="checkUpdatesOptions">
+            <label class="form-check-label" for="checkUpdates" aria-describedby="checkUpdatesHelp">
+                Periodically Check for New Incidents
+                <span data-bs-toggle="tooltip" data-bs-title="Periodically Check for New Incidents.">
+                    <i class="fa-solid fa-circle-info ms-1"></i>
+                </span>
+            </label>
+        </div>
+        <div class="mt-0" id="checkUpdatesOptions" style="display: none;">
+            <div class="row">
+                <div class="col-12 col-sm-8 mb-2">
+                    <label for="checkURL" class="form-label">
+                        <i class="fa-solid fa-globe me-1"></i> Check URL
+                    </label>
+                    <input id="checkURL" aria-describedby="checkURLHelp" type="email" class="form-control" autocomplete="off" placeholder="ASN Check URL">
+                    <div class="form-text" id="checkURLHelp">
+                        URL to check for updates.
+                    </div>
+                </div>
+                <div class="col-12 col-sm-4  mb-2">
+                    <label for="checkFrequency" class="form-label">
+                        <i class="fa-solid fa-clock-rotate-left me-1"></i> Frequency
+                    </label>
+                    <input id="checkFrequency" aria-describedby="checkFrequencyHelp" type="number" step="5" min="5" max="60" class="form-control" autocomplete="off" placeholder="Minutes">
+                    <div class="form-text" id="checkFrequencyHelp">
+                        Check minutes.
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <hr>
 
         <div class="row mt-2">
@@ -228,7 +260,7 @@
 <!--                    </span>-->
                 </label>
                 <input id="speechRate" aria-describedby="speechRateHelp" type="number" class="form-control" autocomplete="off"
-                       step="0.1" min="0.1" max="10">
+                       step="0.1" min="0.1" max="2">
                 <div class="form-text" id="speechRateHelp">
                     Playback Rate.
                 </div>
