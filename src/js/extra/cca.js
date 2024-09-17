@@ -1,6 +1,6 @@
 // JS for wwwapps.tc.gc.ca
 
-console.info('LOADED: cca.js')
+console.log('%cRUNNING cca.js', 'color: Khaki')
 
 const searchParams = new URLSearchParams(window.location.search)
 console.debug('searchParams:', searchParams)

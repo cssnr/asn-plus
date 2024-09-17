@@ -16,8 +16,10 @@ document
  */
 async function domContentLoaded() {
     console.debug('domContentLoaded')
+    // noinspection ES6MissingAwait
     updateManifest()
-    await checkPerms()
+    // noinspection ES6MissingAwait
+    checkPerms()
 }
 
 /**
@@ -30,6 +32,7 @@ async function grantPerms(event) {
     const button = event.target.closest('button')
     const extra = !!button.dataset.extra
     console.debug('extra:', extra)
+    // noinspection ES6MissingAwait
     requestPerms(extra)
 }
 
@@ -50,6 +53,6 @@ function openOptions(event) {
  * @param permissions
  */
 async function onAdded(permissions) {
-    console.info('onAdded', permissions)
+    console.log('onAdded', permissions)
     await checkPerms()
 }
