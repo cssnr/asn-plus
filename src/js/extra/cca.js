@@ -68,6 +68,7 @@ function getData() {
             .children[1].textContent.trim()
 
         console.log('data:', data)
+        // noinspection JSIgnoredPromiseFromCall
         chrome.runtime.sendMessage({ autofill: data })
         window.close()
     }

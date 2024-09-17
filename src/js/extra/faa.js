@@ -15,6 +15,7 @@ function getData() {
     const error = searchParams.get('error')
     if (error) {
         console.log('error:', error)
+        // noinspection JSIgnoredPromiseFromCall
         chrome.runtime.sendMessage({ autofill: { tab: tab, error: error } })
         return
     }
