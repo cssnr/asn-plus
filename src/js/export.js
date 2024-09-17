@@ -2,6 +2,8 @@
 
 import { countryList } from './vars.js'
 
+export const githubURL = 'https://github.com/cssnr/asn-plus'
+
 /**
  * Request Host Permissions
  * @function getSearchURL
@@ -71,6 +73,24 @@ function updatePermsEl(hasPerms, has, grant) {
     } else {
         grantEl.forEach((el) => el.classList.remove('d-none'))
         hasEl.forEach((el) => el.classList.add('d-none'))
+    }
+}
+
+/**
+ * Grant Permissions Click Callback
+ * @function grantPerms
+ * @param {MouseEvent} event
+ * @param {Boolean} [close]
+ */
+export async function grantPerms(event, close = false) {
+    console.debug('grantPerms:', event)
+    const button = event.target.closest('button')
+    const extra = !!button.dataset.extra
+    console.debug('extra:', extra)
+    // noinspection ES6MissingAwait
+    requestPerms(extra)
+    if (close) {
+        window.close()
     }
 }
 
@@ -202,14 +222,21 @@ export function onChanged(changes, namespace) {
     }
 }
 
-export function updateManifest() {
+/**
+ * Update DOM with Manifest Details
+ * @function updateManifest
+ */
+export async function updateManifest() {
     const manifest = chrome.runtime.getManifest()
-    document
-        .querySelectorAll('.version')
-        .forEach((el) => (el.textContent = manifest.version))
-    document
-        .querySelectorAll('[href="homepage_url"]')
-        .forEach((el) => (el.href = manifest.homepage_url))
+    document.querySelectorAll('.version').forEach((el) => {
+        el.textContent = manifest.version
+    })
+    document.querySelectorAll('[href="homepage_url"]').forEach((el) => {
+        el.href = manifest.homepage_url
+    })
+    document.querySelectorAll('[href="version_url"]').forEach((el) => {
+        el.href = `${githubURL}/releases/tag/${manifest.version}`
+    })
 }
 
 /**

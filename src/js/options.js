@@ -3,7 +3,7 @@
 import {
     activateOrOpen,
     checkPerms,
-    requestPerms,
+    grantPerms,
     saveOptions,
     showToast,
     updateManifest,
@@ -48,13 +48,22 @@ document
  */
 async function initOptions() {
     console.debug('initOptions')
-    await setShortcuts('#keyboard-shortcuts')
+
+    // noinspection ES6MissingAwait
+    setShortcuts('#keyboard-shortcuts')
+    // noinspection ES6MissingAwait
     updateManifest()
+
+    checkPerms().then((hasPerms) => {
+        if (!hasPerms) {
+            console.log('%cHost Permissions Not Granted', 'color: Red')
+        }
+    })
+
     const { options } = await chrome.storage.sync.get(['options'])
     console.debug('options:', options)
     updateOptions(options)
     setBackground(options)
-    await checkPerms()
 
     if (typeof speechSynthesis !== 'undefined') {
         console.debug('speechSynthesis')
@@ -242,20 +251,6 @@ async function copySupport(event) {
 }
 
 /**
- * Grant Permissions Click Callback
- * Move to export and use anonymous function
- * @function grantPerms
- * @param {MouseEvent} event
- */
-async function grantPerms(event) {
-    console.debug('grantPerms:', event)
-    const button = event.target.closest('button')
-    const extra = !!button.dataset.extra
-    console.debug('extra:', extra)
-    requestPerms(extra)
-}
-
-/**
  * Revoke Permissions Click Callback
  * @function revokePerms
  * @param {MouseEvent} event
@@ -287,6 +282,7 @@ async function openPermissions(event) {
     console.debug('openPermissions:', event)
     event.preventDefault()
     const url = chrome.runtime.getURL('/html/permissions.html')
+    // noinspection ES6MissingAwait
     activateOrOpen(url)
 }
 
@@ -334,10 +330,7 @@ export function onChanged(changes, namespace) {
             if (oldValue.radioBackground !== newValue.radioBackground) {
                 setBackground(newValue)
             }
-            if (
-                oldValue.pictureURL !== newValue.pictureURL ||
-                oldValue.videoURL !== newValue.videoURL
-            ) {
+            if (oldValue.pictureURL !== newValue.pictureURL) {
                 setBackground(newValue)
             }
         }

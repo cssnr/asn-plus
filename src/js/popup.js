@@ -4,10 +4,10 @@ import {
     activateOrOpen,
     checkPerms,
     getSearchURL,
+    grantPerms,
     onChanged,
-    requestPerms,
     saveOptions,
-    showToast,
+    updateManifest,
     updateOptions,
 } from './export.js'
 
@@ -17,8 +17,12 @@ document
     .querySelectorAll('#options-form input')
     .forEach((el) => el.addEventListener('change', saveOptions))
 document
+    .querySelectorAll('a[href]')
+    .forEach((el) => el.addEventListener('click', popupLinks))
+// noinspection JSCheckFunctionSignatures
+document
     .querySelectorAll('.grant-permissions')
-    .forEach((el) => el.addEventListener('click', grantPerms))
+    .forEach((el) => el.addEventListener('click', (e) => grantPerms(e, true)))
 document
     .getElementsByName('searchType')
     .forEach((el) => el.addEventListener('change', updateSearchType))
@@ -37,11 +41,18 @@ const searchTerm = document.getElementById('searchTerm')
  */
 async function initPopup() {
     console.debug('initPopup')
-    const manifest = chrome.runtime.getManifest()
-    document.querySelector('.version').textContent = manifest.version
-    document.querySelector('[href="homepage_url"]').href = manifest.homepage_url
+    searchTerm.focus()
 
-    await checkPerms()
+    // noinspection ES6MissingAwait
+    updateManifest()
+    // noinspection ES6MissingAwait
+    populateYearLinks()
+
+    checkPerms().then((hasPerms) => {
+        if (!hasPerms) {
+            console.log('%cHost Permissions Not Granted', 'color: Red')
+        }
+    })
 
     const { options } = await chrome.storage.sync.get(['options'])
     console.debug('options:', options)
@@ -53,21 +64,9 @@ async function initPopup() {
     document.querySelector(
         `input[name="searchType"][value="${options.searchType}"]`
     ).checked = true
-
-    populateYearLinks()
-    // addEventListener on popupLinks must be done after all links are generated
-    document
-        .querySelectorAll('a[href]')
-        .forEach((el) => el.addEventListener('click', popupLinks))
-
-    searchTerm.focus()
-
-    if (chrome.runtime.lastError) {
-        showToast(chrome.runtime.lastError.message, 'warning')
-    }
 }
 
-function populateYearLinks() {
+async function populateYearLinks() {
     console.debug('populateYearLinks')
     const url = 'https://asn.flightsafety.org/asndb/year'
     const yearView = document.getElementById('year-view')
@@ -84,6 +83,7 @@ function populateYearLinks() {
         a.classList.add('dropdown-item')
         a.textContent = year.toString()
         a.href = `${url}/${year}`
+        a.addEventListener('click', popupLinks)
         li.appendChild(a)
         yearList.appendChild(li)
     }
@@ -113,21 +113,6 @@ async function popupLinks(event) {
     console.debug('url:', url)
     await activateOrOpen(url)
     return window.close()
-}
-
-/**
- * Grant Permissions Button Click Callback
- * Move to export and use anonymous function
- * @function grantPerms
- * @param {MouseEvent} event
- */
-async function grantPerms(event) {
-    console.debug('grantPerms:', event)
-    const button = event.target.closest('button')
-    const extra = !!button.dataset.extra
-    console.debug('extra:', extra)
-    requestPerms(extra)
-    window.close()
 }
 
 /**

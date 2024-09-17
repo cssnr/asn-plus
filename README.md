@@ -19,7 +19,7 @@ to enable dark mode **plus** add additional features.
 
 *   [Install](#install)
 *   [Features](#features)
-    -   [Upcoming Features](#upcoming-features-and-ideas)
+    -   [Upcoming Features](#Upcoming-Features)
 *   [Frequently Asked Questions](#frequently-asked-questions)
 *   [Known Issues](#known-issues)
 *   [Configuration](#configuration)
@@ -59,7 +59,7 @@ All **Chromium** Based Browsers can install the extension from the
 *   Search Registration/Operator from Popup Action
 *   Auto Fill New Incidents for US and Canada Registration
 
-### Planned Upcoming Features
+### Upcoming Features
 
 *   Infinite Scroll when Browsing Incidents
 
@@ -192,6 +192,8 @@ Other Web Extensions I have created and published:
 
 - [Link Extractor](https://github.com/cssnr/link-extractor)
 - [Open Links in New Tab](https://github.com/cssnr/open-links-in-new-tab)
+- [Auto Auth](https://github.com/cssnr/auto-auth)
+- [Cache Cleaner](https://github.com/cssnr/cache-cleaner)
 - [HLS Video Downloader](https://github.com/cssnr/hls-video-downloader)
 - [SMWC Web Extension](https://github.com/cssnr/smwc-web-extension)
 - [PlayDrift Extension](https://github.com/cssnr/playdrift-extension)
