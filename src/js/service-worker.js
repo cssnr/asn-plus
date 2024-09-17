@@ -20,6 +20,40 @@ chrome.omnibox.onInputEntered.addListener(onInputEntered)
 const omniboxDefault = 'ASN - registration OR operator Search'
 const asnHomePageURL = 'https://asn.flightsafety.org/'
 
+chrome.alarms.onAlarm.addListener(onAlarm)
+// noinspection JSIgnoredPromiseFromCall
+chrome.alarms.create('checkUpdates', { periodInMinutes: 1 })
+
+async function onAlarm(alarmInfo) {
+    console.debug('onAlarm:', alarmInfo)
+    // const now = Date.now()
+    // console.log('now:', now)
+    const { options } = await chrome.storage.sync.get(['options'])
+    console.debug('checkUpdates:', options.checkUpdates)
+    if (!options.checkUpdates) {
+        console.debug('Skipping Updates Check')
+        return
+    }
+    console.debug('checkFrequency:', options.checkFrequency)
+    let { lastChecked } = await chrome.storage.local.get(['lastChecked'])
+    console.debug('lastChecked:', lastChecked)
+    const diff = alarmInfo.scheduledTime - lastChecked
+    console.debug('diff:', diff)
+    const last = Math.floor(diff / 1000 / 60)
+    console.debug('last:', last)
+    if (!diff || last >= options.checkFrequency) {
+        await chrome.storage.local.set({
+            lastChecked: alarmInfo.scheduledTime,
+        })
+        await checkUpdates(options)
+    }
+}
+
+async function checkUpdates(options) {
+    console.debug('%cChecking Updates Now', 'color: Lime')
+    console.debug('checkURL:', options.checkURL)
+}
+
 /**
  * On Installed Callback
  * @function onInstalled
