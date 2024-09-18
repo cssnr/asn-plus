@@ -35,7 +35,7 @@ async function onAlarm(alarmInfo) {
         return
     }
     console.debug('checkFrequency:', options.checkFrequency)
-    let { lastChecked } = await chrome.storage.local.get(['lastChecked'])
+    const { lastChecked } = await chrome.storage.local.get(['lastChecked'])
     console.debug('lastChecked:', lastChecked)
     const diff = alarmInfo.scheduledTime - lastChecked
     console.debug('diff:', diff)
@@ -52,6 +52,63 @@ async function onAlarm(alarmInfo) {
 async function checkUpdates(options) {
     console.debug('%cChecking Updates Now', 'color: Lime')
     console.debug('checkURL:', options.checkURL)
+    let { seen, unseen } = await chrome.storage.sync.get(['seen', 'unseen'])
+    // console.debug('seen, unseen:', seen, unseen)
+    const response = await fetch(options.checkURL)
+    if (!response.ok) {
+        console.error(`Error ${response.status} fetching: ${options.checkURL}`)
+        return
+    }
+    console.debug('response:', response)
+    const text = await response.text()
+    // console.debug('text:', text)
+    const parser = new DOMParser()
+    const htmlDocument = parser.parseFromString(text, 'text/html')
+    console.debug('htmlDocument:', htmlDocument)
+    const nodeList = htmlDocument.querySelectorAll('td.list a')
+    console.debug('nodeList:', nodeList)
+    let uc = 0
+    for (const el of nodeList) {
+        // console.debug('el:', el)
+        const id = el.href.split('/').pop()
+        // console.debug('id:', id)
+        if (!seen.includes(id) && !unseen.includes(id)) {
+            unseen.push(id)
+            uc++
+        }
+    }
+    console.debug('uc:', uc)
+    if (uc) {
+        await chrome.storage.sync.set({ unseen })
+        console.debug('%cUpdated unseen:', 'color: Yellow', unseen)
+    }
+}
+
+/**
+ * updateIcon
+ * @param {String[]} unseen
+ */
+function updateIcon(unseen) {
+    console.debug('updateIcon:', unseen)
+    // let color, text
+    let color = 'red'
+    let text
+    if (!unseen.length) {
+        // color = 'red'
+        text = ''
+    } else {
+        // color = 'red'
+        text = unseen.length.toString()
+    }
+    console.debug(`color: ${color}, text: ${text}`)
+    // noinspection JSIgnoredPromiseFromCall
+    chrome.action.setBadgeBackgroundColor({
+        color,
+    })
+    // noinspection JSIgnoredPromiseFromCall
+    chrome.action.setBadgeText({
+        text,
+    })
 }
 
 /**
@@ -306,6 +363,9 @@ function onChanged(changes, namespace) {
                 }
             }
         }
+        if (namespace === 'sync' && key === 'unseen') {
+            updateIcon(newValue)
+        }
     }
 }
 
@@ -482,7 +542,19 @@ function createContextMenus() {
  */
 async function setDefaultOptions(defaultOptions) {
     console.log('setDefaultOptions', defaultOptions)
-    let { options } = await chrome.storage.sync.get(['options'])
+    let { options, seen, unseen } = await chrome.storage.sync.get([
+        'options',
+        'seen',
+        'unseen',
+    ])
+    if (typeof seen === 'undefined') {
+        console.log('Initialized empty: seen')
+        await chrome.storage.sync.set({ seen: [] })
+    }
+    if (typeof unseen === 'undefined') {
+        console.log('Initialized empty: unseen')
+        await chrome.storage.sync.set({ unseen: [] })
+    }
     options = options || {}
     let changed = false
     for (const [key, value] of Object.entries(defaultOptions)) {
@@ -494,8 +566,8 @@ async function setDefaultOptions(defaultOptions) {
         }
     }
     if (changed) {
+        console.log('options changed:', options)
         await chrome.storage.sync.set({ options })
-        console.log('changed:', options)
     }
     return options
 }

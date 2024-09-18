@@ -61,6 +61,10 @@ function processOptions(options) {
     if (options.enableKeyboard) {
         enableKeyboard()
     }
+    if (options.checkUpdates) {
+        // noinspection JSIgnoredPromiseFromCall
+        checkSeen()
+    }
     if (window.location.pathname.startsWith('/wikibase')) {
         if (options.hideEntryWarning) {
             hideEntryWarning()
@@ -79,6 +83,48 @@ function processOptions(options) {
         }
     }
     if (window.location.pathname === '/wikibase/web_db_input.php') {
+        // noinspection JSIgnoredPromiseFromCall
         enableAutoFill(options)
+    }
+}
+
+async function checkSeen() {
+    console.debug('%c checkSeen', 'color: Khaki')
+    checkSeen = function () {}
+    let { seen, unseen } = await chrome.storage.sync.get(['seen', 'unseen'])
+    // console.debug('seen, unseen:', seen, unseen)
+    const nodeList = document.querySelectorAll('td.list a')
+    console.debug('nodeList:', nodeList)
+    let sc = 0
+    let uc = 0
+    for (const el of nodeList) {
+        // console.debug('el:', el)
+        const id = el.href.split('/').pop()
+        console.debug('id:', id)
+        if (!seen.includes(id)) {
+            seen.push(id)
+            // console.debug(`%cAdding seen ID: ${id}`, 'color: Aqua')
+            sc++
+        }
+        if (unseen.includes(id)) {
+            const idx = unseen.indexOf(id)
+            console.debug(
+                `%cRemoving unseen ID: ${id} idx: ${idx}`,
+                'color: Orange'
+            )
+            unseen.splice(idx, 1)
+            uc++
+        }
+    }
+    console.debug('sc:', sc)
+    if (sc) {
+        seen = seen.slice(-500)
+        await chrome.storage.sync.set({ seen })
+        console.debug('%cUpdated seen:', 'color: Lime', seen)
+    }
+    console.debug('uc:', uc)
+    if (uc) {
+        await chrome.storage.sync.set({ unseen })
+        console.debug('%cUpdated unseen:', 'color: Yellow', unseen)
     }
 }
