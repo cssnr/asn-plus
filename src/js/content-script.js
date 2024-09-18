@@ -92,7 +92,7 @@ async function checkSeen() {
     console.debug('%c checkSeen', 'color: Khaki')
     checkSeen = function () {}
     let { seen, unseen } = await chrome.storage.sync.get(['seen', 'unseen'])
-    // console.debug('seen, unseen:', seen, unseen)
+    console.debug('seen, unseen:', seen, unseen)
     const nodeList = document.querySelectorAll('td.list a')
     console.debug('nodeList:', nodeList)
     let sc = 0

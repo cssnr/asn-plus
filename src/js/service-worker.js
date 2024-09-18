@@ -91,7 +91,7 @@ async function checkUpdates(options) {
 function updateIcon(unseen) {
     console.debug('updateIcon:', unseen)
     // let color, text
-    let color = 'red'
+    // let color = 'red'
     let text
     if (!unseen.length) {
         // color = 'red'
@@ -100,11 +100,12 @@ function updateIcon(unseen) {
         // color = 'red'
         text = unseen.length.toString()
     }
-    console.debug(`color: ${color}, text: ${text}`)
+    // console.debug(`color: ${color}`)
+    console.debug(`text: ${text}`)
     // noinspection JSIgnoredPromiseFromCall
-    chrome.action.setBadgeBackgroundColor({
-        color,
-    })
+    // chrome.action.setBadgeBackgroundColor({
+    //     color,
+    // })
     // noinspection JSIgnoredPromiseFromCall
     chrome.action.setBadgeText({
         text,
@@ -179,6 +180,10 @@ async function onInstalled(details) {
         }
     }
     setUninstallURL()
+    const { unseen } = await chrome.storage.sync.get(['unseen'])
+    if (unseen.length) {
+        updateIcon(unseen)
+    }
 }
 
 /**
@@ -196,6 +201,10 @@ async function onStartup() {
             createContextMenus()
         }
         setUninstallURL()
+    }
+    const { unseen } = await chrome.storage.sync.get(['unseen'])
+    if (unseen.length) {
+        updateIcon(unseen)
     }
 }
 
