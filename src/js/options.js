@@ -10,6 +10,8 @@ import {
     updateOptions,
 } from './export.js'
 
+import { countryList } from './vars.js'
+
 chrome.storage.onChanged.addListener(onChanged)
 chrome.permissions.onAdded.addListener(onAdded)
 chrome.permissions.onRemoved.addListener(onRemoved)
@@ -77,6 +79,14 @@ async function initOptions() {
                 addSpeechVoices(options, voices)
             }
         }
+    }
+
+    const ccDataList = document.getElementById('countryCodeList')
+    for (const cc of countryList) {
+        console.debug('cc:', cc)
+        const option = document.createElement('option')
+        option.value = cc
+        ccDataList.appendChild(option)
     }
 }
 

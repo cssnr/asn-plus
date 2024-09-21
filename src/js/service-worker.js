@@ -52,6 +52,10 @@ async function onAlarm(alarmInfo) {
 async function checkUpdates(options) {
     console.debug('%cChecking Updates Now', 'color: Lime')
     console.debug('checkURL:', options.checkURL)
+    if (!options.checkURL) {
+        console.warn('No checkURL defined in Options.')
+        return
+    }
     let { seen, unseen } = await chrome.storage.sync.get(['seen', 'unseen'])
     // console.debug('seen, unseen:', seen, unseen)
     const response = await fetch(options.checkURL)

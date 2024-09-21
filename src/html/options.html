@@ -189,7 +189,7 @@
                     <label for="checkURL" class="form-label">
                         <i class="fa-solid fa-globe me-1"></i> Check URL
                     </label>
-                    <input id="checkURL" aria-describedby="checkURLHelp" type="email" class="form-control" autocomplete="off" placeholder="ASN Check URL">
+                    <input id="checkURL" aria-describedby="checkURLHelp"  type="url" class="form-control" autocomplete="off" placeholder="ASN Check URL">
                     <div class="form-text" id="checkURLHelp">
                         URL to check for updates.
                     </div>
@@ -229,12 +229,13 @@
                         <i class="fa-solid fa-circle-info ms-1"></i>
                     </span>
                 </label>
-                <input id="countryCode" aria-describedby="countryCodeHelp" type="text" class="form-control" autocomplete="off">
+                <input id="countryCode" aria-describedby="countryCodeHelp" list="countryCodeList" type="text" class="form-control" autocomplete="off">
                 <div class="form-text" id="countryCodeHelp">
                     Country URL or Code from
                     <a class="d-inline-block" href="https://asn.flightsafety.org/asndb/countries/" target="_blank" rel="noopener">
                         ASN <i class="fa-solid fa-arrow-up-right-from-square fa-xs ms-1"></i></a>.
                 </div>
+                <datalist id="countryCodeList"></datalist>
             </div>
         </div>
         <div class="row mt-2">
