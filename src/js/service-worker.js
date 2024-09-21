@@ -137,7 +137,7 @@ async function onInstalled(details) {
         countryCode: 'N',
         searchType: 'registration',
         speechVoice: '',
-        speechRate: '1.1',
+        speechRate: 1.1,
         autoFill: false,
         asnUsername: '',
         asnEmail: '',
@@ -145,7 +145,7 @@ async function onInstalled(details) {
         pictureURL: 'https://images.cssnr.com/aviation',
         checkUpdates: false,
         checkURL: 'https://asn.flightsafety.org/asndb/year/2024',
-        checkFrequency: '15',
+        checkFrequency: 30,
         contextMenu: true,
         showUpdate: false,
     })
