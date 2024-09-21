@@ -56,13 +56,6 @@ async function initPopup() {
         }
     })
 
-    chrome.storage.sync.get(['unseen']).then((items) => {
-        console.debug('unseen:', items.unseen)
-        const div = document.getElementById('new-incidents')
-        div.querySelector('span').textContent = items.unseen.length
-        div.classList.remove('d-none')
-    })
-
     const { options } = await chrome.storage.sync.get(['options'])
     console.debug('options:', options)
     updateOptions(options)
@@ -73,6 +66,15 @@ async function initPopup() {
     document.querySelector(
         `input[name="searchType"][value="${options.searchType}"]`
     ).checked = true
+
+    if (options.checkUpdates) {
+        chrome.storage.sync.get(['unseen']).then((items) => {
+            console.debug('unseen:', items.unseen)
+            const div = document.getElementById('new-incidents')
+            div.querySelector('span').textContent = items.unseen.length
+            div.classList.remove('d-none')
+        })
+    }
 }
 
 async function populateYearLinks() {

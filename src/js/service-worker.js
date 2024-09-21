@@ -84,31 +84,21 @@ async function checkUpdates(options) {
     }
 }
 
-/**
- * updateIcon
- * @param {String[]} unseen
- */
-function updateIcon(unseen) {
-    console.debug('updateIcon:', unseen)
-    // let color, text
-    // let color = 'red'
-    let text
-    if (!unseen.length) {
-        // color = 'red'
-        text = ''
-    } else {
-        // color = 'red'
-        text = unseen.length.toString()
-    }
-    // console.debug(`color: ${color}`)
-    console.debug(`text: ${text}`)
+function updateUnseenBadge() {
     // noinspection JSIgnoredPromiseFromCall
-    // chrome.action.setBadgeBackgroundColor({
-    //     color,
-    // })
-    // noinspection JSIgnoredPromiseFromCall
-    chrome.action.setBadgeText({
-        text,
+    chrome.action.setBadgeBackgroundColor({ color: 'green' })
+    chrome.storage.sync.get(['options', 'unseen']).then((items) => {
+        console.debug('options:', items.options)
+        if (!items.options.checkUpdates || !items.unseen.length) {
+            // noinspection JSIgnoredPromiseFromCall
+            chrome.action.setBadgeText({ text: '' })
+            return
+        }
+        console.debug('unseen:', items.unseen)
+        if (items.unseen.length) {
+            // noinspection JSIgnoredPromiseFromCall
+            chrome.action.setBadgeText({ text: items.unseen.length.toString() })
+        }
     })
 }
 
@@ -180,11 +170,7 @@ async function onInstalled(details) {
         }
     }
     setUninstallURL()
-    await chrome.action.setBadgeBackgroundColor({ color: 'green' })
-    const { unseen } = await chrome.storage.sync.get(['unseen'])
-    if (unseen.length) {
-        updateIcon(unseen)
-    }
+    updateUnseenBadge()
 }
 
 /**
@@ -203,11 +189,7 @@ async function onStartup() {
         }
         setUninstallURL()
     }
-    await chrome.action.setBadgeBackgroundColor({ color: 'green' })
-    const { unseen } = await chrome.storage.sync.get(['unseen'])
-    if (unseen.length) {
-        updateIcon(unseen)
-    }
+    updateUnseenBadge()
 }
 
 function setUninstallURL() {
@@ -253,12 +235,14 @@ function onMessage(message, sender, sendResponse) {
         console.debug(`SW: Dark Mode: ${message.dark}`, darkCss)
         if (message.dark === 'off') {
             try {
+                // noinspection JSIgnoredPromiseFromCall
                 chrome.scripting.removeCSS(darkCss)
             } catch (e) {
                 console.warn('e', e)
             }
         } else if (message.dark === 'on') {
             try {
+                // noinspection JSIgnoredPromiseFromCall
                 chrome.scripting.insertCSS(darkCss)
             } catch (e) {
                 console.warn('e', e)
@@ -272,6 +256,7 @@ function onMessage(message, sender, sendResponse) {
         console.debug('autofill:', message.autofill)
         const tabID = parseInt(message.autofill.tab)
         console.debug('tabID:', tabID)
+        // noinspection JSIgnoredPromiseFromCall
         chrome.tabs.sendMessage(tabID, message.autofill)
     } else {
         console.warn('Unmatched Message:', message)
@@ -303,6 +288,7 @@ function processRegistration(registration, sender, sendResponse) {
     }
     url.searchParams.append('tab', sender.tab.id.toString())
     console.debug('url', url)
+    // noinspection JSIgnoredPromiseFromCall
     chrome.tabs.create({ active: false, url: url.href })
 }
 
@@ -364,17 +350,23 @@ function onChanged(changes, namespace) {
             if (oldValue.darkMode !== newValue.darkMode) {
                 if (newValue?.darkMode) {
                     console.debug('Register Dark Mode.')
+                    // noinspection JSIgnoredPromiseFromCall
                     registerDarkMode()
                 } else {
                     console.debug('Unregister Dark Mode.')
+                    // noinspection JSIgnoredPromiseFromCall
                     chrome.scripting.unregisterContentScripts({
                         ids: ['asn-dark'],
                     })
                 }
             }
+            if (oldValue.checkUpdates !== newValue.checkUpdates) {
+                updateUnseenBadge()
+            }
         }
         if (namespace === 'sync' && key === 'unseen') {
-            updateIcon(newValue)
+            // updateIcon(newValue)
+            updateUnseenBadge()
         }
     }
 }
