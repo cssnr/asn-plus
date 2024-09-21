@@ -13,6 +13,8 @@ import {
 
 chrome.storage.onChanged.addListener(onChanged)
 document.addEventListener('DOMContentLoaded', initPopup)
+document.getElementById('open-unseen').addEventListener('click', openUnseen)
+document.getElementById('clear-unseen').addEventListener('click', clearUnseen)
 document
     .querySelectorAll('#options-form input')
     .forEach((el) => el.addEventListener('change', saveOptions))
@@ -52,6 +54,13 @@ async function initPopup() {
         if (!hasPerms) {
             console.log('%cHost Permissions Not Granted', 'color: Red')
         }
+    })
+
+    chrome.storage.sync.get(['unseen']).then((items) => {
+        console.debug('unseen:', items.unseen)
+        const div = document.getElementById('new-incidents')
+        div.querySelector('span').textContent = items.unseen.length
+        div.classList.remove('d-none')
     })
 
     const { options } = await chrome.storage.sync.get(['options'])
@@ -149,4 +158,32 @@ async function searchFormSubmit(event) {
     console.log(`url: ${url}`)
     await chrome.tabs.create({ active: true, url })
     window.close()
+}
+
+/**
+ * Open Unseen Click Callback
+ * @function openUnseen
+ * @param {UIEvent} event
+ */
+async function openUnseen(event) {
+    console.debug('openUnseen:', event)
+    const { unseen } = await chrome.storage.sync.get(['unseen'])
+    console.debug('unseen:', unseen)
+    for (const id of unseen) {
+        const url = `https://asn.flightsafety.org/wikibase/${id}`
+        console.debug('url:', url)
+        // noinspection ES6MissingAwait
+        chrome.tabs.create({ active: false, url })
+    }
+}
+
+/**
+ * Clear Unseen Click Callback
+ * @function clearUnseen
+ * @param {UIEvent} event
+ */
+async function clearUnseen(event) {
+    console.debug('clearUnseen:', event)
+    await chrome.storage.sync.set({ unseen: [] })
+    document.getElementById('new-incidents').classList.add('d-none')
 }

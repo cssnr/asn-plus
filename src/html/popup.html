@@ -86,7 +86,7 @@
             </div>
         </div>
         <div class="row mb-2">
-            <label for="searchTerm" class="visually-hidden"></label>
+            <label for="searchTerm" class="visually-hidden">Search Term</label>
             <div class="input-group">
                 <input id="searchTerm" type="text" class="form-control form-control-sm" placeholder="Registration or Operator"
                        aria-label="Registration or Operator" aria-describedby="submit-search" required>
@@ -94,6 +94,12 @@
             </div>
         </div>
     </form>
+
+    <div id="new-incidents" class="mb-2 d-none">
+        <span class="badge text-bg-danger"></span> New Incidents
+        <a id="open-unseen" role="button" class="link-warning mx-2">Open All</a>
+        <a id="clear-unseen" role="button" class="link-danger">Mark Read</a>
+    </div>
 
     <form id="options-form" class="mb-2">
         <div class="form-check form-switch">
