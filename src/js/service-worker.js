@@ -218,7 +218,6 @@ function setUninstallURL() {
     url.searchParams.append('version', manifest.version)
     chrome.runtime.setUninstallURL(url.href)
     console.debug(`setUninstallURL: ${url.href}`)
-    chrome.runtime.setUninstallURL(url.href)
 }
 
 /**
