@@ -83,7 +83,7 @@ async function initOptions() {
 
     const ccDataList = document.getElementById('countryCodeList')
     for (const cc of countryList) {
-        console.debug('cc:', cc)
+        // console.debug('cc:', cc)
         const option = document.createElement('option')
         option.value = cc
         ccDataList.appendChild(option)

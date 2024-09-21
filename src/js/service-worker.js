@@ -22,17 +22,17 @@ const asnHomePageURL = 'https://asn.flightsafety.org/'
 
 chrome.alarms.onAlarm.addListener(onAlarm)
 // noinspection JSIgnoredPromiseFromCall
-chrome.alarms.create('checkUpdates', { periodInMinutes: 1 })
+chrome.alarms.create('checkUpdates', { delayInMinutes: 1, periodInMinutes: 5 })
 
 async function onAlarm(alarmInfo) {
     console.debug('onAlarm:', alarmInfo)
-    // const now = Date.now()
-    // console.log('now:', now)
     const { options } = await chrome.storage.sync.get(['options'])
     console.debug('checkUpdates:', options.checkUpdates)
     if (!options.checkUpdates) {
-        console.debug('Skipping Updates Check')
-        return
+        return console.debug('Skipping Updates Check')
+    }
+    if (!options.checkURL) {
+        return console.warn('No checkURL defined in Options.')
     }
     console.debug('checkFrequency:', options.checkFrequency)
     const { lastChecked } = await chrome.storage.local.get(['lastChecked'])
@@ -52,10 +52,6 @@ async function onAlarm(alarmInfo) {
 async function checkUpdates(options) {
     console.debug('%cChecking Updates Now', 'color: Lime')
     console.debug('checkURL:', options.checkURL)
-    if (!options.checkURL) {
-        console.warn('No checkURL defined in Options.')
-        return
-    }
     let { seen, unseen } = await chrome.storage.sync.get(['seen', 'unseen'])
     // console.debug('seen, unseen:', seen, unseen)
     const response = await fetch(options.checkURL)
@@ -68,7 +64,7 @@ async function checkUpdates(options) {
     // console.debug('text:', text)
     const parser = new DOMParser()
     const htmlDocument = parser.parseFromString(text, 'text/html')
-    console.debug('htmlDocument:', htmlDocument)
+    // console.debug('htmlDocument:', htmlDocument)
     const nodeList = htmlDocument.querySelectorAll('td.list a')
     console.debug('nodeList:', nodeList)
     let uc = 0
