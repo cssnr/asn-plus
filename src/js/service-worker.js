@@ -180,6 +180,7 @@ async function onInstalled(details) {
         }
     }
     setUninstallURL()
+    await chrome.action.setBadgeBackgroundColor({ color: 'green' })
     const { unseen } = await chrome.storage.sync.get(['unseen'])
     if (unseen.length) {
         updateIcon(unseen)
@@ -202,6 +203,7 @@ async function onStartup() {
         }
         setUninstallURL()
     }
+    await chrome.action.setBadgeBackgroundColor({ color: 'green' })
     const { unseen } = await chrome.storage.sync.get(['unseen'])
     if (unseen.length) {
         updateIcon(unseen)
