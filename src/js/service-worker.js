@@ -85,16 +85,17 @@ async function checkUpdates(options) {
 }
 
 function updateUnseenBadge() {
+    console.debug('%c updateUnseenBadge', 'color: Lime')
     // noinspection JSIgnoredPromiseFromCall
     chrome.action.setBadgeBackgroundColor({ color: 'green' })
     chrome.storage.sync.get(['options', 'unseen']).then((items) => {
         console.debug('options:', items.options)
+        console.debug('unseen:', items.unseen)
         if (!items.options.checkUpdates || !items.unseen.length) {
             // noinspection JSIgnoredPromiseFromCall
             chrome.action.setBadgeText({ text: '' })
             return
         }
-        console.debug('unseen:', items.unseen)
         if (items.unseen.length) {
             // noinspection JSIgnoredPromiseFromCall
             chrome.action.setBadgeText({ text: items.unseen.length.toString() })

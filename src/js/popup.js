@@ -68,12 +68,18 @@ async function initPopup() {
     ).checked = true
 
     if (options.checkUpdates) {
-        chrome.storage.sync.get(['unseen']).then((items) => {
-            console.debug('unseen:', items.unseen)
-            const div = document.getElementById('new-incidents')
-            div.querySelector('span').textContent = items.unseen.length
-            div.classList.remove('d-none')
-        })
+        chrome.storage.sync
+            .get(['unseen'])
+            .then((items) => enableUnseen(items.unseen))
+    }
+}
+
+function enableUnseen(unseen) {
+    console.debug('enableUnseen:', unseen)
+    const div = document.getElementById('new-incidents')
+    if (div && unseen.length) {
+        div.querySelector('span').textContent = unseen.length
+        div.classList.remove('d-none')
     }
 }
 

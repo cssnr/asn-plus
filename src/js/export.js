@@ -120,6 +120,27 @@ export async function saveOptions(event) {
         const selectedOption = event.target.selectedOptions[0]
         console.debug('value:', selectedOption.value)
         value = selectedOption.value
+    } else if (key === 'reset-check-url') {
+        console.debug('reset-check-url:', event.target.dataset.default)
+        key = 'checkURL'
+        value = event.target.dataset.default
+    } else if (key === 'checkURL') {
+        value = event.target.value
+        console.debug('value:', value)
+        if (countryList.includes(value)) {
+            value = `https://asn.flightsafety.org/asndb/country/${value}`
+            console.debug('value:', value)
+        }
+        try {
+            const url = new URL(value)
+            console.debug('url:', url)
+            if (url.origin !== 'https://asn.flightsafety.org') {
+                return showToast('Invalid URL.', 'danger')
+            }
+        } catch (e) {
+            console.warn('e:', e)
+            return showToast(`Error: ${e.message}`, 'danger')
+        }
     } else if (key === 'reset-country') {
         options['countryCode'] = 'N'
         key = 'countryDisplay'
@@ -229,6 +250,7 @@ export function onChanged(changes, namespace) {
  */
 export async function updateManifest() {
     const manifest = chrome.runtime.getManifest()
+    console.debug('updateManifest:', manifest)
     document.querySelectorAll('.version').forEach((el) => {
         el.textContent = manifest.version
     })
