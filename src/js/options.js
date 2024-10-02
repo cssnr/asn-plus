@@ -61,7 +61,7 @@ async function initOptions() {
 
     checkPerms().then((hasPerms) => {
         if (!hasPerms) {
-            console.log('%cHost Permissions Not Granted', 'color: Red')
+            console.log('%c Host Permissions Not Granted', 'color: Red')
         }
     })
 

@@ -20,6 +20,33 @@ chrome.omnibox.onInputEntered.addListener(onInputEntered)
 const omniboxDefault = 'ASN - registration OR operator Search'
 const asnHomePageURL = 'https://asn.flightsafety.org/'
 
+// chrome.tabs.onActivated.addListener(onActivated)
+//
+// async function onActivated(info) {
+//     console.debug('onActivated:', info)
+//     const tab = await chrome.tabs.get(info.tabId)
+//     console.debug('tab:', tab)
+//     if (tab.url.startsWith('https://asn.flightsafety.org/wikibase/')) {
+//         const id = tab.url.split('/').at(-1).trim()
+//         console.debug('%c id:', 'color: Lime', id)
+//         let { seen, unseen } = await chrome.storage.sync.get(['seen', 'unseen'])
+//         console.debug('seen, unseen:', seen, unseen)
+//         if (!seen.includes(id)) {
+//             seen.push(id)
+//             await chrome.storage.sync.set({ seen })
+//         }
+//         if (unseen.includes(id)) {
+//             const idx = unseen.indexOf(id)
+//             console.debug(
+//                 `%c Removing unseen ID: ${id} idx: ${idx}`,
+//                 'color: Orange'
+//             )
+//             unseen.splice(idx, 1)
+//             await chrome.storage.sync.set({ unseen })
+//         }
+//     }
+// }
+
 chrome.alarms.onAlarm.addListener(onAlarm)
 // noinspection JSIgnoredPromiseFromCall
 chrome.alarms.create('checkUpdates', { delayInMinutes: 1, periodInMinutes: 5 })
@@ -50,7 +77,7 @@ async function onAlarm(alarmInfo) {
 }
 
 async function checkUpdates(options) {
-    console.debug('%cChecking Updates Now', 'color: Lime')
+    console.debug('%c Checking Updates Now', 'color: Lime')
     console.debug('checkURL:', options.checkURL)
     let { seen, unseen } = await chrome.storage.sync.get(['seen', 'unseen'])
     // console.debug('seen, unseen:', seen, unseen)
@@ -62,15 +89,11 @@ async function checkUpdates(options) {
     console.debug('response:', response)
     const text = await response.text()
     // console.debug('text:', text)
-    const parser = new DOMParser()
-    const htmlDocument = parser.parseFromString(text, 'text/html')
-    // console.debug('htmlDocument:', htmlDocument)
-    const nodeList = htmlDocument.querySelectorAll('td.list a')
-    console.debug('nodeList:', nodeList)
+    let ids = await parseIds(text)
+    console.debug('ids:', ids)
+
     let uc = 0
-    for (const el of nodeList) {
-        // console.debug('el:', el)
-        const id = el.href.split('/').pop()
+    for (const id of ids) {
         // console.debug('id:', id)
         if (!seen.includes(id) && !unseen.includes(id)) {
             unseen.push(id)
@@ -80,7 +103,44 @@ async function checkUpdates(options) {
     console.debug('uc:', uc)
     if (uc) {
         await chrome.storage.sync.set({ unseen })
-        console.debug('%cUpdated unseen:', 'color: Yellow', unseen)
+        console.debug('%c Updated unseen:', 'color: Yellow', unseen)
+    }
+}
+
+/**
+ * @function parseIds
+ * @param {String} text
+ * @return {Promise<String[]>}
+ */
+async function parseIds(text) {
+    console.debug('parseIds:', text)
+    if (typeof document !== 'undefined') {
+        console.debug('%c FIREFOX DETECTED', 'color: Orange')
+        const parser = new DOMParser()
+        const htmlDocument = parser.parseFromString(text, 'text/html')
+        // console.debug('htmlDocument:', htmlDocument)
+        const nodeList = htmlDocument.querySelectorAll('td.list a')
+        console.debug('nodeList 1:', nodeList)
+        const ids = []
+        for (const el of nodeList) {
+            // console.debug('el:', el)
+            const id = el.href.split('/').pop()
+            // console.debug('id:', id)
+            ids.push(id)
+        }
+        console.debug('ids FF:', ids)
+        return ids
+    } else {
+        console.debug('%c CHROME DETECTED', 'color: Aqua')
+        await chrome.offscreen.createDocument({
+            url: 'html/offscreen.html',
+            reasons: [chrome.offscreen.Reason.DOM_PARSER],
+            justification: 'Use DOMParser to Update Unseen.',
+        })
+        const resp = await chrome.runtime.sendMessage({ update: text })
+        console.debug('sendMessage: resp:', resp)
+        console.debug('ids Chrome:', resp.ids)
+        return resp.ids
     }
 }
 
@@ -89,14 +149,15 @@ function updateUnseenBadge() {
     // noinspection JSIgnoredPromiseFromCall
     chrome.action.setBadgeBackgroundColor({ color: 'green' })
     chrome.storage.sync.get(['options', 'unseen']).then((items) => {
+        console.debug('items:', items)
         console.debug('options:', items.options)
         console.debug('unseen:', items.unseen)
-        if (!items.options.checkUpdates || !items.unseen.length) {
+        if (!items.options?.checkUpdates || !items.unseen?.length) {
             // noinspection JSIgnoredPromiseFromCall
             chrome.action.setBadgeText({ text: '' })
             return
         }
-        if (items.unseen.length) {
+        if (items.unseen?.length) {
             // noinspection JSIgnoredPromiseFromCall
             chrome.action.setBadgeText({ text: items.unseen.length.toString() })
         }
@@ -133,6 +194,7 @@ async function onInstalled(details) {
         checkUpdates: false,
         checkURL: 'https://asn.flightsafety.org/asndb/year/2024',
         checkFrequency: 30,
+        checkList: false,
         contextMenu: true,
         showUpdate: false,
     })

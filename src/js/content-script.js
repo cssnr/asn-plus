@@ -1,6 +1,6 @@
 // JS Content Script
 
-console.log('%cRUNNING content-script.js', 'color: Khaki')
+console.log('%c RUNNING content-script.js', 'color: Khaki')
 
 window.addEventListener('DOMContentLoaded', domContentLoaded)
 
@@ -61,13 +61,21 @@ function processOptions(options) {
     if (options.enableKeyboard) {
         enableKeyboard()
     }
-    if (options.checkUpdates) {
+    if (options.checkUpdates && options.checkList) {
         // noinspection JSIgnoredPromiseFromCall
-        checkSeen()
+        checkSeenList()
     }
     if (window.location.pathname.startsWith('/wikibase')) {
         if (options.hideEntryWarning) {
             hideEntryWarning()
+        }
+        if (options.checkUpdates) {
+            if (document.hasFocus()) {
+                // noinspection JSIgnoredPromiseFromCall
+                checkSeen()
+            } else {
+                window.addEventListener('focus', checkSeen, { once: true })
+            }
         }
     }
     if (/^\/wikibase\/\d+/.test(window.location.pathname)) {
@@ -89,8 +97,30 @@ function processOptions(options) {
 }
 
 async function checkSeen() {
-    console.debug('%c checkSeen', 'color: Khaki')
+    console.debug('%c checkSeen', 'color: Yellow')
     checkSeen = function () {}
+    const id = document.URL.split('/').at(-1).trim()
+    console.debug('%c id:', 'color: Lime', id)
+    let { seen, unseen } = await chrome.storage.sync.get(['seen', 'unseen'])
+    console.debug('seen, unseen:', seen, unseen)
+    if (!seen.includes(id)) {
+        seen.push(id)
+        await chrome.storage.sync.set({ seen })
+    }
+    if (unseen.includes(id)) {
+        const idx = unseen.indexOf(id)
+        console.debug(
+            `%c Removing unseen ID: ${id} idx: ${idx}`,
+            'color: Orange'
+        )
+        unseen.splice(idx, 1)
+        await chrome.storage.sync.set({ unseen })
+    }
+}
+
+async function checkSeenList() {
+    console.debug('%c checkSeenList', 'color: OrangeRed')
+    checkSeenList = function () {}
     let { seen, unseen } = await chrome.storage.sync.get(['seen', 'unseen'])
     console.debug('seen, unseen:', seen, unseen)
     const nodeList = document.querySelectorAll('td.list a')
@@ -103,13 +133,13 @@ async function checkSeen() {
         console.debug('id:', id)
         if (!seen.includes(id)) {
             seen.push(id)
-            // console.debug(`%cAdding seen ID: ${id}`, 'color: Aqua')
+            // console.debug(`%c Adding seen ID: ${id}`, 'color: Aqua')
             sc++
         }
         if (unseen.includes(id)) {
             const idx = unseen.indexOf(id)
             console.debug(
-                `%cRemoving unseen ID: ${id} idx: ${idx}`,
+                `%c Removing unseen ID: ${id} idx: ${idx}`,
                 'color: Orange'
             )
             unseen.splice(idx, 1)
@@ -120,11 +150,11 @@ async function checkSeen() {
     if (sc) {
         seen = seen.slice(-500)
         await chrome.storage.sync.set({ seen })
-        console.debug('%cUpdated seen:', 'color: Lime', seen)
+        console.debug('%c Updated seen:', 'color: Lime', seen)
     }
     console.debug('uc:', uc)
     if (uc) {
         await chrome.storage.sync.set({ unseen })
-        console.debug('%cUpdated unseen:', 'color: Yellow', unseen)
+        console.debug('%c Updated unseen:', 'color: Yellow', unseen)
     }
 }

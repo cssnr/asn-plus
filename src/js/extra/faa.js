@@ -1,6 +1,6 @@
 // JS for registry.faa.gov
 
-console.log('%cRUNNING faa.js', 'color: Khaki')
+console.log('%c RUNNING faa.js', 'color: Khaki')
 
 const searchParams = new URLSearchParams(window.location.search)
 console.debug('searchParams:', searchParams)

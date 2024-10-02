@@ -93,13 +93,15 @@
         </div>
     </form>
 
-    <div id="new-incidents" class="d-none">
-        <span class="badge text-bg-success"></span> New Incidents
-        <a id="open-unseen" role="button" class="link-warning">Open All</a>
-        <a id="clear-unseen" role="button" class="link-danger">Mark Read</a>
+    <div class="has-perms d-none">
+        <div id="new-incidents" class="mb-2 d-none">
+            <span class="badge text-bg-success"></span> New Incidents
+            <a id="open-unseen" role="button" class="link-warning">Open All</a>
+            <a id="clear-unseen" role="button" class="link-danger">Mark Read</a>
+        </div>
     </div>
 
-    <form id="options-form" class="mb-2">
+    <form id="options-form" class="">
         <div class="form-check form-switch">
             <input class="form-check-input" id="darkMode" type="checkbox" role="switch">
             <label class="form-check-label" for="darkMode">Enable ASN Dark Mode</label>
@@ -145,6 +147,7 @@
             <label class="form-check-label" for="enableKeyboard">Enable Keyboard Shortcuts</label>
             <i class="fa-solid fa-circle-info ms-1" data-bs-toggle="tooltip" data-bs-title="Navigate the Site with the Keyboard."></i>
         </div>
+
         <div class="form-check form-switch">
             <input class="form-check-input" id="autoFill" type="checkbox" role="switch" data-related="autoFillOptions">
             <label class="form-check-label" for="autoFill">Enable New Incident Auto Fill</label>
@@ -158,11 +161,20 @@
                     <i class="fa-solid fa-check-double me-1"></i> Grant Extra Permissions</button>
             </div>
         </div>
+
         <div class="form-check form-switch">
             <input class="form-check-input" id="checkUpdates" type="checkbox" role="switch" data-related="checkUpdatesOptions">
             <label class="form-check-label" for="checkUpdates">Periodically Check New Incidents</label>
             <i class="fa-solid fa-circle-info ms-1" data-bs-toggle="tooltip" data-bs-title="Periodically Check for New Incidents."></i>
         </div>
+        <div id="checkUpdatesOptions" style="display: none;">
+            <div class="form-check form-switch ms-4">
+                <input class="form-check-input" id="checkList" type="checkbox" role="switch">
+                <label class="form-check-label" for="checkList">Mark Read from List Views</label>
+                <i class="fa-solid fa-circle-info ms-1" data-bs-toggle="tooltip" data-bs-title="Disabled this to only mark read when viewing incidents."></i>
+            </div>
+        </div>
+
     </form>
 
 <!--    <a class="btn btn-sm btn-outline-primary w-100" role="button" href="../html/options.html">-->

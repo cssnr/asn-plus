@@ -132,6 +132,13 @@
             <i class="fa-solid fa-circle-info ms-1" data-bs-toggle="tooltip" data-bs-title="Periodically Check for New Incidents."></i>
         </div>
         <div class="mt-0" id="checkUpdatesOptions" style="display: none;">
+
+            <div class="form-check form-switch ms-4">
+                <input class="form-check-input" id="checkList" type="checkbox" role="switch">
+                <label class="form-check-label" for="checkList">Mark Read from List Views</label>
+                <i class="fa-solid fa-circle-info ms-1" data-bs-toggle="tooltip" data-bs-title="Disabled this to only mark read when viewing incidents."></i>
+            </div>
+
             <div class="row">
                 <div class="col-12 col-sm-8 mb-2">
                     <a id="reset-check-url" class="float-end align-bottom small" role="button"
@@ -215,21 +222,13 @@
         <hr class="my-2">
         <div class="form-check form-switch">
             <input class="form-check-input" id="contextMenu" type="checkbox" role="switch">
-            <label class="form-check-label" for="contextMenu" aria-describedby="contextMenuHelp">
-                Enable Right Click Menu
-                <span data-bs-toggle="tooltip" data-bs-title="Show Context Menu on Right Click.">
-                    <i class="fa-solid fa-circle-info ms-1"></i>
-                </span>
-            </label>
+            <label class="form-check-label" for="contextMenu">Enable Right Click Menu</label>
+            <i class="fa-solid fa-circle-info ms-1" data-bs-toggle="tooltip" data-bs-title="Show Context Menu on Right Click."></i>
         </div>
         <div class="form-check form-switch">
             <input class="form-check-input" id="showUpdate" type="checkbox" role="switch">
-            <label class="form-check-label" for="showUpdate" aria-describedby="showUpdateHelp">
-                Show Release Notes on Update
-                <span data-bs-toggle="tooltip" data-bs-title="Show Release Notes on Version Update.">
-                    <i class="fa-solid fa-circle-info ms-1"></i>
-                </span>
-            </label>
+            <label class="form-check-label" for="showUpdate">Show Release Notes on Update</label>
+            <i class="fa-solid fa-circle-info ms-1" data-bs-toggle="tooltip" data-bs-title="Show Release Notes on Version Update."></i>
         </div>
 
         <h5 class="mt-3">

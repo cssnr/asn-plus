@@ -3,7 +3,7 @@
 /* eslint no-func-assign: "off" */
 /* eslint no-unused-vars: "off" */
 
-console.log('%cRUNNING asn.js', 'color: Khaki')
+console.log('%c RUNNING asn.js', 'color: Khaki')
 
 const tagNames = ['INPUT', 'TEXTAREA', 'SELECT', 'OPTION']
 

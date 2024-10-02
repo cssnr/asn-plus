@@ -176,7 +176,7 @@ export async function saveOptions(event) {
     }
     if (value !== undefined) {
         options[key] = value
-        console.log(`Set %c${key}:`, 'color: Khaki', value)
+        console.log(`Set %c ${key}:`, 'color: Khaki', value)
         await chrome.storage.sync.set({ options })
     } else {
         console.warn('No Value for key:', key)
@@ -236,11 +236,36 @@ function hideShowElement(selector, show, speed = 'fast') {
  */
 export function onChanged(changes, namespace) {
     console.debug('onChanged:', changes, namespace)
-    for (const [key, { newValue }] of Object.entries(changes)) {
+    for (const [key, { oldValue, newValue }] of Object.entries(changes)) {
         if (namespace === 'sync' && key === 'options') {
             console.debug('newValue:', newValue)
             updateOptions(newValue)
+            if (oldValue.checkUpdates !== newValue.checkUpdates) {
+                if (newValue.checkUpdates) {
+                    chrome.storage.sync
+                        .get(['unseen'])
+                        .then((items) => enableUnseen(items.unseen))
+                } else {
+                    document
+                        ?.getElementById('new-incidents')
+                        ?.classList?.add('d-none')
+                }
+            }
         }
+    }
+}
+
+export function enableUnseen(unseen) {
+    console.debug('enableUnseen:', unseen)
+    const div = document.getElementById('new-incidents')
+    if (!div) {
+        return console.warn('#new-incidents not found')
+    }
+    if (unseen.length) {
+        div.querySelector('span').textContent = unseen.length
+        div.classList.remove('d-none')
+    } else {
+        div.classList.add('d-none')
     }
 }
 
