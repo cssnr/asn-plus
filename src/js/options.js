@@ -10,6 +10,8 @@ import {
     updateOptions,
 } from './export.js'
 
+import { countryList } from './vars.js'
+
 chrome.storage.onChanged.addListener(onChanged)
 chrome.permissions.onAdded.addListener(onAdded)
 chrome.permissions.onRemoved.addListener(onRemoved)
@@ -19,6 +21,9 @@ window.addEventListener('keydown', handleKeyboard)
 document.addEventListener('DOMContentLoaded', initOptions)
 document.getElementById('test-voice').addEventListener('click', testVoice)
 document.getElementById('copy-support').addEventListener('click', copySupport)
+document
+    .getElementById('reset-check-url')
+    .addEventListener('click', resetCheckURL)
 document.getElementById('reset-country').addEventListener('click', resetCountry)
 document
     .getElementById('reset-background')
@@ -56,7 +61,7 @@ async function initOptions() {
 
     checkPerms().then((hasPerms) => {
         if (!hasPerms) {
-            console.log('%cHost Permissions Not Granted', 'color: Red')
+            console.log('%c Host Permissions Not Granted', 'color: Red')
         }
     })
 
@@ -77,6 +82,14 @@ async function initOptions() {
                 addSpeechVoices(options, voices)
             }
         }
+    }
+
+    const ccDataList = document.getElementById('countryCodeList')
+    for (const cc of countryList) {
+        // console.debug('cc:', cc)
+        const option = document.createElement('option')
+        option.value = cc
+        ccDataList.appendChild(option)
     }
 }
 
@@ -120,6 +133,21 @@ function addSpeechVoices(options, voices) {
     if (options.speechVoice) {
         voiceSelect.value = options.speechVoice
     }
+}
+
+/**
+ * Reset Check URL Click Callback
+ * @function resetCheckURL
+ * @param {InputEvent} event
+ */
+async function resetCheckURL(event) {
+    console.log('resetCheckURL:', event)
+    event.preventDefault()
+    const checkURL = document.getElementById('checkURL')
+    checkURL.value = event.currentTarget.dataset.default
+    checkURL.focus()
+    await saveOptions(event)
+    showToast('Update Check URL Reset.')
 }
 
 /**
@@ -292,6 +320,7 @@ async function openPermissions(event) {
  * @param {String} selector
  */
 async function setShortcuts(selector = '#keyboard-shortcuts') {
+    console.debug('setShortcuts:', selector)
     if (!chrome.commands) {
         return console.debug('Skipping: chrome.commands')
     }
