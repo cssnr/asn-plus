@@ -9,6 +9,7 @@ import {
 
 chrome.runtime.onInstalled.addListener(onInstalled)
 chrome.runtime.onStartup.addListener(onStartup)
+chrome.alarms.onAlarm.addListener(onAlarm)
 chrome.runtime.onMessage.addListener(onMessage)
 chrome.contextMenus.onClicked.addListener(onClicked)
 chrome.commands.onCommand.addListener(onCommand)
@@ -47,9 +48,124 @@ const asnHomePageURL = 'https://asn.flightsafety.org/'
 //     }
 // }
 
-chrome.alarms.onAlarm.addListener(onAlarm)
-// noinspection JSIgnoredPromiseFromCall
-chrome.alarms.create('checkUpdates', { delayInMinutes: 1, periodInMinutes: 5 })
+/**
+ * On Installed Callback
+ * @function onInstalled
+ * @param {InstalledDetails} details
+ */
+async function onInstalled(details) {
+    console.log('onInstalled:', details)
+    const options = await setDefaultOptions({
+        darkMode: true,
+        highlightTable: true,
+        updateEntry: true,
+        expandImages: true,
+        hideEntryWarning: true,
+        updateNavigation: true,
+        hideHeaderImage: true,
+        enableKeyboard: true,
+        increaseMaxWidth: false,
+        countryDisplay: 'USA',
+        countryCode: 'N',
+        searchType: 'registration',
+        speechVoice: '',
+        speechRate: 1.1,
+        autoFill: false,
+        asnUsername: '',
+        asnEmail: '',
+        radioBackground: 'bgPicture',
+        pictureURL: 'https://images.cssnr.com/aviation',
+        checkUpdates: false,
+        checkURL: 'https://asn.flightsafety.org/asndb/year/2024',
+        checkFrequency: 30,
+        checkList: false,
+        contextMenu: true,
+        showUpdate: false,
+    })
+    console.debug('options:', options)
+    if (options.contextMenu) {
+        createContextMenus()
+    }
+    if (options.darkMode) {
+        await registerDarkMode()
+    }
+    await registerContentScripts()
+    // if (options.autoFill) {
+    //     const hasPerms = await checkPerms([
+    //         '*://registry.faa.gov/AircraftInquiry/Search/*',
+    //     ])
+    //     if (hasPerms) {
+    //         await registerContentScripts()
+    //     }
+    // }
+    if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
+        const hasPerms = await checkPerms()
+        console.debug('hasPerms:', hasPerms)
+        if (hasPerms) {
+            chrome.runtime.openOptionsPage()
+        } else {
+            const url = chrome.runtime.getURL('/html/permissions.html')
+            await chrome.tabs.create({ active: true, url })
+        }
+    } else if (details.reason === chrome.runtime.OnInstalledReason.UPDATE) {
+        if (options.showUpdate) {
+            const manifest = chrome.runtime.getManifest()
+            if (manifest.version !== details.previousVersion) {
+                const url = `${githubURL}/releases/tag/${manifest.version}`
+                await chrome.tabs.create({ active: false, url })
+            }
+        }
+    }
+    setUninstallURL()
+    updateUnseenBadge()
+    initAlarms('onInstalled')
+}
+
+/**
+ * On Startup Callback
+ * @function onStartup
+ */
+async function onStartup() {
+    console.log('onStartup')
+    // noinspection JSUnresolvedReference
+    if (typeof browser !== 'undefined') {
+        console.log('Firefox Startup Workarounds')
+        const { options } = await chrome.storage.sync.get(['options'])
+        console.debug('options:', options)
+        if (options.contextMenu) {
+            createContextMenus()
+        }
+        setUninstallURL()
+    }
+    updateUnseenBadge()
+    initAlarms()
+}
+
+function setUninstallURL() {
+    const manifest = chrome.runtime.getManifest()
+    const url = new URL('https://asn-plus.cssnr.com/uninstall/')
+    url.searchParams.append('version', manifest.version)
+    chrome.runtime.setUninstallURL(url.href)
+    console.debug(`setUninstallURL: ${url.href}`)
+}
+
+function initAlarms(reason) {
+    chrome.alarms.get('checkUpdates').then((items) => {
+        console.debug('items:', items)
+        if (!items) {
+            const alarmInfo = { delayInMinutes: 1, periodInMinutes: 5 }
+            console.debug(
+                `%c ${reason} - initAlarms: create`,
+                'color: Yellow',
+                alarmInfo
+            )
+            // noinspection JSIgnoredPromiseFromCall
+            chrome.alarms.create('checkUpdates', alarmInfo)
+        } else {
+            console.debug(`%c ${reason} - Alarm Exists`, 'color: lime')
+        }
+    })
+}
 
 async function onAlarm(alarmInfo) {
     console.debug('onAlarm:', alarmInfo)
@@ -128,7 +244,7 @@ async function parseIds(text) {
             // console.debug('id:', id)
             ids.push(id)
         }
-        console.debug('ids FF:', ids)
+        console.debug('Firefox ids:', ids)
         return ids
     } else {
         console.debug('%c CHROME DETECTED', 'color: Aqua')
@@ -139,7 +255,7 @@ async function parseIds(text) {
         })
         const resp = await chrome.runtime.sendMessage({ update: text })
         console.debug('sendMessage: resp:', resp)
-        console.debug('ids Chrome:', resp.ids)
+        console.debug('Chrome ids:', resp.ids)
         return resp.ids
     }
 }
@@ -162,105 +278,6 @@ function updateUnseenBadge() {
             chrome.action.setBadgeText({ text: items.unseen.length.toString() })
         }
     })
-}
-
-/**
- * On Installed Callback
- * @function onInstalled
- * @param {InstalledDetails} details
- */
-async function onInstalled(details) {
-    console.log('onInstalled:', details)
-    const options = await setDefaultOptions({
-        darkMode: true,
-        highlightTable: true,
-        updateEntry: true,
-        expandImages: true,
-        hideEntryWarning: true,
-        updateNavigation: true,
-        hideHeaderImage: true,
-        enableKeyboard: true,
-        increaseMaxWidth: false,
-        countryDisplay: 'USA',
-        countryCode: 'N',
-        searchType: 'registration',
-        speechVoice: '',
-        speechRate: 1.1,
-        autoFill: false,
-        asnUsername: '',
-        asnEmail: '',
-        radioBackground: 'bgPicture',
-        pictureURL: 'https://images.cssnr.com/aviation',
-        checkUpdates: false,
-        checkURL: 'https://asn.flightsafety.org/asndb/year/2024',
-        checkFrequency: 30,
-        checkList: false,
-        contextMenu: true,
-        showUpdate: false,
-    })
-    console.debug('options:', options)
-    if (options.contextMenu) {
-        createContextMenus()
-    }
-    if (options.darkMode) {
-        await registerDarkMode()
-    }
-    await registerContentScripts()
-    // if (options.autoFill) {
-    //     const hasPerms = await checkPerms([
-    //         '*://registry.faa.gov/AircraftInquiry/Search/*',
-    //     ])
-    //     if (hasPerms) {
-    //         await registerContentScripts()
-    //     }
-    // }
-    if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
-        const hasPerms = await checkPerms()
-        console.debug('hasPerms:', hasPerms)
-        if (hasPerms) {
-            chrome.runtime.openOptionsPage()
-        } else {
-            const url = chrome.runtime.getURL('/html/permissions.html')
-            await chrome.tabs.create({ active: true, url })
-        }
-    } else if (details.reason === chrome.runtime.OnInstalledReason.UPDATE) {
-        if (options.showUpdate) {
-            const manifest = chrome.runtime.getManifest()
-            if (manifest.version !== details.previousVersion) {
-                const url = `${githubURL}/releases/tag/${manifest.version}`
-                await chrome.tabs.create({ active: false, url })
-            }
-        }
-    }
-    setUninstallURL()
-    updateUnseenBadge()
-}
-
-/**
- * On Startup Callback
- * @function onStartup
- */
-async function onStartup() {
-    console.log('onStartup')
-    // noinspection JSUnresolvedReference
-    if (typeof browser !== 'undefined') {
-        console.log('Firefox Startup Workarounds')
-        const { options } = await chrome.storage.sync.get(['options'])
-        console.debug('options:', options)
-        if (options.contextMenu) {
-            createContextMenus()
-        }
-        setUninstallURL()
-    }
-    updateUnseenBadge()
-}
-
-function setUninstallURL() {
-    const manifest = chrome.runtime.getManifest()
-    const url = new URL('https://asn-plus.cssnr.com/uninstall/')
-    url.searchParams.append('version', manifest.version)
-    chrome.runtime.setUninstallURL(url.href)
-    console.debug(`setUninstallURL: ${url.href}`)
 }
 
 /**
@@ -358,7 +375,7 @@ function processRegistration(registration, sender, sendResponse) {
 /**
  * On Clicked Callback
  * @function onClicked
- * @param {OnClickData} ctx
+ * @param {chrome.contextMenus.OnClickData} ctx
  * @param {chrome.tabs.Tab} tab
  */
 async function onClicked(ctx, tab) {
@@ -397,7 +414,7 @@ async function onCommand(command) {
  * @param {Object} changes
  * @param {String} namespace
  */
-function onChanged(changes, namespace) {
+function onChanged(changes, namespace) /* NOSONAR */ {
     // console.debug('onChanged:', changes, namespace)
     for (const [key, { oldValue, newValue }] of Object.entries(changes)) {
         if (namespace === 'sync' && key === 'options' && oldValue && newValue) {

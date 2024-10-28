@@ -197,6 +197,11 @@ async function openUnseen(event) {
  */
 async function clearUnseen(event) {
     console.debug('clearUnseen:', event)
-    await chrome.storage.sync.set({ unseen: [] })
+    let { seen, unseen } = await chrome.storage.sync.get(['seen', 'unseen'])
+    console.debug('seen, unseen:', seen, unseen)
+    seen.push(...unseen)
+    seen = seen.slice(-500)
+    await chrome.storage.sync.set({ unseen: [], seen })
+    console.debug('seen, unseen:', seen, unseen)
     document.getElementById('new-incidents').classList.add('d-none')
 }
