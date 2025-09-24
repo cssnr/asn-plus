@@ -106,7 +106,7 @@ export async function saveOptions(event) {
     let value
     if (key === 'countryCode') {
         value = event.target.value.trim()
-        console.info('Country Code:', value)
+        console.log('Country Code:', value)
         if (value.includes('/')) {
             value = value.split('/').at(-1).trim()
             event.target.value = value
@@ -120,6 +120,27 @@ export async function saveOptions(event) {
         const selectedOption = event.target.selectedOptions[0]
         console.debug('value:', selectedOption.value)
         value = selectedOption.value
+    } else if (key === 'reset-check-url') {
+        console.debug('reset-check-url:', event.target.dataset.default)
+        key = 'checkURL'
+        value = event.target.dataset.default
+    } else if (key === 'checkURL') {
+        value = event.target.value
+        console.debug('value:', value)
+        if (countryList.includes(value)) {
+            value = `https://asn.flightsafety.org/asndb/country/${value}`
+            console.debug('value:', value)
+        }
+        try {
+            const url = new URL(value)
+            console.debug('url:', url)
+            if (url.origin !== 'https://asn.flightsafety.org') {
+                return showToast('Invalid URL.', 'danger')
+            }
+        } catch (e) {
+            console.warn('e:', e)
+            return showToast(`Error: ${e.message}`, 'danger')
+        }
     } else if (key === 'reset-country') {
         options['countryCode'] = 'N'
         key = 'countryDisplay'
@@ -139,9 +160,10 @@ export async function saveOptions(event) {
     } else if (event.target.type === 'checkbox') {
         value = event.target.checked
     } else if (event.target.type === 'number') {
+        // } else if (key === 'speechRate') {
         const number = parseFloat(event.target.value)
-        let min = 0.5
-        let max = 2.0
+        let min = parseFloat(event.target.min)
+        let max = parseFloat(event.target.max)
         if (!isNaN(number) && number >= min && number <= max) {
             event.target.value = number.toString()
             value = number
@@ -154,7 +176,7 @@ export async function saveOptions(event) {
     }
     if (value !== undefined) {
         options[key] = value
-        console.info(`Set: ${key}:`, value)
+        console.log(`Set %c ${key}:`, 'color: Khaki', value)
         await chrome.storage.sync.set({ options })
     } else {
         console.warn('No Value for key:', key)
@@ -214,11 +236,36 @@ function hideShowElement(selector, show, speed = 'fast') {
  */
 export function onChanged(changes, namespace) {
     console.debug('onChanged:', changes, namespace)
-    for (const [key, { newValue }] of Object.entries(changes)) {
+    for (const [key, { oldValue, newValue }] of Object.entries(changes)) {
         if (namespace === 'sync' && key === 'options') {
             console.debug('newValue:', newValue)
             updateOptions(newValue)
+            if (oldValue.checkUpdates !== newValue.checkUpdates) {
+                if (newValue.checkUpdates) {
+                    chrome.storage.sync
+                        .get(['unseen'])
+                        .then((items) => enableUnseen(items.unseen))
+                } else {
+                    document
+                        ?.getElementById('new-incidents')
+                        ?.classList?.add('d-none')
+                }
+            }
         }
+    }
+}
+
+export function enableUnseen(unseen) {
+    console.debug('enableUnseen:', unseen)
+    const div = document.getElementById('new-incidents')
+    if (!div) {
+        return console.warn('#new-incidents not found')
+    }
+    if (unseen.length) {
+        div.querySelector('span').textContent = unseen.length
+        div.classList.remove('d-none')
+    } else {
+        div.classList.add('d-none')
     }
 }
 
@@ -228,6 +275,7 @@ export function onChanged(changes, namespace) {
  */
 export async function updateManifest() {
     const manifest = chrome.runtime.getManifest()
+    console.debug('updateManifest:', manifest)
     document.querySelectorAll('.version').forEach((el) => {
         el.textContent = manifest.version
     })

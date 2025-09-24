@@ -1,5 +1,8 @@
 [![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/phcbcnpmcbkcnijkpfohkdmcofcofibh?logo=google&logoColor=white&label=users)](https://chromewebstore.google.com/detail/asn-plus/phcbcnpmcbkcnijkpfohkdmcofcofibh)
 [![Mozilla Add-on Users](https://img.shields.io/amo/users/asn-plus?logo=mozilla&logoColor=white&label=users)](https://addons.mozilla.org/addon/asn-plus)
+[![Chrome Web Store Rating](https://img.shields.io/chrome-web-store/rating/phcbcnpmcbkcnijkpfohkdmcofcofibh?logo=google&logoColor=white)](https://chromewebstore.google.com/detail/asn-plus/phcbcnpmcbkcnijkpfohkdmcofcofibh)
+[![Mozilla Add-on Rating](https://img.shields.io/amo/rating/asn-plus?logo=mozilla&logoColor=white)](https://addons.mozilla.org/addon/asn-plus)
+[![GitHub Repo Stars](https://img.shields.io/github/stars/cssnr/asn-plus?style=flat&logo=github&logoColor=white)](https://github.com/cssnr/asn-plus/stargazers)
 [![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/phcbcnpmcbkcnijkpfohkdmcofcofibh?label=chrome&logo=googlechrome)](https://chromewebstore.google.com/detail/asn-plus/phcbcnpmcbkcnijkpfohkdmcofcofibh)
 [![Mozilla Add-on Version](https://img.shields.io/amo/v/asn-plus?label=firefox&logo=firefox)](https://addons.mozilla.org/addon/asn-plus)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/asn-plus?logo=github&logoColor=white)](https://github.com/cssnr/asn-plus/releases/latest)
@@ -10,6 +13,7 @@
 [![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/asn-plus?logo=htmx&logoColor=white)](https://github.com/cssnr/asn-plus)
 [![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github&logoColor=white)](https://cssnr.github.io/)
 [![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
+
 # ASN Plus
 
 Modern [Chrome](https://chromewebstore.google.com/detail/asn-plus/phcbcnpmcbkcnijkpfohkdmcofcofibh)
@@ -17,21 +21,21 @@ Web Extension and [Firefox](https://addons.mozilla.org/addon/asn-plus)
 Browser Addon for [The Aviation Safety Network](https://asn.flightsafety.org/)
 to enable dark mode **plus** add additional features.
 
-*   [Install](#install)
-*   [Features](#features)
-    -   [Upcoming Features](#Upcoming-Features)
-*   [Frequently Asked Questions](#frequently-asked-questions)
-*   [Known Issues](#known-issues)
-*   [Configuration](#configuration)
-*   [Support](#support)
-*   [Development](#development)
-    -   [Building](#building)
-*   [Contributing](#Contributing)
+- [Install](#install)
+- [Features](#features)
+  - [Upcoming Features](#Upcoming-Features)
+- [Frequently Asked Questions](#frequently-asked-questions)
+- [Known Issues](#known-issues)
+- [Configuration](#configuration)
+- [Support](#support)
+- [Development](#development)
+  - [Building](#building)
+- [Contributing](#Contributing)
 
 ## Install
 
-*   [Google Chrome Web Store](https://chromewebstore.google.com/detail/asn-plus/phcbcnpmcbkcnijkpfohkdmcofcofibh)
-*   [Mozilla Firefox Add-ons](https://addons.mozilla.org/addon/asn-plus)
+- [Google Chrome Web Store](https://chromewebstore.google.com/detail/asn-plus/phcbcnpmcbkcnijkpfohkdmcofcofibh)
+- [Mozilla Firefox Add-ons](https://addons.mozilla.org/addon/asn-plus)
 
 [![Chrome](https://raw.githubusercontent.com/smashedr/logo-icons/master/browsers/chrome_48.png)](https://chromewebstore.google.com/detail/asn-plus/phcbcnpmcbkcnijkpfohkdmcofcofibh)
 [![Firefox](https://raw.githubusercontent.com/smashedr/logo-icons/master/browsers/firefox_48.png)](https://addons.mozilla.org/addon/asn-plus)
@@ -46,41 +50,38 @@ All **Chromium** Based Browsers can install the extension from the
 
 ## Features
 
-*   Enable Dark Mode
-*   Highlight Rows with Fatalities
-*   Add Additional Links to Entries
-*   Expand Images from Sources
-*   Hide Wiki Warnings on Entries
-*   Update Main Navigation Links
-*   Hide Site Header Image
-*   Add Keyboard Shortcuts for Navigation
-*   Easily Play Narrative as Text to Speech
-*   Search Registration/Operator from Selection Text
-*   Search Registration/Operator from Popup Action
-*   Auto Fill New Incidents for US and Canada Registration
+- Enable Dark Mode
+- Highlight Rows with Fatalities
+- Add Additional Links to Entries
+- Expand Images from Sources
+- Hide Wiki Warnings on Entries
+- Update Main Navigation Links
+- Hide Site Header Image
+- Add Keyboard Shortcuts for Navigation
+- Easily Play Narrative as Text to Speech
+- Search Registration/Operator from Selection Text
+- Search Registration/Operator from Popup Action
+- Auto Fill New Incidents for US and Canada Registration
 
 ### Upcoming Features
 
-*   Infinite Scroll when Browsing Incidents
+- Infinite Scroll when Browsing Incidents
 
-> [!TIP]
-> **Don't see your feature here?**
+> [!TIP] > **Don't see your feature here?**
 > Request one on the [Feature Request Discussion](https://github.com/cssnr/asn-plus/discussions/categories/feature-requests).
 
 ## Frequently Asked Questions
 
 Nobody has asked any...
 
-> [!TIP]
-> **Don't see your question here?**
+> [!TIP] > **Don't see your question here?**
 > Ask one on the [Q&A Discussion](https://github.com/cssnr/asn-plus/discussions/categories/q-a).
 
 ## Known Issues
 
-*   Disabling some features requires a page reload before they will take effect.
+- Disabling some features requires a page reload before they will take effect.
 
-> [!TIP]
-> **Don't see your issue here?**
+> [!TIP] > **Don't see your issue here?**
 > Open one on the [Issues](https://github.com/cssnr/asn-plus/issues).
 
 ## Configuration
@@ -119,17 +120,20 @@ To support this project, see the [Contributing](#Contributing) section at the bo
 First, clone (or download) this repository and change into the directory.
 
 Second, install the dependencies:
+
 ```shell
 npm install
 ```
 
 Finally, to run Chrome or Firefox with web-ext, run one of the following:
+
 ```shell
 npm run chrome
 npm run firefox
 ```
 
 Additionally, to Load Unpacked/Temporary Add-on make a `manifest.json` and run from the [src](src) folder, run one of the following:
+
 ```shell
 npm run manifest:chrome
 npm run manifest:firefox
@@ -146,11 +150,13 @@ Example: `npm run chrome -- --chromium-binary=...`
 
 Install the requirements and copy libraries into the `src/dist` directory by running `npm install`.
 See [gulpfile.js](gulpfile.js) for more information on `postinstall`.
+
 ```shell
 npm install
 ```
 
 To create a `.zip` archive of the [src](src) directory for the desired browser run one of the following:
+
 ```shell
 npm run build
 npm run build:chrome

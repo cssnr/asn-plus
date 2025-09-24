@@ -1,6 +1,6 @@
 // JS for wwwapps.tc.gc.ca
 
-console.info('LOADED: cca.js')
+console.log('%c RUNNING cca.js', 'color: Khaki')
 
 const searchParams = new URLSearchParams(window.location.search)
 console.debug('searchParams:', searchParams)
@@ -68,6 +68,7 @@ function getData() {
             .children[1].textContent.trim()
 
         console.log('data:', data)
+        // noinspection JSIgnoredPromiseFromCall
         chrome.runtime.sendMessage({ autofill: data })
         window.close()
     }

@@ -3,7 +3,7 @@
 /* eslint no-func-assign: "off" */
 /* eslint no-unused-vars: "off" */
 
-console.info('LOADED: asn.js')
+console.log('%c RUNNING asn.js', 'color: Khaki')
 
 const tagNames = ['INPUT', 'TEXTAREA', 'SELECT', 'OPTION']
 
@@ -543,6 +543,7 @@ async function doAutoFill(event) {
 function getOptionsLink(text = 'Options Page.') {
     const link = document.createElement('a')
     link.addEventListener('click', () => {
+        // noinspection JSIgnoredPromiseFromCall
         chrome.runtime.sendMessage('openOptionsPage')
     })
     link.textContent = text

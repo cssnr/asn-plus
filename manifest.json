@@ -22,7 +22,7 @@
   "omnibox": {
     "keyword": "asn"
   },
-  "permissions": ["contextMenus", "scripting", "storage"],
+  "permissions": ["alarms", "contextMenus", "scripting", "storage"],
   "host_permissions": ["*://asn.flightsafety.org/*"],
   "content_scripts": [
     {
