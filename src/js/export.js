@@ -14,10 +14,10 @@ export const githubURL = 'https://github.com/cssnr/asn-plus'
 export function getSearchURL(type, value) {
     value = value.trim()
     if (type === 'registration') {
-        return `https://aviation-safety.net/wikibase/dblist2.php?yr=&at=&re=${value}&pc=&op=&lo=&co=&ph=&na=&submit=Submit`
+        return `https://aviation-safety.net/wikibase/dblist4.php?yr=&at=&re=${value}&pc=&op=&lo=&co=&ph=&na=&submit=Submit`
     } else if (type === 'operator') {
         value = value.replaceAll(' ', '+')
-        return `https://aviation-safety.net/wikibase/dblist2.php?yr=&at=&re=&pc=&op=${value}&lo=&co=&ph=&na=&submit=Submit`
+        return `https://aviation-safety.net/wikibase/dblist4.php?yr=&at=&re=&pc=&op=${value}&lo=&co=&ph=&na=&submit=Submit`
     }
 }
 
