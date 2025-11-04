@@ -14,10 +14,10 @@ export const githubURL = 'https://github.com/cssnr/asn-plus'
 export function getSearchURL(type, value) {
     value = value.trim()
     if (type === 'registration') {
-        return `https://asn.flightsafety.org/wikibase/dblist2.php?yr=&at=&re=${value}&pc=&op=&lo=&co=&ph=&na=&submit=Submit`
+        return `https://aviation-safety.net/wikibase/dblist2.php?yr=&at=&re=${value}&pc=&op=&lo=&co=&ph=&na=&submit=Submit`
     } else if (type === 'operator') {
         value = value.replaceAll(' ', '+')
-        return `https://asn.flightsafety.org/wikibase/dblist2.php?yr=&at=&re=&pc=&op=${value}&lo=&co=&ph=&na=&submit=Submit`
+        return `https://aviation-safety.net/wikibase/dblist2.php?yr=&at=&re=&pc=&op=${value}&lo=&co=&ph=&na=&submit=Submit`
     }
 }
 
@@ -28,7 +28,7 @@ export function getSearchURL(type, value) {
  * @return {Promise<*|chrome.permissions.request>}
  */
 export async function requestPerms(extra = false) {
-    let origins = ['*://asn.flightsafety.org/*']
+    let origins = ['*://asn.flightsafety.org/*', '*://aviation-safety.net/*']
     if (extra) {
         origins = [
             '*://registry.faa.gov/AircraftInquiry/Search/*',
@@ -47,7 +47,7 @@ export async function requestPerms(extra = false) {
  */
 export async function checkPerms() {
     const reqPerms = await chrome.permissions.contains({
-        origins: ['*://asn.flightsafety.org/*'],
+        origins: ['*://asn.flightsafety.org/*', '*://aviation-safety.net/*'],
     })
     updatePermsEl(reqPerms, '.has-perms', '.grant-perms')
     const extraPerms = await chrome.permissions.contains({
@@ -106,7 +106,7 @@ export async function saveOptions(event) {
     let value
     if (key === 'countryCode') {
         value = event.target.value.trim()
-        console.info('Country Code:', value)
+        console.log('Country Code:', value)
         if (value.includes('/')) {
             value = value.split('/').at(-1).trim()
             event.target.value = value
@@ -140,8 +140,8 @@ export async function saveOptions(event) {
         value = event.target.checked
     } else if (event.target.type === 'number') {
         const number = parseFloat(event.target.value)
-        let min = 0.5
-        let max = 2.0
+        let min = parseFloat(event.target.min)
+        let max = parseFloat(event.target.max)
         if (!isNaN(number) && number >= min && number <= max) {
             event.target.value = number.toString()
             value = number
@@ -154,7 +154,7 @@ export async function saveOptions(event) {
     }
     if (value !== undefined) {
         options[key] = value
-        console.info(`Set: ${key}:`, value)
+        console.log(`Set %c ${key}:`, 'color: Khaki', value)
         await chrome.storage.sync.set({ options })
     } else {
         console.warn('No Value for key:', key)
@@ -228,6 +228,7 @@ export function onChanged(changes, namespace) {
  */
 export async function updateManifest() {
     const manifest = chrome.runtime.getManifest()
+    console.debug('updateManifest:', manifest)
     document.querySelectorAll('.version').forEach((el) => {
         el.textContent = manifest.version
     })

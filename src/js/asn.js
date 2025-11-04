@@ -3,7 +3,7 @@
 /* eslint no-func-assign: "off" */
 /* eslint no-unused-vars: "off" */
 
-console.info('LOADED: asn.js')
+console.log('%c RUNNING asn.js', 'color: Khaki')
 
 const tagNames = ['INPUT', 'TEXTAREA', 'SELECT', 'OPTION']
 
@@ -190,7 +190,7 @@ function updateEntryTable() {
             ) {
                 const link = document.createElement('a')
                 operator = operator.replaceAll(' ', '+')
-                link.href = `https://asn.flightsafety.org/wikibase/dblist2.php?op=${operator.toString()}`
+                link.href = `https://aviation-safety.net/wikibase/dblist2.php?op=${operator.toString()}`
                 link.textContent = 'Wiki Search'
                 tr.cells[1].appendChild(document.createTextNode(' - '))
                 tr.cells[1].appendChild(link)
@@ -299,7 +299,7 @@ function updateLastUpdated() {
     if (isNaN(id)) {
         return console.debug('id isNaN:', id)
     }
-    lastupdated.innerHTML = `<a href='https://asn.flightsafety.org/wikibase/web_db_edit.php?id=${id}'>Edit ${id}</a>`
+    lastupdated.innerHTML = `<a href='https://aviation-safety.net/wikibase/web_db_edit.php?id=${id}'>Edit ${id}</a>`
 
     // Add Updated Date and Count
     const table = document.querySelector('table.updates')
@@ -351,7 +351,7 @@ async function keyboardEvent(e) {
             if (match) {
                 const id = match[0]
                 console.debug('keyboard: Edit Entry:', id)
-                window.location = `https://asn.flightsafety.org/wikibase/web_db_edit.php?id=${id}`
+                window.location = `https://aviation-safety.net/wikibase/web_db_edit.php?id=${id}`
             }
         }
     } else if (['KeyD', 'KeyW'].includes(e.code)) {
@@ -359,15 +359,15 @@ async function keyboardEvent(e) {
         let year = date.getFullYear()
         if (e.code === 'KeyD') {
             console.debug('keyboard: Database Latest')
-            window.location = `https://asn.flightsafety.org/database/year/${year}`
+            window.location = `https://aviation-safety.net/database/year/${year}`
         } else if (e.code === 'KeyW') {
             console.debug('keyboard: Wiki Latest')
-            window.location = `https://asn.flightsafety.org/asndb/year/${year}`
+            window.location = `https://aviation-safety.net/asndb/year/${year}`
         }
     } else if (['KeyC'].includes(e.code)) {
         const { options } = await chrome.storage.sync.get(['options'])
         console.debug('keyLocation: Country:', options.countryCode)
-        window.location = `https://asn.flightsafety.org/asndb/country/${options.countryCode}`
+        window.location = `https://aviation-safety.net/asndb/country/${options.countryCode}`
     } else if (keyLocations[e.code]) {
         console.debug(`keyLocation: ${e.code}`, keyLocations[e.code])
         window.location = keyLocations[e.code]
@@ -543,6 +543,7 @@ async function doAutoFill(event) {
 function getOptionsLink(text = 'Options Page.') {
     const link = document.createElement('a')
     link.addEventListener('click', () => {
+        // noinspection JSIgnoredPromiseFromCall
         chrome.runtime.sendMessage('openOptionsPage')
     })
     link.textContent = text

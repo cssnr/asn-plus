@@ -1,6 +1,6 @@
 // JS Content Script
 
-console.info('LOADED: content-script.js')
+console.log('%c RUNNING content-script.js', 'color: Khaki')
 
 window.addEventListener('DOMContentLoaded', domContentLoaded)
 
@@ -9,7 +9,7 @@ if (!chrome.storage.onChanged.hasListener(onChanged)) {
 }
 
 async function domContentLoaded() {
-    console.info('domContentLoaded')
+    console.debug('domContentLoaded')
     const { options } = await chrome.storage.sync.get(['options'])
     console.debug('options:', options)
     processOptions(options)
@@ -79,6 +79,7 @@ function processOptions(options) {
         }
     }
     if (window.location.pathname === '/wikibase/web_db_input.php') {
+        // noinspection JSIgnoredPromiseFromCall
         enableAutoFill(options)
     }
 }

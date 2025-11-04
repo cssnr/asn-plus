@@ -18,7 +18,7 @@ chrome.omnibox.onInputCancelled.addListener(onInputCancelled)
 chrome.omnibox.onInputEntered.addListener(onInputEntered)
 
 const omniboxDefault = 'ASN - registration OR operator Search'
-const asnHomePageURL = 'https://asn.flightsafety.org/'
+const asnHomePageURL = 'https://aviation-safety.net/'
 
 /**
  * On Installed Callback
@@ -41,7 +41,7 @@ async function onInstalled(details) {
         countryCode: 'N',
         searchType: 'registration',
         speechVoice: '',
-        speechRate: '1.1',
+        speechRate: 1.1,
         autoFill: false,
         asnUsername: '',
         asnEmail: '',
@@ -111,7 +111,6 @@ function setUninstallURL() {
     url.searchParams.append('version', manifest.version)
     chrome.runtime.setUninstallURL(url.href)
     console.debug(`setUninstallURL: ${url.href}`)
-    chrome.runtime.setUninstallURL(url.href)
 }
 
 /**
@@ -149,12 +148,14 @@ function onMessage(message, sender, sendResponse) {
         console.debug(`SW: Dark Mode: ${message.dark}`, darkCss)
         if (message.dark === 'off') {
             try {
+                // noinspection JSIgnoredPromiseFromCall
                 chrome.scripting.removeCSS(darkCss)
             } catch (e) {
                 console.warn('e', e)
             }
         } else if (message.dark === 'on') {
             try {
+                // noinspection JSIgnoredPromiseFromCall
                 chrome.scripting.insertCSS(darkCss)
             } catch (e) {
                 console.warn('e', e)
@@ -168,6 +169,7 @@ function onMessage(message, sender, sendResponse) {
         console.debug('autofill:', message.autofill)
         const tabID = parseInt(message.autofill.tab)
         console.debug('tabID:', tabID)
+        // noinspection JSIgnoredPromiseFromCall
         chrome.tabs.sendMessage(tabID, message.autofill)
     } else {
         console.warn('Unmatched Message:', message)
@@ -199,13 +201,14 @@ function processRegistration(registration, sender, sendResponse) {
     }
     url.searchParams.append('tab', sender.tab.id.toString())
     console.debug('url', url)
+    // noinspection JSIgnoredPromiseFromCall
     chrome.tabs.create({ active: false, url: url.href })
 }
 
 /**
  * On Clicked Callback
  * @function onClicked
- * @param {OnClickData} ctx
+ * @param {chrome.contextMenus.OnClickData} ctx
  * @param {chrome.tabs.Tab} tab
  */
 async function onClicked(ctx, tab) {
@@ -244,25 +247,27 @@ async function onCommand(command) {
  * @param {Object} changes
  * @param {String} namespace
  */
-function onChanged(changes, namespace) {
+function onChanged(changes, namespace) /* NOSONAR */ {
     // console.debug('onChanged:', changes, namespace)
     for (const [key, { oldValue, newValue }] of Object.entries(changes)) {
         if (namespace === 'sync' && key === 'options' && oldValue && newValue) {
             if (oldValue.contextMenu !== newValue.contextMenu) {
                 if (newValue?.contextMenu) {
-                    console.info('Enabled contextMenu...')
+                    console.log('Enabled contextMenu...')
                     createContextMenus()
                 } else {
-                    console.info('Disabled contextMenu...')
+                    console.log('Disabled contextMenu...')
                     chrome.contextMenus.removeAll()
                 }
             }
             if (oldValue.darkMode !== newValue.darkMode) {
                 if (newValue?.darkMode) {
                     console.debug('Register Dark Mode.')
+                    // noinspection JSIgnoredPromiseFromCall
                     registerDarkMode()
                 } else {
                     console.debug('Unregister Dark Mode.')
+                    // noinspection JSIgnoredPromiseFromCall
                     chrome.scripting.unregisterContentScripts({
                         ids: ['asn-dark'],
                     })
@@ -357,7 +362,7 @@ async function onInputEntered(text) {
     console.debug('search:', search)
     let url
     if (!search) {
-        url = 'https://asn.flightsafety.org/wikibase/wikisearch.php'
+        url = 'https://aviation-safety.net/wikibase/wikisearch.php'
     } else {
         url = getSearchURL(type, search)
     }
@@ -373,7 +378,7 @@ async function registerDarkMode() {
     const asnDark = {
         id: 'asn-dark',
         css: ['css/dark.css'],
-        matches: ['*://asn.flightsafety.org/*'],
+        matches: ['*://asn.flightsafety.org/*', '*://aviation-safety.net/*'],
         runAt: 'document_start',
     }
     console.log('registerDarkMode', asnDark)
@@ -457,8 +462,8 @@ async function setDefaultOptions(defaultOptions) {
         }
     }
     if (changed) {
+        console.log('options changed:', options)
         await chrome.storage.sync.set({ options })
-        console.log('changed:', options)
     }
     return options
 }

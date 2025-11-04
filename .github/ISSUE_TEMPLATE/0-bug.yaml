@@ -12,7 +12,7 @@ body:
     attributes:
       label: Site Link
       description: Please provide a link to the page you are having issues on if possible.
-      placeholder: https://asn.flightsafety.org/
+      placeholder: https://aviation-safety.net/
 
   - type: textarea
     id: description
