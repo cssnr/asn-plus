@@ -11,36 +11,55 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
+    permissions:
+      contents: write
+
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: "Setup Node"
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
+
+      - name: "Install"
+        run: |
+          npm ci
 
       - name: "Update Manifest Version"
         if: ${{ github.event_name == 'release' }}
         uses: cssnr/update-json-value-action@v1
 
-      - name: "Build All"
+      - name: "Build"
         run: |
-          npm install
           npm run build
 
       - name: "Upload to Actions"
-        uses: actions/upload-artifact@v4
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        uses: actions/upload-artifact@v5
         with:
           name: artifacts
           path: web-ext-artifacts/
 
       - name: "Upload to Release"
         if: ${{ github.event_name == 'release' }}
-        uses: svenstaro/upload-release-action@v2
+        uses: cssnr/upload-release-action@v1
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: web-ext-artifacts/*
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
+          globs: web-ext-artifacts/*
+
+      - name: "Update Release Notes Action"
+        if: ${{ github.event_name == 'release' }}
+        continue-on-error: true
+        uses: smashedr/update-release-notes-action@master
+
+      - name: "Package Changelog Action"
+        if: ${{ github.event_name == 'release' }}
+        continue-on-error: true
+        uses: cssnr/package-changelog-action@v2
+
+      - name: "Send Failure Notification"
+        if: ${{ failure() && github.event_name == 'release' }}
+        uses: sarisia/actions-status-discord@11a0bfe3b50977e38aa2bd4a4ebd296415e83c19 # v1.15.4
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}

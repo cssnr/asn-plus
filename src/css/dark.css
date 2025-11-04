@@ -1,5 +1,5 @@
 body {
-    background: #848484 !important;
+  background: #848484 !important;
 }
 
 td.list,
@@ -10,9 +10,9 @@ td.listmain,
 td.listmain_nohover,
 .infobox_highlight,
 td.listdata {
-    color: white !important;
-    border-top: 1px solid #fff !important;
-    border-bottom: 1px solid #fff !important;
+  color: white !important;
+  border-top: 1px solid #fff !important;
+  border-bottom: 1px solid #fff !important;
 }
 
 body,
@@ -20,15 +20,15 @@ div.pagenumbers a,
 .navigation a:link,
 label,
 td.listnoline {
-    color: white !important;
+  color: white !important;
 }
 
 .navigation a:visited {
-    color: white !important;
+  color: white !important;
 }
 
 .infobox {
-    background-color: #222 !important;
+  background-color: #222 !important;
 }
 
 table,
@@ -36,24 +36,24 @@ table,
 .navigation,
 .navigation ul li,
 table tr.listmain td {
-    background-color: #313131 !important;
+  background-color: #313131 !important;
 }
 
 table tr.list:hover td,
 table tr:hover td.list,
 td.listdata:hover,
 tbody tr:hover td.listdata {
-    background-color: #474747 !important;
+  background-color: #474747 !important;
 }
 
 a {
-    color: #0f0 !important;
+  color: #0f0 !important;
 }
 a:visited,
 .trail a:link,
 .trail a:visited,
 div.alertbox a {
-    color: #f0f !important;
+  color: #f0f !important;
 }
 
 /*div.navigation img,*/

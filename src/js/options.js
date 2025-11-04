@@ -10,6 +10,8 @@ import {
     updateOptions,
 } from './export.js'
 
+import { countryList } from './vars.js'
+
 chrome.storage.onChanged.addListener(onChanged)
 chrome.permissions.onAdded.addListener(onAdded)
 chrome.permissions.onRemoved.addListener(onRemoved)
@@ -56,7 +58,7 @@ async function initOptions() {
 
     checkPerms().then((hasPerms) => {
         if (!hasPerms) {
-            console.log('%cHost Permissions Not Granted', 'color: Red')
+            console.log('%c Host Permissions Not Granted', 'color: Red')
         }
     })
 
@@ -77,6 +79,14 @@ async function initOptions() {
                 addSpeechVoices(options, voices)
             }
         }
+    }
+
+    const ccDataList = document.getElementById('countryCodeList')
+    for (const cc of countryList) {
+        console.debug('cc:', cc)
+        const option = document.createElement('option')
+        option.value = cc
+        ccDataList.appendChild(option)
     }
 }
 
@@ -292,6 +302,7 @@ async function openPermissions(event) {
  * @param {String} selector
  */
 async function setShortcuts(selector = '#keyboard-shortcuts') {
+    console.debug('setShortcuts:', selector)
     if (!chrome.commands) {
         return console.debug('Skipping: chrome.commands')
     }
