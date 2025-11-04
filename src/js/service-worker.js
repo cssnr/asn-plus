@@ -167,7 +167,7 @@ function onMessage(message, sender, sendResponse) {
         processRegistration(message.registration, sender, sendResponse)
     } else if (message.autofill) {
         console.debug('autofill:', message.autofill)
-        const tabID = parseInt(message.autofill.tab)
+        const tabID = Number.parseInt(message.autofill.tab)
         console.debug('tabID:', tabID)
         // noinspection JSIgnoredPromiseFromCall
         chrome.tabs.sendMessage(tabID, message.autofill)
@@ -295,6 +295,7 @@ async function parseInput(text) {
         return ['operator', search]
     } else {
         search = text.replace(/ /g, '')
+        // search = text.replaceAll(' ', '')
         let { options } = await chrome.storage.sync.get(['options'])
         return [options.searchType, search]
     }

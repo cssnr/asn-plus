@@ -294,9 +294,9 @@ function updateLastUpdated() {
     lastupdated.style.marginTop = '6px'
 
     // Add Edit Link
-    const id = parseInt(document.URL.split('/').at(-1).trim())
+    const id = Number.parseInt(document.URL.split('/').at(-1).trim())
     console.debug('id:', id)
-    if (isNaN(id)) {
+    if (Number.isNaN(id)) {
         return console.debug('id isNaN:', id)
     }
     lastupdated.innerHTML = `<a href='https://aviation-safety.net/wikibase/web_db_edit.php?id=${id}'>Edit ${id}</a>`
@@ -347,7 +347,7 @@ async function keyboardEvent(e) {
         }
     } else if (['KeyE'].includes(e.code)) {
         if (/^\/wikibase\/\d+/.test(window.location.pathname)) {
-            const match = RegExp(/\d+/).exec(window.location.pathname)
+            const match = new RegExp(/\d+/).exec(window.location.pathname)
             if (match) {
                 const id = match[0]
                 console.debug('keyboard: Edit Entry:', id)
