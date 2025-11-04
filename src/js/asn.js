@@ -5,7 +5,7 @@
 
 console.log('%c RUNNING asn.js', 'color: Khaki')
 
-const tagNames = ['INPUT', 'TEXTAREA', 'SELECT', 'OPTION']
+const tagNames = new Set(['INPUT', 'TEXTAREA', 'SELECT', 'OPTION'])
 
 const keyLocations = {
     KeyH: '/',
@@ -326,7 +326,7 @@ async function keyboardEvent(e) {
         e.metaKey ||
         e.shiftKey ||
         e.repeat ||
-        tagNames.includes(e.target.tagName)
+        tagNames.has(e.target.tagName)
     ) {
         return
     }
