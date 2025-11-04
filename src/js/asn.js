@@ -190,7 +190,7 @@ function updateEntryTable() {
             ) {
                 const link = document.createElement('a')
                 operator = operator.replaceAll(' ', '+')
-                link.href = `https://aviation-safety.net/wikibase/dblist2.php?op=${operator.toString()}`
+                link.href = `https://aviation-safety.net/wikibase/dblist4.php?op=${operator.toString()}`
                 link.textContent = 'Wiki Search'
                 tr.cells[1].appendChild(document.createTextNode(' - '))
                 tr.cells[1].appendChild(link)
