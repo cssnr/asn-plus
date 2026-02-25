@@ -22,9 +22,7 @@ document.addEventListener('DOMContentLoaded', initOptions)
 document.getElementById('test-voice').addEventListener('click', testVoice)
 document.getElementById('copy-support').addEventListener('click', copySupport)
 document.getElementById('reset-country').addEventListener('click', resetCountry)
-document
-    .getElementById('reset-background')
-    .addEventListener('click', resetBackground)
+document.getElementById('reset-background').addEventListener('click', resetBackground)
 document
     .querySelectorAll('#options-form input,select')
     .forEach((el) => el.addEventListener('change', saveOptions))
@@ -216,16 +214,9 @@ function handleKeyboard(e) {
         return
     }
     if (
-        [
-            'date',
-            'email',
-            'number',
-            'password',
-            'search',
-            'tel',
-            'text',
-            'url',
-        ].includes(e.target.type)
+        ['date', 'email', 'number', 'password', 'search', 'tel', 'text', 'url'].includes(
+            e.target.type,
+        )
     ) {
         return
     }
@@ -292,8 +283,7 @@ async function openPermissions(event) {
     console.debug('openPermissions:', event)
     event.preventDefault()
     const url = chrome.runtime.getURL('/html/permissions.html')
-    // noinspection ES6MissingAwait
-    activateOrOpen(url)
+    await activateOrOpen(url)
 }
 
 /**

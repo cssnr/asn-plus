@@ -1,11 +1,6 @@
 // JS Background Service Worker
 
-import {
-    activateOrOpen,
-    checkPerms,
-    getSearchURL,
-    githubURL,
-} from './export.js'
+import { activateOrOpen, checkPerms, getSearchURL, githubURL } from './export.js'
 
 chrome.runtime.onInstalled.addListener(onInstalled)
 chrome.runtime.onStartup.addListener(onStartup)
@@ -94,7 +89,10 @@ async function onInstalled(details) {
 async function onStartup() {
     console.log('onStartup')
     // noinspection JSUnresolvedReference
-    if (typeof browser !== 'undefined') {
+    if (
+        typeof browser !== 'undefined' &&
+        typeof browser?.runtime?.getBrowserInfo === 'function'
+    ) {
         console.log('Firefox Startup Workarounds')
         const { options } = await chrome.storage.sync.get(['options'])
         console.debug('options:', options)
@@ -183,15 +181,11 @@ function processRegistration(registration, sender, sendResponse) {
     console.debug('value', value)
     let url
     if (value.startsWith('n')) {
-        url = new URL(
-            'https://registry.faa.gov/AircraftInquiry/Search/NNumberResult'
-        )
+        url = new URL('https://registry.faa.gov/AircraftInquiry/Search/NNumberResult')
         url.searchParams.append('nNumberTxt', value)
         // console.log('url', url)
     } else if (value.startsWith('c')) {
-        url = new URL(
-            'https://wwwapps.tc.gc.ca/saf-sec-sur/2/ccarcs-riacc/RchSimp.aspx'
-        )
+        url = new URL('https://wwwapps.tc.gc.ca/saf-sec-sur/2/ccarcs-riacc/RchSimp.aspx')
         url.searchParams.append('registration', value)
         // console.log('url', url)
     } else {
@@ -329,8 +323,7 @@ async function onInputChanged(text, suggest) {
             let { options } = await chrome.storage.sync.get(['options'])
             // search = text.replace(/\s/g, '')
             const type =
-                options.searchType.charAt(0).toUpperCase() +
-                options.searchType.slice(1)
+                options.searchType.charAt(0).toUpperCase() + options.searchType.slice(1)
             chrome.omnibox.setDefaultSuggestion({
                 description: `Aviation Tools - ${type} Search`,
             })

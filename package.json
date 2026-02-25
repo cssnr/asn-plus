@@ -1,5 +1,6 @@
 {
   "name": "asn-plus",
+  "private": true,
   "scripts": {
     "postinstall": "npx gulp",
     "lint:eslint": "npx eslint src/js",
@@ -13,20 +14,23 @@
     "build:firefox": "npm run manifest:firefox && npx web-ext build -n {name}-firefox-{version}.zip -o -s src",
     "build": "npm run build:chrome && npm run build:firefox",
     "prettier:check": "npx prettier --check .",
-    "prettier:write": "npx prettier --write ."
+    "prettier:write": "npx prettier --write .",
+    "actionlint": "actionlint",
+    "yamllint": "yamllint -c .github/yamllint.yaml ."
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^7.1.0",
+    "@fortawesome/fontawesome-free": "^7.2.0",
     "bootstrap": "^5.3.8",
     "bootswatch": "^5.3.8",
-    "jquery": "^3.7.1"
+    "jquery": "^4.0.0"
   },
   "devDependencies": {
-    "@types/chrome": "^0.1.27",
-    "eslint": "^9.39.1",
+    "@eslint/js": "^10.0.1",
+    "@types/chrome": "^0.1.37",
+    "eslint": "^10.0.2",
     "gulp": "^5.0.1",
     "json-merger": "^3.0.0",
-    "prettier": "^3.6.2",
-    "web-ext": "^9.1.0"
+    "prettier": "^3.8.1",
+    "web-ext": "^9.3.0"
   }
 }

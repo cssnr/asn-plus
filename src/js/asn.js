@@ -184,10 +184,7 @@ function updateEntryTable() {
         if (tr.textContent.startsWith('Owner/operator:')) {
             operator = tr.cells[1].textContent.trim()
             console.debug('operator:', operator)
-            if (
-                operator &&
-                !['private', 'unreported'].includes(operator.toLowerCase())
-            ) {
+            if (operator && !['private', 'unreported'].includes(operator.toLowerCase())) {
                 const link = document.createElement('a')
                 operator = operator.replaceAll(' ', '+')
                 link.href = `https://aviation-safety.net/wikibase/dblist4.php?op=${operator.toString()}`
@@ -306,8 +303,7 @@ function updateLastUpdated() {
     if (!table) {
         return console.debug('table.updates not found')
     }
-    const updated =
-        table.rows[table.rows.length - 1].cells[0].textContent.trim()
+    const updated = table.rows[table.rows.length - 1].cells[0].textContent.trim()
     console.debug('updated:', updated)
     const count = table.rows.length - 1
     lastupdated.innerHTML += ` - Updated <strong>${count}</strong> times on <strong>${updated}</strong>`
@@ -396,9 +392,7 @@ async function enableAutoFill(options) {
 
     const date = new Date()
     document.querySelector('[name="Day"]').value = date.getDay()
-    document.querySelector('[name="Month"]').value = (
-        '0' + date.getMonth()
-    ).slice(-2)
+    document.querySelector('[name="Month"]').value = ('0' + date.getMonth()).slice(-2)
     document.querySelector('[name="Year"]').value = date.getFullYear()
 
     const extraPerms = await chrome.runtime.sendMessage('extraPerms')
@@ -407,8 +401,7 @@ async function enableAutoFill(options) {
         console.debug('Missing Extra Permissions')
 
         const p = document.createElement('p')
-        p.textContent =
-            'Auto Fill requires additional permissions. See the Popup or '
+        p.textContent = 'Auto Fill requires additional permissions. See the Popup or '
         p.style.marginLeft = '40px'
 
         const link = getOptionsLink()
@@ -480,8 +473,7 @@ function onMessage(message, sender) {
 
 function processResponse(message) {
     if (message.registration) {
-        document.querySelector('[name="Registration"]').value =
-            message.registration
+        document.querySelector('[name="Registration"]').value = message.registration
     }
     if (message.serial) {
         document.querySelector('[name="Cn"]').value = message.serial

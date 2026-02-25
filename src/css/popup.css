@@ -1,11 +1,11 @@
 /* CSS for popup.html */
 
 body {
-  width: 360px;
-  overflow-x: hidden;
+    width: 360px;
+    overflow-x: hidden;
 }
 
 input::placeholder {
-  text-align: center;
-  text-transform: capitalize;
+    text-align: center;
+    text-transform: capitalize;
 }

@@ -245,22 +245,24 @@ export async function updateManifest() {
  * @function activateOrOpen
  * @param {String} url
  * @param {Boolean} [open]
- * @return {Promise<*|Boolean>}
+ * @return {Promise<chrome.tabs.Tab>}
  */
 export async function activateOrOpen(url, open = true) {
-    console.debug('activateOrOpen:', url)
+    console.debug('activateOrOpen:', url, open)
+    // Note: To Get Tab from Tabs (requires host permissions or tabs)
     const tabs = await chrome.tabs.query({ currentWindow: true })
-    // console.debug('tabs:', tabs)
+    console.debug('tabs:', tabs)
     for (const tab of tabs) {
         if (tab.url === url) {
-            console.debug('tab:', tab)
-            await chrome.tabs.update(tab.id, { active: true })
-            return
+            console.debug('%cTab found, activating:', 'color: Lime', tab)
+            return await chrome.tabs.update(tab.id, { active: true })
         }
     }
     if (open) {
-        await chrome.tabs.create({ active: true, url })
+        console.debug('%cTab not found, opening url:', 'color: Yellow', url)
+        return await chrome.tabs.create({ active: true, url })
     }
+    console.warn('tab not found and open not set!')
 }
 
 /**
@@ -277,7 +279,7 @@ export function showToast(message, type = 'success') {
         return console.warn('Missing clone or container:', clone, container)
     }
     const element = clone.cloneNode(true)
-    element.querySelector('.toast-body').innerHTML = message
+    element.querySelector('.toast-body').textContent = message
     element.classList.add(`text-bg-${type}`)
     container.appendChild(element)
     const toast = new bootstrap.Toast(element)
