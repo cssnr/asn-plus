@@ -78,7 +78,7 @@ All **Chromium** Based Browsers can install the extension from the
 
 > [!TIP]  
 > **Don't see your feature here?**  
-> Request one on the [Feature Request Discussion](https://github.com/cssnr/asn-plus/discussions/categories/feature-requests).
+> Submit a [Feature Request](https://github.com/cssnr/asn-plus/issues/new?template=1-feature.yaml).
 
 ## Frequently Asked Questions
 
@@ -86,7 +86,7 @@ Nobody has asked any...
 
 > [!TIP]  
 > **Don't see your question here?**  
-> Ask one on the [Q&A Discussion](https://github.com/cssnr/asn-plus/discussions/categories/q-a).
+> Start a [Q&A Discussion](https://github.com/cssnr/asn-plus/discussions/categories/q-a).
 
 ## Known Issues
 
@@ -94,7 +94,7 @@ Nobody has asked any...
 
 > [!TIP]  
 > **Don't see your issue here?**  
-> Open one on the [Issues](https://github.com/cssnr/asn-plus/issues).
+> Open a [New Issues](https://github.com/cssnr/asn-plus/issues).
 
 ## Configuration
 
