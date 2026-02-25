@@ -28,8 +28,8 @@
 - [Install](#install)
 - [Features](#features)
   - [Upcoming Features](#Upcoming-Features)
-- [Frequently Asked Questions](#frequently-asked-questions)
-- [Known Issues](#known-issues)
+  - [Frequently Asked Questions](#frequently-asked-questions)
+  - [Known Issues](#known-issues)
 - [Configuration](#configuration)
 - [Support](#support)
 - [Development](#development)
@@ -40,6 +40,8 @@ Modern [Chrome](https://chromewebstore.google.com/detail/asn-plus/phcbcnpmcbkcni
 Web Extension and [Firefox](https://addons.mozilla.org/addon/asn-plus)
 Browser Addon for [The Aviation Safety Network](https://aviation-safety.net/)
 to enable dark mode **plus** add additional features.
+
+[![View Documentation](https://img.shields.io/badge/view_documentation-blue?style=for-the-badge&logo=quicklook)](https://asn-plus.cssnr.com/)
 
 ## Install
 
@@ -77,23 +79,23 @@ All **Chromium** Based Browsers can install the extension from the
 - Infinite Scroll when Browsing Incidents
 
 > [!TIP]  
-> **Don't see your feature here?**  
+> **Don't see your feature here?**
 > Submit a [Feature Request](https://github.com/cssnr/asn-plus/issues/new?template=1-feature.yaml).
 
-## Frequently Asked Questions
+### Frequently Asked Questions
 
-Nobody has asked any...
+- Nobody has asked any...
 
 > [!TIP]  
-> **Don't see your question here?**  
+> **Don't see your question here?**
 > Start a [Q&A Discussion](https://github.com/cssnr/asn-plus/discussions/categories/q-a).
 
-## Known Issues
+### Known Issues
 
 - Disabling some features requires a page reload before they will take effect.
 
 > [!TIP]  
-> **Don't see your issue here?**  
+> **Don't see your issue here?**
 > Open a [New Issues](https://github.com/cssnr/asn-plus/issues).
 
 ## Configuration
@@ -105,6 +107,8 @@ You can pin the Addon by clicking the `Puzzle Piece`, find the Web Extension ico
 To open the options, click on the icon (from above) then click `Open Options`.
 
 You may also access the Options and Home page from a Right Click if Enabled in Options.
+
+[![View Documentation](https://img.shields.io/badge/view_documentation-blue?style=for-the-badge&logo=quicklook)](https://asn-plus.cssnr.com/)
 
 ## Support
 
