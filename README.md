@@ -7,7 +7,6 @@
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/asn-plus?logo=github&logoColor=white)](https://github.com/cssnr/asn-plus/releases/latest)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_asn-plus&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_asn-plus)
 [![Workflow Build](https://img.shields.io/github/actions/workflow/status/cssnr/asn-plus/build.yaml?logo=norton&logoColor=white&label=build)](https://github.com/cssnr/asn-plus/actions/workflows/build.yaml)
-[![Workflow Test](https://img.shields.io/github/actions/workflow/status/cssnr/asn-plus/test.yaml?logo=norton&logoColor=white&label=test)](https://github.com/cssnr/asn-plus/actions/workflows/test.yaml)
 [![Workflow Lint](https://img.shields.io/github/actions/workflow/status/cssnr/asn-plus/lint.yaml?logo=norton&logoColor=white&label=lint)](https://github.com/cssnr/asn-plus/actions/workflows/lint.yaml)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/asn-plus?logo=listenhub&label=updated)](https://github.com/cssnr/asn-plus/pulse)
 [![GitHub Repo Size](https://img.shields.io/github/repo-size/cssnr/asn-plus?logo=buffer&label=repo%20size)](https://github.com/cssnr/asn-plus?tab=readme-ov-file#readme)
@@ -77,21 +76,24 @@ All **Chromium** Based Browsers can install the extension from the
 
 - Infinite Scroll when Browsing Incidents
 
-> [!TIP] > **Don't see your feature here?**
+> [!TIP]  
+> **Don't see your feature here?**  
 > Request one on the [Feature Request Discussion](https://github.com/cssnr/asn-plus/discussions/categories/feature-requests).
 
 ## Frequently Asked Questions
 
 Nobody has asked any...
 
-> [!TIP] > **Don't see your question here?**
+> [!TIP]  
+> **Don't see your question here?**  
 > Ask one on the [Q&A Discussion](https://github.com/cssnr/asn-plus/discussions/categories/q-a).
 
 ## Known Issues
 
 - Disabling some features requires a page reload before they will take effect.
 
-> [!TIP] > **Don't see your issue here?**
+> [!TIP]  
+> **Don't see your issue here?**  
 > Open one on the [Issues](https://github.com/cssnr/asn-plus/issues).
 
 ## Configuration
@@ -203,7 +205,7 @@ You may also use an Unbranded Build: [https://wiki.mozilla.org/Add-ons/Extension
 Please consider making a donation to support the development of this project
 and [additional](https://cssnr.com/) open source projects.
 
-[![Support](https://img.shields.io/badge/Ko--fi-579fbf?style=for-the-badge&logo=kofi&label=Support)](https://ko-fi.com/cssnr)
+[![Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/cssnr)
 
 Additionally, you can give a 5-star rating
 on [Google](https://chromewebstore.google.com/detail/asn-plus/phcbcnpmcbkcnijkpfohkdmcofcofibh)
@@ -216,6 +218,7 @@ Other Web Extensions I have created and published:
 - [Auto Auth](https://github.com/cssnr/auto-auth?tab=readme-ov-file#readme)
 - [Cache Cleaner](https://github.com/cssnr/cache-cleaner?tab=readme-ov-file#readme)
 - [HLS Video Downloader](https://github.com/cssnr/hls-video-downloader?tab=readme-ov-file#readme)
+- [Zipline Extension](https://github.com/cssnr/zipline-extension?tab=readme-ov-file#readme)
 - [Obtainium Extension](https://github.com/cssnr/obtainium-extension?tab=readme-ov-file#readme)
 - [SMWC Web Extension](https://github.com/cssnr/smwc-web-extension?tab=readme-ov-file#readme)
 - [PlayDrift Extension](https://github.com/cssnr/playdrift-extension?tab=readme-ov-file#readme)
