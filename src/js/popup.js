@@ -26,9 +26,7 @@ document
 document
     .getElementsByName('searchType')
     .forEach((el) => el.addEventListener('change', updateSearchType))
-document
-    .getElementById('search-form')
-    .addEventListener('submit', searchFormSubmit)
+document.getElementById('search-form').addEventListener('submit', searchFormSubmit)
 document
     .querySelectorAll('[data-bs-toggle="tooltip"]')
     .forEach((el) => new bootstrap.Tooltip(el))
@@ -62,7 +60,7 @@ async function initPopup() {
         `https://aviation-safety.net/asndb/country/${options.countryCode}`
     searchTerm.placeholder = options.searchType
     document.querySelector(
-        `input[name="searchType"][value="${options.searchType}"]`
+        `input[name="searchType"][value="${options.searchType}"]`,
     ).checked = true
 
     const hasPerms = await checkPerms()
@@ -146,9 +144,7 @@ async function searchFormSubmit(event) {
     // const form = event.target.form || event.target
     // console.debug('form:', form)
     // const searchType = form.elements.searchType.value.toString().trim()
-    const searchType = document.querySelector(
-        '[name="searchType"]:checked'
-    ).value
+    const searchType = document.querySelector('[name="searchType"]:checked').value
     console.debug('searchType:', searchType)
     // console.debug('searchTerm:', searchTerm)
     let value = searchTerm.value.toString().trim()

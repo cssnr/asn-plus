@@ -63,9 +63,7 @@ function getData() {
             }
         }
 
-        data.name = document
-            .getElementById('dvOwnerName')
-            .children[1].textContent.trim()
+        data.name = document.getElementById('dvOwnerName').children[1].textContent.trim()
 
         console.log('data:', data)
         // noinspection JSIgnoredPromiseFromCall

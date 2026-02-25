@@ -23,10 +23,7 @@
     "keyword": "asn"
   },
   "permissions": ["contextMenus", "scripting", "storage"],
-  "host_permissions": [
-    "*://asn.flightsafety.org/*",
-    "*://aviation-safety.net/*"
-  ],
+  "host_permissions": ["*://asn.flightsafety.org/*", "*://aviation-safety.net/*"],
   "content_scripts": [
     {
       "matches": ["*://asn.flightsafety.org/*", "*://aviation-safety.net/*"],

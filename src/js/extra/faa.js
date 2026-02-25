@@ -28,12 +28,8 @@ function getData() {
     const manufacturer = document
         .querySelector('[data-label="Manufacturer Name"]')
         ?.textContent.trim()
-    const model = document
-        .querySelector('[data-label="Model"]')
-        ?.textContent.trim()
-    const name = document
-        .querySelector('[data-label="Name"]')
-        ?.textContent.trim()
+    const model = document.querySelector('[data-label="Model"]')?.textContent.trim()
+    const name = document.querySelector('[data-label="Name"]')?.textContent.trim()
     const type = document
         .querySelector('[data-label="Aircraft Type"]')
         ?.textContent.trim()
